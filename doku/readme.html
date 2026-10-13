@@ -1,0 +1,1494 @@
+<!DOCTYPE html>
+<html lang="de" data-kern-theme="light">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Dokumentation – Projektschau für KERN</title>
+	<script>
+		/* Reihenfolge: Adresse (?theme=, für Seitenwechsel ohne Browserspeicher), gespeicherte Wahl, Systemeinstellung */
+		( function () { var t = new URLSearchParams( location.search ).get( 'theme' ); if ( t !== 'dark' && t !== 'light' ) { t = null; try { t = localStorage.getItem( 'ps-theme' ); } catch ( e ) {} } if ( ! t && window.matchMedia && matchMedia( '(prefers-color-scheme: dark)' ).matches ) { t = 'dark'; } if ( t ) { document.documentElement.setAttribute( 'data-kern-theme', t ); try { localStorage.setItem( 'ps-theme', t ); } catch ( e ) {} } } )();
+	</script>
+	<link rel="icon" href="data:,">
+	<link rel="stylesheet" href="../vendor/kern/fonts/fira-sans.css">
+	<link rel="stylesheet" href="../vendor/kern/kern.min.css">
+	<link rel="stylesheet" href="../vendor/kern/kern-grid.min.css">
+	<style>
+		.demo-kopf { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--kern-metric-space-small, 8px); padding: var(--kern-metric-space-small, 8px) 0; margin-bottom: var(--kern-metric-space-large, 24px); border-bottom: var(--kern-metric-border-width-light, 1px) solid var(--kern-color-decorative-border-contextual, #c0c3d5); }
+		.demo-navi { display: flex; gap: var(--kern-metric-space-default, 16px); margin-inline-start: auto; margin-inline-end: var(--kern-metric-space-default, 16px); }
+		@media (max-width: 48rem) { .demo-kopf > p { flex: 1 1 100%; } .demo-navi { margin-inline-start: 0; } #farbschema { margin-inline-start: auto; } }
+		.demo-fuss { margin-top: calc(var(--kern-metric-space-x-large, 32px) * 3); padding-bottom: var(--kern-metric-space-x-large, 32px); }
+		.demo-fuss .kern-divider { margin-bottom: var(--kern-metric-space-default, 16px); }
+		.demo-navi .kern-link { display: inline-flex; align-items: center; min-height: 24px; padding-block: 0; line-height: 1; }
+		.demo-skip { position: absolute; inset-block-start: var(--kern-metric-space-small, 8px); inset-inline-start: var(--kern-metric-space-small, 8px); z-index: 100; padding: var(--kern-metric-space-small, 8px) var(--kern-metric-space-default, 16px); border-radius: var(--kern-metric-border-radius-default, 4px); background: var(--kern-color-layout-background-default, #fff); transform: translateY(-300%); }
+		.demo-skip:focus { transform: none; }
+		/* Links im Fuß in der Schriftgröße des Fußtexts, ohne den Grundlinienabstand des Kit-Links */
+		.demo-fuss .kern-link { font-size: inherit; line-height: inherit; padding: 0; }
+		.demo-navi [aria-current] { text-decoration: none; color: var(--kern-color-layout-text-default, #131525); font-weight: var(--kern-typography-font-weight-semi-bold, 600); }
+		.ps-icon { width: 1em; height: 1em; flex: none; margin-inline-end: var(--kern-metric-space-x-small, 4px); color: var(--kern-color-action-default-contextual, #2044aa); }
+		[data-kern-theme="dark"] .demo-sonne, :root:not([data-kern-theme="dark"]) .demo-mond { display: none; }
+		/* Gleiche Lage wie der Sprachumschalter der Demo: 24 px unter der Kopfzeile, 24 px über dem Inhalt */
+		.doku-lang { gap: 0; justify-content: flex-end; margin-bottom: var(--kern-metric-space-small, 8px); }
+		/* Überschrift und Einleitung wie in der Demo: 8 px unter dem Schalter, Einleitung in der großen Textstufe */
+		.doku > h1 + p { margin-top: calc(-1 * var(--kern-metric-space-small, 8px)); }
+		.doku-lang .kern-btn { margin: 0; border-radius: 0; }
+		.doku-lang .kern-btn--secondary { border-color: var(--kern-color-action-default-contextual, #2044aa); }
+		.doku-lang .kern-btn + .kern-btn { margin-inline-start: -1px; }
+		.doku-lang .kern-btn:first-child { border-start-start-radius: var(--kern-metric-border-radius-default, 4px); border-end-start-radius: var(--kern-metric-border-radius-default, 4px); }
+		.doku-lang .kern-btn:last-child { border-start-end-radius: var(--kern-metric-border-radius-default, 4px); border-end-end-radius: var(--kern-metric-border-radius-default, 4px); }
+		.doku-lang .kern-btn:focus-visible, .doku-lang .kern-btn--primary { z-index: 1; }
+		.doku-layout { display: grid; grid-template-columns: minmax(0, 52rem) 1fr; gap: var(--kern-metric-space-x-large, 32px); align-items: start; }
+		.doku { max-width: 52rem; display: flex; flex-direction: column; gap: var(--kern-metric-space-default, 16px); }
+		/* Mitlaufendes Inhaltsverzeichnis wie in der KERN-Doku: rechts, haftet beim Scrollen, aktiver Abschnitt hervorgehoben */
+		.doku-toc { position: sticky; top: var(--kern-metric-space-large, 24px); max-width: 18rem; justify-self: end; width: 100%; border-left: var(--kern-metric-border-width-light, 1px) solid var(--kern-color-decorative-border-contextual, #c0c3d5); padding-left: var(--kern-metric-space-default, 16px); }
+		.doku-toc .kern-label { display: block; padding: 0 0 var(--kern-metric-space-small, 8px); }
+		.doku-toc ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--kern-metric-space-x-small, 4px); }
+		.doku-toc .kern-link { text-decoration: none; color: var(--kern-color-layout-text-muted, #51577a); font-size: var(--kern-typography-font-size-small-static, 16px); line-height: var(--kern-typography-line-height-medium-static, 24px); }
+		.doku-toc .kern-link:hover, .doku-toc .kern-link:focus-visible { text-decoration: underline; }
+		.doku-toc .kern-link[aria-current="true"] { color: var(--kern-color-action-default, #2044aa); font-weight: var(--kern-typography-font-weight-semi-bold, 600); }
+		@media (max-width: 64rem) { .doku-layout { grid-template-columns: 1fr; } .doku-toc { position: static; order: -1; max-width: none; border-left: 0; padding-left: 0; } }
+		.doku h2 { margin-top: var(--kern-metric-space-x-large, 32px); }
+		.doku h3 { margin-top: var(--kern-metric-space-default, 16px); }
+		.doku-code { position: relative; }
+		.doku-code .kern-btn { position: absolute; right: var(--kern-metric-space-small, 8px); bottom: var(--kern-metric-space-small, 8px); margin: 0; min-height: 0; padding: var(--kern-metric-space-x-small, 4px); opacity: .6; }
+		.doku-code .kern-btn .kern-label:empty { display: none; }
+		.doku-code .kern-btn:hover, .doku-code .kern-btn:focus-visible { opacity: 1; }
+		.doku-code .kern-btn .kern-label { padding: var(--kern-metric-space-2x-small, 2px) var(--kern-metric-space-x-small, 4px); font-size: var(--kern-font-size-14, .875rem); }
+		.doku-code .ps-icon { margin: 0; width: 1.25rem; height: 1.25rem; }
+		.doku pre { width: 100%; box-sizing: border-box; margin: 0; padding: var(--kern-metric-space-default, 16px) var(--kern-metric-space-default, 16px) calc(var(--kern-metric-space-x-large, 32px) + var(--kern-metric-space-small, 8px)); white-space: pre-wrap; overflow-wrap: anywhere; border-radius: var(--kern-metric-border-radius-default, 4px); background: var(--kern-color-layout-background-default-surface, #f3f4f7); border: var(--kern-metric-border-width-light, 1px) solid var(--kern-color-decorative-border-contextual, #c0c3d5); }
+		.doku code { overflow-wrap: anywhere; font-family: var(--kern-typography-font-family-fira-mono, monospace); font-size: var(--kern-font-size-14, .875rem); color: var(--kern-color-layout-text-default, #131525); }
+		.doku :not(pre) > code { padding: 0 var(--kern-metric-space-x-small, 4px); border-radius: var(--kern-metric-border-radius-small, 2px); background: var(--kern-color-layout-background-default-surface, #f3f4f7); }
+		.doku .kern-list--bullet li, .doku .kern-list--number li { padding-block: 0; }
+		.doku .kern-table__cell { vertical-align: top; }
+		.doku .kern-table__cell:first-child code { white-space: nowrap; }
+		/* Links im Fließtext erben Zeilenhöhe und Schriftgröße, sonst vergrößert der Grundlinienabstand des Kit-Links die Zeile */
+		.doku p .kern-link, .doku li .kern-link, .doku td .kern-link { display: inline; padding: 0; line-height: inherit; font-size: inherit; }
+		.doku-autor { display: flex; gap: var(--kern-metric-space-large, 24px); align-items: flex-start; }
+		.doku-foto { width: 6rem; height: 6rem; flex: none; object-fit: cover; border-radius: 50%; }
+		.doku-autor-links { margin-top: var(--kern-metric-space-small, 8px); gap: var(--kern-metric-space-default, 16px) var(--kern-metric-space-large, 24px); flex-wrap: wrap; }
+		@media (max-width: 40rem) { .doku-autor { flex-direction: column; } }
+		/* Tabellen scrollen auf schmalen Bildschirmen in ihrer KERN-Hülle statt die Seite zu verbreitern */
+		.doku { min-width: 0; }
+		.doku > * { min-width: 0; max-width: 100%; }
+		.doku .kern-table-responsive { width: 100%; }
+		@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+		.doku .kern-table-responsive[tabindex]:focus-visible { outline: 4px solid var(--kern-color-action-focus-default-contextual, #454B6B); outline-offset: 2px; }
+		.doku .kern-table { min-width: 36rem; }
+	</style>
+</head>
+<body>
+	<a class="kern-link demo-skip" href="#inhalt">Zum Inhalt springen</a>
+	<div class="kern-container">
+		<header class="demo-kopf">
+			<p class="kern-body kern-body--bold">Projektschau für KERN · Dokumentation</p>
+			<nav class="demo-navi" aria-label="Seiten"><a class="kern-link" href="../index.html">Demo</a><a class="kern-link" href="readme.html" aria-current="page">Dokumentation</a></nav>
+			<button type="button" class="kern-btn kern-btn--tertiary kern-btn--small" id="farbschema" role="switch" aria-checked="false" aria-label="Dunkles Farbschema">
+				<svg class="ps-icon demo-sonne" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+				<svg class="ps-icon demo-mond" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+				<span class="kern-label">Hell / Dunkel</span>
+			</button>
+		</header>
+		<div class="kern-btn-wrapper doku-lang" role="group" aria-label="Sprache wählen">
+			<a class="kern-btn kern-btn--x-small kern-btn--primary" href="readme.html" data-lang="de" aria-current="page"><span class="kern-label">DE</span></a>
+			<a class="kern-btn kern-btn--x-small kern-btn--secondary" href="readme.en.html" data-lang="en" aria-current="false"><span class="kern-label">EN</span></a>
+		</div>
+		<div class="doku-layout">
+		<main id="inhalt" class="doku">
+<h1 class="kern-heading-x-large" id="projektschau-für-kern">Projektschau für KERN</h1>
+<p class="kern-body">Projektübersicht mit Karten, Filtern und Zeitleiste auf Basis des <a class="kern-link" rel="noopener" href="https://www.kern-ux.de">KERN UX-Standards</a>. Ein Pattern für Initiativen, Vereine und Verwaltungen, die ihre Vorhaben auf einer Seite zeigen wollen: jede Karte ein Projekt mit Bereich, Einordnung, Status, Beschreibung, Aktivitäten, Partnern, Kennzahl und Links. Zwei Sprachen, Hell- und Dunkelmodus, Filter nach Bereich und Einordnung, Zeitleiste nach Jahren, Deep-Links über die Adresszeile.</p>
+<p class="kern-body">Drei Dateien, kein Framework, kein Build: <code>projektschau.js</code>, <code>projektschau.css</code> und ein JSON-Datenpaket. Das KERN-Kit liegt unverändert unter <code>vendor/kern/</code>.</p>
+<p class="kern-body">Das Pattern ist aus der <a class="kern-link" rel="noopener" href="https://ankerpunkt-hoherflaeming.de/projekte/">Projektübersicht des Ankerpunkts Hoher Fläming</a> entstanden, die dort als laufendes Projekt im Einsatz ist. Parallel wird ein WordPress-Plugin mit demselben Datenformat entwickelt. Die Beispieldaten in <code>daten/beispiel.json</code> sind erfunden.</p>
+<p class="kern-body">Quellcode: <a class="kern-link" rel="noopener" href="https://github.com/donludwig/projektschau-kern">github.com/donludwig/projektschau-kern</a>. Diese Seite gibt es auch auf Englisch: <code>README.en.md</code>.</p>
+<h2 class="kern-heading-large" id="1-demo-und-einbinden">1. Demo und Einbinden</h2>
+<p class="kern-body"><code>index.html</code> im Browser öffnen, ein Server ist nicht nötig. Die Beispieldaten liegen direkt in der Seite; dieselben Daten stehen in <code>daten/beispiel.json</code> für die Einbindung per <code>data-src</code>.</p>
+<div class="doku-code"><pre><code class="language-html">&lt;link rel=&quot;stylesheet&quot; href=&quot;vendor/kern/fonts/fira-sans.css&quot;&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;vendor/kern/kern.min.css&quot;&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;vendor/kern/kern-grid.min.css&quot;&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;projektschau.css&quot;&gt;
+&lt;script src=&quot;projektschau.js&quot; defer&gt;&lt;/script&gt;
+
+&lt;div data-projektschau data-src=&quot;daten/beispiel.json&quot;&gt;&lt;/div&gt;
+</code></pre><button type="button" class="kern-btn kern-btn--tertiary kern-btn--x-small doku-kopieren" aria-label="Code in die Zwischenablage kopieren" data-kopiert="Kopiert"><svg class="ps-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><span class="kern-label" aria-live="polite"></span></button></div>
+<p class="kern-body">Alternativ ohne <code>data-src</code>, mit dem Datenpaket direkt im Element:</p>
+<div class="doku-code"><pre><code class="language-html">&lt;div data-projektschau&gt;
+  &lt;script type=&quot;application/json&quot;&gt;{ &quot;version&quot;: 1, &quot;sprachen&quot;: [&quot;de&quot;, &quot;en&quot;], … }&lt;/script&gt;
+&lt;/div&gt;
+</code></pre><button type="button" class="kern-btn kern-btn--tertiary kern-btn--x-small doku-kopieren" aria-label="Code in die Zwischenablage kopieren" data-kopiert="Kopiert"><svg class="ps-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><span class="kern-label" aria-live="polite"></span></button></div>
+<p class="kern-body">Beim Einbetten <code>&lt;/</code> als <code>&lt;\/</code> schreiben (<code>skripte/einbetten.py</code> tut das), sonst beendet ein <code>&lt;/script&gt;</code> in einem Textfeld den Block, bevor der Renderer läuft.</p>
+<p class="kern-body">Die Seite muss das KERN-Kit laden (Kit-Version in <code>vendor/kern/VERSION</code>). Das Kit ist nicht gekapselt: es setzt <code>html</code>, <code>body</code> und <code>:root</code> und gehört deshalb auf Seiten, die insgesamt mit KERN gestaltet sind. Die Breite bestimmt die Seite, zum Beispiel über <code>kern-container</code> (96 Prozent der Fensterbreite, höchstens 1536 Pixel). Hell und Dunkel folgen dem KERN-Mechanismus: <code>data-kern-theme="light|dark"</code> auf <code>&lt;html&gt;</code> oder die Systemeinstellung.</p>
+<div class="kern-table-responsive" data-name="Tabelle, seitlich verschiebbar"><table class="kern-table kern-table--striped">
+<thead class="kern-table__header">
+<tr class="kern-table__row">
+<th class="kern-table__cell">Datei</th>
+<th class="kern-table__cell">Aufgabe</th>
+</tr>
+</thead>
+<tbody class="kern-table__body">
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>index.html</code></td>
+<td class="kern-table__cell">Demo-Seite. Lädt das Kit, das Ergänzungs-CSS und das Skript, enthält die Beispieldaten eingebettet und einen Hell/Dunkel-Umschalter. Ohne Inline-Skripte und -Styles, damit sie auch unter einer strengen Content-Security-Policy läuft.</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>demo-theme.js</code>, <code>demo.js</code>, <code>demo.css</code></td>
+<td class="kern-table__cell">Nur für die Demo-Seite: Farbschema vor dem ersten Rendern, Adressparameter, Umschalter, Doku-Link und die Gestaltung von Kopf- und Fußzeile. Kein Teil des Patterns.</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>projektschau.js</code></td>
+<td class="kern-table__cell">Liest das Datenpaket, erzeugt das gesamte Markup und steuert Filter, Ansicht, Sprache und Adresszeile. Rund 340 Zeilen, ohne Abhängigkeiten.</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>projektschau.css</code></td>
+<td class="kern-table__cell">Ergänzungen zum Kit: Raster, Bereichsfarben, Filterleiste, Zeitleiste. Rund 160 Zeilen, nur KERN-Tokens und die Bereichsfarben aus den Daten.</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>daten/beispiel.json</code></td>
+<td class="kern-table__cell">Datenpaket der Demo, 32 erfundene Projekte in vier Bereichen. Vorlage für eigene Daten.</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>vendor/kern/</code></td>
+<td class="kern-table__cell">KERN-Kit <a class="kern-link" rel="noopener" href="https://www.npmjs.com/package/@kern-ux/native"><code>@kern-ux/native</code></a> (<a class="kern-link" rel="noopener" href="https://gitlab.opencode.de/kern-ux/kern-ux-plain">Quelle auf openCode</a>; <code>kern.min.css</code>, <code>kern-grid.min.css</code>, Schriften), Version in <code>VERSION</code>, nur über <code>skripte/kern-sync.sh</code> aktualisieren.</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>skripte/pruefe.py</code></td>
+<td class="kern-table__cell">Prüft Klassen und Tokens gegen das Kit, das Datenpaket (Schlüssel, Sprachen, Farben, Nummern, Links), Kontraste und die eingebetteten Daten.</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>skripte/pruefe_xss.js</code></td>
+<td class="kern-table__cell">Rendert das Datenpaket mit Node ohne Browser und prüft Nutzlasten in Farben, Schlüsseln, Sprachen, Icons, Links, Nummer und Jahr.</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>skripte/pruefe_fuzz.js</code></td>
+<td class="kern-table__cell">Schickt tausend zufällig verstümmelte Pakete durch den Renderer: keine Ausnahme, kein aktives Markup.</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>skripte/erzeuge_last.py</code></td>
+<td class="kern-table__cell">Erzeugt ein Datenpaket mit vielen Karten (Standard 1000) und eine Demo-Seite dazu für den Lasttest im Browser.</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>skripte/einbetten.py</code></td>
+<td class="kern-table__cell">Schreibt <code>daten/beispiel.json</code> in den JSON-Block von <code>index.html</code>.</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>skripte/farben.py</code></td>
+<td class="kern-table__cell">Leitet aus einer Grundfarbe je Bereich die Werte <code>area</code>, <code>on</code> und <code>fg</code> für hell und dunkel ab, siehe 2.6.</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>skripte/doku_html.py</code></td>
+<td class="kern-table__cell">Erzeugt aus <code>README.md</code> und <code>README.en.md</code> die Seiten <code>doku/readme.html</code> und <code>doku/readme.en.html</code> im KERN-Stil: gleiche Kopf- und Fußzeile wie die Demo, mitlaufendes Inhaltsverzeichnis „Auf dieser Seite“, Kopierknöpfe an Codeblöcken, Tabellen in <code>kern-table-responsive</code>, DE/EN-Links. Braucht das Python-Modul <code>markdown</code>.</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>skripte/kern-sync.sh</code></td>
+<td class="kern-table__cell">Holt das Kit in fester Version mit Prüfsumme aus der npm-Registry.</td>
+</tr>
+</tbody>
+</table></div>
+<h3 class="kern-heading-medium" id="die-demo-seite">Die Demo-Seite</h3>
+<p class="kern-body"><code>index.html</code> hat eine Kopfzeile mit den Links Demo und Dokumentation, dem Hell/Dunkel-Umschalter und einer Fußzeile mit den Lizenzhinweisen; die Doku-Seiten tragen dieselbe Kopf- und Fußzeile. Farbschema und Sprache werden beim Wechsel zwischen den Seiten in der Adresse mitgegeben (<code>?theme=dark&amp;lang=en</code>), damit die Wahl auch dann erhalten bleibt, wenn der Browser keinen Speicher erlaubt, etwa Safari bei Dateien von der Festplatte. Beide Werte landen zusätzlich im <code>localStorage</code> unter <code>ps-theme</code> und <code>ps-lang</code>. Der README-Link zeigt immer auf die Fassung in der gerade aktiven Sprache.</p>
+<h3 class="kern-heading-medium" id="optionen-am-element">Optionen am Element</h3>
+<div class="kern-table-responsive" data-name="Tabelle, seitlich verschiebbar"><table class="kern-table kern-table--striped">
+<thead class="kern-table__header">
+<tr class="kern-table__row">
+<th class="kern-table__cell">Attribut</th>
+<th class="kern-table__cell">Werte</th>
+<th class="kern-table__cell">Wirkung</th>
+</tr>
+</thead>
+<tbody class="kern-table__body">
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>data-src</code></td>
+<td class="kern-table__cell">Pfad oder URL</td>
+<td class="kern-table__cell">Datenpaket per <code>fetch</code> laden; ein eingebetteter JSON-Block hat Vorrang</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>data-ansicht</code></td>
+<td class="kern-table__cell"><code>karten</code> (Vorgabe), <code>zeitleiste</code></td>
+<td class="kern-table__cell">Startansicht</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>data-bereich</code></td>
+<td class="kern-table__cell">Schlüssel eines Bereichs</td>
+<td class="kern-table__cell">vorgewählter Bereichsfilter</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>data-ebene</code></td>
+<td class="kern-table__cell">1 bis 4</td>
+<td class="kern-table__cell">Überschriftenebene des Titels; Kartentitel und Jahre liegen eine Stufe darunter, Projekttitel in der Zeitleiste zwei</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>data-sprache</code></td>
+<td class="kern-table__cell">Sprachkürzel</td>
+<td class="kern-table__cell">Startsprache. Reihenfolge der Ermittlung: gespeicherte Wahl im Browser, dieses Attribut, Browsersprache, erste Sprache des Pakets. Die Demo setzt es aus <code>?lang=</code> in der Adresse.</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>data-zeitleiste</code>, <code>data-einordnungsfilter</code>, <code>data-sprachumschalter</code></td>
+<td class="kern-table__cell"><code>nein</code></td>
+<td class="kern-table__cell">den jeweiligen Teil nicht rendern</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>data-symbole</code></td>
+<td class="kern-table__cell"><code>ja</code>, <code>nein</code></td>
+<td class="kern-table__cell">Cover mit dem großen Projektsymbol über dem Kartenkopf, Fläche in der Bereichsfarbe. Ohne das Attribut gilt die im Browser gespeicherte Wahl des Symbolschalters, sonst aus. Die Demo setzt es aus <code>?symbole=</code> in der Adresse.</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>data-symbolschalter</code></td>
+<td class="kern-table__cell"><code>ja</code></td>
+<td class="kern-table__cell">Checkbox „Symbole“ im Kopf links neben dem Sprachumschalter, mit der Lesende das Cover ein- und ausschalten; die Wahl wird im Browser gespeichert (<code>ps-symbole</code>)</td>
+</tr>
+</tbody>
+</table></div>
+<h2 class="kern-heading-large" id="2-daten">2. Daten</h2>
+<h3 class="kern-heading-medium" id="21-aufbau-des-datenpakets">2.1 Aufbau des Datenpakets</h3>
+<p class="kern-body">Das Paket ist ein JSON-Objekt. Texte, die in mehreren Sprachen vorliegen, sind immer ein Objekt mit einem Eintrag je Sprachkürzel, zum Beispiel <code>{"de": "Umwelt", "en": "Environment"}</code>. Im Folgenden heißt das „Sprachpaar“.</p>
+<div class="doku-code"><pre><code>{
+  &quot;version&quot;: 1,
+  &quot;sprachen&quot;: [&quot;de&quot;, &quot;en&quot;],
+  &quot;texte&quot;: { … },
+  &quot;filter_alle&quot;: { &quot;bereich&quot;: { &quot;label&quot;: Sprachpaar, &quot;icon_svg&quot;: &quot;…&quot; } },
+  &quot;bereiche&quot;: [ … ],
+  &quot;einordnungen&quot;: [ … ],
+  &quot;projekte&quot;: [ … ]
+}
+</code></pre><button type="button" class="kern-btn kern-btn--tertiary kern-btn--x-small doku-kopieren" aria-label="Code in die Zwischenablage kopieren" data-kopiert="Kopiert"><svg class="ps-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><span class="kern-label" aria-live="polite"></span></button></div>
+<p class="kern-body"><strong><code>sprachen</code>:</strong> Liste der Sprachkürzel. Die erste Sprache ist die Vorgabe. Mit einer Sprache entfällt der Sprachumschalter.</p>
+<p class="kern-body"><strong><code>texte</code>:</strong> alle Oberflächentexte, die nicht zu einem Projekt gehören.</p>
+<div class="kern-table-responsive" data-name="Tabelle, seitlich verschiebbar"><table class="kern-table kern-table--striped">
+<thead class="kern-table__header">
+<tr class="kern-table__row">
+<th class="kern-table__cell">Pfad</th>
+<th class="kern-table__cell">Wo es erscheint</th>
+</tr>
+</thead>
+<tbody class="kern-table__body">
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>kopf.titel</code></td>
+<td class="kern-table__cell">Hauptüberschrift über der Übersicht</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>kopf.einleitung</code></td>
+<td class="kern-table__cell">Einleitungstext unter der Überschrift, HTML erlaubt</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>filter.bereich_label</code>, <code>filter.einordnung_label</code></td>
+<td class="kern-table__cell">Beschriftung der beiden Filterblöcke; auf schmalen Bildschirmen zugleich die Köpfe der Aufklapper</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>filter.aria_bereich</code>, <code>filter.aria_einordnung</code></td>
+<td class="kern-table__cell"><code>aria-label</code> der beiden Filtergruppen</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>ansicht.karten</code>, <code>ansicht.zeitleiste</code>, <code>ansicht.aria</code></td>
+<td class="kern-table__cell">Beschriftung des Umschalters Karten/Zeitleiste und dessen <code>aria-label</code></td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>sprache.aria</code></td>
+<td class="kern-table__cell"><code>aria-label</code> des Sprachumschalters</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>symbole.label</code>, <code>symbole.aria</code></td>
+<td class="kern-table__cell">Beschriftung und <code>aria-label</code> des Symbolschalters (Option <code>data-symbolschalter</code>)</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>leerzustand.meldung</code>, <code>leerzustand.zuruecksetzen</code></td>
+<td class="kern-table__cell">Meldung und Knopf, wenn kein Projekt zum Filter passt</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>zeitleiste.aria</code></td>
+<td class="kern-table__cell"><code>aria-label</code> der Zeitleiste</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>fuss.ueber.ueberschrift</code>, <code>fuss.ueber.absaetze</code></td>
+<td class="kern-table__cell">optionaler aufklappbarer Abschnitt am Ende; <code>absaetze</code> ist eine Liste von Sprachpaaren, HTML erlaubt. Fehlt <code>fuss</code>, gibt es den Abschnitt nicht.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="kern-body"><strong><code>filter_alle.bereich</code>:</strong> Beschriftung und Symbol des Filters „Alle“, der in beiden Filterblöcken vorn steht.</p>
+<p class="kern-body"><strong><code>bereiche</code>:</strong> die Bereiche, nach denen gefiltert wird. Die Reihenfolge der Liste ist die Reihenfolge der Filter.</p>
+<div class="kern-table-responsive" data-name="Tabelle, seitlich verschiebbar"><table class="kern-table kern-table--striped">
+<thead class="kern-table__header">
+<tr class="kern-table__row">
+<th class="kern-table__cell">Feld</th>
+<th class="kern-table__cell">Bedeutung</th>
+</tr>
+</thead>
+<tbody class="kern-table__body">
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>schluessel</code></td>
+<td class="kern-table__cell">technischer Name, nur Kleinbuchstaben und Bindestrich, wird in Adresszeile und CSS-Variablen verwendet</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>label</code></td>
+<td class="kern-table__cell">Sprachpaar, erscheint auf Filter und Badge</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>icon_svg</code></td>
+<td class="kern-table__cell">Symbol, siehe 2.3</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>farben.hell</code>, <code>farben.dunkel</code></td>
+<td class="kern-table__cell">je ein Objekt mit <code>area</code>, <code>on</code>, <code>fg</code>, siehe 2.4. Ein zusätzlicher Wert <code>brand</code> wird mitgeführt, aber nicht verwendet.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="kern-body"><strong><code>einordnungen</code>:</strong> die zweite Filterachse, zum Beispiel Hauptprojekt, Netzwerk, Veranstaltung, Idee.</p>
+<div class="kern-table-responsive" data-name="Tabelle, seitlich verschiebbar"><table class="kern-table kern-table--striped">
+<thead class="kern-table__header">
+<tr class="kern-table__row">
+<th class="kern-table__cell">Feld</th>
+<th class="kern-table__cell">Bedeutung</th>
+</tr>
+</thead>
+<tbody class="kern-table__body">
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>schluessel</code></td>
+<td class="kern-table__cell">technischer Name wie bei den Bereichen</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>label</code></td>
+<td class="kern-table__cell">Sprachpaar, erscheint auf Filter und Karte</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>label_zeitleiste</code></td>
+<td class="kern-table__cell">Sprachpaar für die Zeitleiste; fehlt es, gilt <code>label</code></td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>als_filter_chip</code></td>
+<td class="kern-table__cell"><code>true</code>, wenn die Einordnung als Filter angeboten wird; mit <code>false</code> bleibt sie auf der Karte sichtbar, ist aber nicht filterbar</td>
+</tr>
+</tbody>
+</table></div>
+<p class="kern-body"><strong><code>projekte</code>:</strong> die Karten. Ein Eintrag je Projekt, die Reihenfolge der Liste ist die Reihenfolge im Raster.</p>
+<div class="kern-table-responsive" data-name="Tabelle, seitlich verschiebbar"><table class="kern-table kern-table--striped">
+<thead class="kern-table__header">
+<tr class="kern-table__row">
+<th class="kern-table__cell">Feld</th>
+<th class="kern-table__cell">Pflicht</th>
+<th class="kern-table__cell">Bedeutung</th>
+</tr>
+</thead>
+<tbody class="kern-table__body">
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>nr</code></td>
+<td class="kern-table__cell">ja</td>
+<td class="kern-table__cell">laufende Nummer, wird zweistellig gezeigt</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>bereich</code></td>
+<td class="kern-table__cell">ja</td>
+<td class="kern-table__cell"><code>schluessel</code> eines Bereichs</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>einordnung</code></td>
+<td class="kern-table__cell">ja</td>
+<td class="kern-table__cell"><code>schluessel</code> einer Einordnung</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>icon_svg</code></td>
+<td class="kern-table__cell">nein</td>
+<td class="kern-table__cell">Symbol, siehe 2.3; auf der Karte nur als Cover mit <code>data-symbole="ja"</code></td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>titel</code></td>
+<td class="kern-table__cell">ja</td>
+<td class="kern-table__cell">Sprachpaar</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>status</code></td>
+<td class="kern-table__cell">nein</td>
+<td class="kern-table__cell">Sprachpaar, kurze Zeile unter dem Titel, zum Beispiel „Laufend – seit 05/2025“</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>beschreibung</code></td>
+<td class="kern-table__cell">nein</td>
+<td class="kern-table__cell">Sprachpaar, HTML erlaubt</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>abschnitte</code></td>
+<td class="kern-table__cell">nein</td>
+<td class="kern-table__cell">Liste; jeder Eintrag hat <code>typ</code> <code>liste</code> mit <code>label</code> und <code>punkte</code> (Liste von Sprachpaaren) oder <code>typ</code> <code>text</code> mit <code>label</code> und <code>text</code>. HTML in <code>punkte</code> und <code>text</code> erlaubt. Regel der Demo: Der erste Abschnitt einer Karte ist immer eine Liste mit mindestens zwei Punkten (<a class="kern-link" href="#45-gestaltungsregeln">Abschnitt 4.5</a>).</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>kennzahl</code></td>
+<td class="kern-table__cell">nein</td>
+<td class="kern-table__cell">Sprachpaar, eine hervorgehobene Zeile direkt nach Text oder Liste, HTML erlaubt; Regeln in 4.5</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>links</code></td>
+<td class="kern-table__cell">nein</td>
+<td class="kern-table__cell">Liste mit <code>url</code> und <code>text</code> (Sprachpaar)</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>zeitleiste</code></td>
+<td class="kern-table__cell">nein</td>
+<td class="kern-table__cell">Objekt mit <code>sortierung</code>, <code>zeitraum</code>, <code>notiz</code>, siehe 2.2. Fehlt es oder ist es <code>null</code>, erscheint das Projekt nur in der Kartenansicht.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="kern-body">Leere Werte schreibt man als <code>null</code> oder lässt das Feld weg; eine leere Liste <code>[]</code> ist ebenfalls erlaubt.</p>
+<h3 class="kern-heading-medium" id="22-zeitleiste">2.2 Zeitleiste</h3>
+<p class="kern-body">Ein Projekt wird nicht doppelt gepflegt. Die Zeitleiste liest Nummer, Bereich, Titel und Einordnung aus dem Projekt und braucht nur den kleinen Block <code>zeitleiste</code>:</p>
+<div class="kern-table-responsive" data-name="Tabelle, seitlich verschiebbar"><table class="kern-table kern-table--striped">
+<thead class="kern-table__header">
+<tr class="kern-table__row">
+<th class="kern-table__cell">Feld</th>
+<th class="kern-table__cell">Bedeutung</th>
+</tr>
+</thead>
+<tbody class="kern-table__body">
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>sortierung</code></td>
+<td class="kern-table__cell">Zahl im Muster <code>JJJJMM</code>, zum Beispiel <code>202505</code>. Die ersten vier Ziffern bilden das Jahr, unter dem der Eintrag steht; die Zahl bestimmt die Reihenfolge innerhalb des Jahres. Bei gleicher Zahl entscheidet <code>nr</code>.</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>zeitraum</code></td>
+<td class="kern-table__cell">Sprachpaar, der Text neben der Linie, zum Beispiel „seit 05/2025“ oder „07/2024“</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>notiz</code></td>
+<td class="kern-table__cell">Sprachpaar, optional, der kurze Stand unter dem Titel. Erscheint nur in der Zeitleiste, nicht auf der Karte.</td>
+</tr>
+</tbody>
+</table></div>
+<h3 class="kern-heading-medium" id="23-symbole">2.3 Symbole</h3>
+<p class="kern-body"><code>icon_svg</code> enthält nur das Innere eines SVG-Symbols im 24×24-Raster, ohne die <code>&lt;svg&gt;</code>-Hülle, zum Beispiel <code>&lt;path d="M12 20v2"/&gt;&lt;circle cx="12" cy="12" r="4"/&gt;</code>. Das Skript setzt die Hülle mit <code>viewBox="0 0 24 24"</code>, Strichstärke 2 und <code>currentColor</code>, dadurch nimmt das Symbol die Textfarbe seiner Umgebung an. Die Demo verwendet Symbole aus dem <a class="kern-link" rel="noopener" href="https://lucide.dev">Lucide</a>-Set (ISC-Lizenz); jedes Set mit Strich-Symbolen im 24er-Raster passt.</p>
+<h3 class="kern-heading-medium" id="24-bereichsfarben-und-kontrast">2.4 Bereichsfarben und Kontrast</h3>
+<p class="kern-body">Jeder Bereich bringt seine Farben mit, getrennt für hell und dunkel:</p>
+<div class="kern-table-responsive" data-name="Tabelle, seitlich verschiebbar"><table class="kern-table kern-table--striped">
+<thead class="kern-table__header">
+<tr class="kern-table__row">
+<th class="kern-table__cell">Wert</th>
+<th class="kern-table__cell">Verwendung</th>
+</tr>
+</thead>
+<tbody class="kern-table__body">
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>area</code></td>
+<td class="kern-table__cell">Fläche der Bereichs-Badge und des aktiven Bereichsfilters; Grundlage für Kartentönung und Trennlinie</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>on</code></td>
+<td class="kern-table__cell">Text und Symbol auf <code>area</code>, in der Regel Weiß</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>fg</code></td>
+<td class="kern-table__cell">Textfarbe des Bereichs auf hellem Grund: Titel, Status, Kennzahl, Nummer, Symbol und inaktiver Filter; in der Zeitleiste Punkt, Titel und Einordnung</td>
+</tr>
+</tbody>
+</table></div>
+<p class="kern-body">Anforderungen, die <code>skripte/pruefe.py</code> nachrechnet: <code>on</code> auf <code>area</code> mindestens 4,5:1 in beiden Modi; <code>fg</code> hell auf Weiß mindestens 4,5:1. Für den Dunkelmodus braucht <code>fg</code> dunkel entsprechend Kontrast zum dunklen KERN-Hintergrund; dafür gibt es noch keine automatische Prüfung, der Wert ist beim Anlegen im Browser zu prüfen. Alle anderen Farben kommen aus den KERN-Tokens und sind nicht Teil der Daten.</p>
+<h3 class="kern-heading-medium" id="25-eigene-daten-anlegen">2.5 Eigene Daten anlegen</h3>
+<ol class="kern-list kern-list--number">
+<li><code>daten/beispiel.json</code> kopieren und die Listen <code>bereiche</code>, <code>einordnungen</code> und <code>projekte</code> ersetzen. Schlüssel vergeben, Farben je Bereich setzen, Symbole eintragen.</li>
+<li><code>texte</code> an die eigene Übersicht anpassen, mindestens <code>kopf.titel</code>.</li>
+<li>Prüfen: <code>python3 skripte/pruefe.py</code> meldet unbekannte oder ungültige Schlüssel, fehlende Titel, falsche Formate und zu schwache Kontraste.</li>
+<li>Entweder per <code>data-src</code> laden oder mit <code>python3 skripte/einbetten.py</code> in <code>index.html</code> einbetten. Das Prüfskript meldet, wenn eingebettete Daten und JSON-Datei auseinanderlaufen.</li>
+</ol>
+<p class="kern-body">Vertrauensgrenze: Felder, in denen HTML erlaubt ist (Einleitung, Beschreibung, Abschnitte, Kennzahl, Fußtexte), werden auf eine Allowlist reduziert: <code>a</code> mit geprüftem <code>href</code>, <code>strong</code>, <code>em</code>, <code>p</code>, <code>br</code>, <code>ul</code>, <code>ol</code>, <code>li</code>; andere Elemente und alle übrigen Attribute fallen weg, ihr Text bleibt. Alle anderen Textfelder werden maskiert. Werte, die nicht maskiert werden können, prüft der Renderer auf ihr Format und lässt sie sonst aus: Schlüssel (<code>^[a-z][a-z0-9_-]{0,40}$</code>), Sprachcodes, Farben (Hex), Link-Adressen (nur <code>http</code>, <code>https</code>, <code>mailto</code>, <code>tel</code> und relative Pfade) und die Nummer (ganze Zahl); <code>icon_svg</code> wird auf die Formen <code>path</code>, <code>circle</code>, <code>rect</code>, <code>line</code>, <code>polyline</code>, <code>polygon</code>, <code>ellipse</code> mit Geometrie-Attributen reduziert. <code>skripte/pruefe_xss.js</code> prüft das ohne Browser mit Nutzlasten nach.</p>
+<h3 class="kern-heading-medium" id="26-farben-programmatisch-ableiten">2.6 Farben programmatisch ableiten</h3>
+<p class="kern-body">Von Hand gepflegt wird je Bereich nur eine Grundfarbe. Alles Weitere lässt sich daraus berechnen, auf zwei Ebenen.</p>
+<p class="kern-body"><strong>Ebene 1, Datenpaket:</strong> <code>skripte/farben.py</code> erzeugt aus einer Grundfarbe eine Farbrampe nach dem Verfahren des KERN-Kits und daraus den Block <code>farben</code> für <code>bereiche[]</code>:</p>
+<div class="doku-code"><pre><code class="language-bash">python3 skripte/farben.py &quot;#4c8438&quot; &quot;#b4457a&quot;
+python3 skripte/farben.py --rampe &quot;#4c8438&quot;
+</code></pre><button type="button" class="kern-btn kern-btn--tertiary kern-btn--x-small doku-kopieren" aria-label="Code in die Zwischenablage kopieren" data-kopiert="Kopiert"><svg class="ps-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><span class="kern-label" aria-live="polite"></span></button></div>
+<p class="kern-body">KERN baut seine Farbrampen nach der <a class="kern-link" rel="noopener" href="https://uxdesign.cc/the-universal-color-palette-9826deb94f7">„Universal Color Palette“</a> im <a class="kern-link" rel="noopener" href="https://bottosson.github.io/posts/oklab/">Oklab</a>-Farbraum, beschrieben auf der <a class="kern-link" rel="noopener" href="https://www.kern-ux.de/2.0.6/design-system/farbe/">KERN-Seite zur Farbe</a>: Die Stufen 025 bis 950 sind nach Helligkeit sortiert, jede Stufe hat über alle Farbtöne denselben Kontrast, Stufe 500 ist die Kontrastmitte mit 4,5:1 auf Weiß und auf Schwarz, und Hell- und Dunkelmodus entstehen durch Spiegelung (800 hell entspricht 200 dunkel). Das Skript bildet das nach:</p>
+<div class="kern-table-responsive" data-name="Tabelle, seitlich verschiebbar"><table class="kern-table kern-table--striped">
+<thead class="kern-table__header">
+<tr class="kern-table__row">
+<th class="kern-table__cell">Schritt</th>
+<th class="kern-table__cell">Regel</th>
+</tr>
+</thead>
+<tbody class="kern-table__body">
+<tr class="kern-table__row">
+<td class="kern-table__cell">Farbraum</td>
+<td class="kern-table__cell">Rechnung in OKLCH (Helligkeit L, Chroma C, Farbton H), nicht in sRGB oder HSL. Der Farbton der Grundfarbe bleibt über die ganze Rampe gleich.</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Helligkeit je Stufe</td>
+<td class="kern-table__cell">feste Skala von 025 bis 950, der Mittelwert der elf Rampen aus <code>@kern-ux/native</code> 2.8.2 (zum Beispiel 300 = 75,4 %, 500 = 57,0 %, 700 = 42,4 %)</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Chroma je Stufe</td>
+<td class="kern-table__cell">folgt dem Profil der <a class="kern-link" rel="noopener" href="https://www.kern-ux.de/design-system/foundations/farbe/">Kit-Rampen</a> (Spitze um 550 bis 650, zu den Rändern abnehmend); die Höhe des Profils wird so gewählt, dass die Rampe an der Helligkeit der Grundfarbe deren Chroma trifft</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Farbraumgrenze</td>
+<td class="kern-table__cell">liegt eine Stufe außerhalb von sRGB, wird nur das Chroma verringert; Helligkeit und Farbton bleiben</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Stufe 500</td>
+<td class="kern-table__cell">wird bei Bedarf um Zehntelprozent abgedunkelt, bis Weiß darauf sicher 4,5:1 erreicht</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>area</code></td>
+<td class="kern-table__cell">Stufe 500</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>on</code></td>
+<td class="kern-table__cell">Weiß</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>fg</code> hell</td>
+<td class="kern-table__cell">Stufe 700, wie KERN seine Aktionsfarbe im Hellmodus setzt (Kontrast auf Weiß rund 8:1)</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>fg</code> dunkel</td>
+<td class="kern-table__cell">Stufe 300, die Spiegelung von 700, wie KERNs Aktionsfarbe im Dunkelmodus</td>
+</tr>
+</tbody>
+</table></div>
+<p class="kern-body">Die Grundfarbe selbst erscheint also nicht unverändert, sondern als Rampe in ihrem Farbton; <code>area</code> ist die 500er-Stufe dieses Farbtons. Die Beispieldaten sind so aus den vier Grundfarben der Demo entstanden. Das Skript gibt die Kontraste mit aus, <code>--rampe</code> zeigt alle zwanzig Stufen als OKLCH und Hex.</p>
+<p class="kern-body"><strong>Ebene 2, Darstellung:</strong> Aus <code>area</code>, <code>on</code> und <code>fg</code> leitet <code>projektschau.css</code> zur Laufzeit alle weiteren Töne mit <code>color-mix</code> ab, es gibt keine weiteren Farbwerte in den Daten:</p>
+<div class="kern-table-responsive" data-name="Tabelle, seitlich verschiebbar"><table class="kern-table kern-table--striped">
+<thead class="kern-table__header">
+<tr class="kern-table__row">
+<th class="kern-table__cell">Ton</th>
+<th class="kern-table__cell">Formel</th>
+</tr>
+</thead>
+<tbody class="kern-table__body">
+<tr class="kern-table__row">
+<td class="kern-table__cell">Kartenfläche</td>
+<td class="kern-table__cell">Stufe 025 der Bereichsrampe (hell) bzw. 950 (dunkel), aus <code>area</code> mit der relativen Farbsyntax <code>oklch(from var(--ps-area) 96.4% calc(c * 0.08) h)</code> berechnet; Browser ohne diese Syntax bekommen eine <code>color-mix</code>-Näherung</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Kartenrahmen, Trennlinie</td>
+<td class="kern-table__cell">Stufe 100 (hell) bzw. 900 (dunkel) der Bereichsrampe, ebenso berechnet</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Bereichsfilter aktiv, Hover und Klick</td>
+<td class="kern-table__cell"><code>area</code>; Hover 88 % <code>area</code> mit Schwarz, Klick 78 %</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Bereichsfilter inaktiv, Hover und Klick</td>
+<td class="kern-table__cell">Rand <code>area</code>, Text <code>fg</code>; Hover 10 % <code>area</code> über transparent, Klick 18 %</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Nummer</td>
+<td class="kern-table__cell"><code>fg</code> mit 75 % Deckung</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Titel, Status, Kennzahl, Punkt der Zeitleiste</td>
+<td class="kern-table__cell"><code>fg</code> unverändert</td>
+</tr>
+</tbody>
+</table></div>
+<p class="kern-body">Die Mischung läuft im Farbraum <code>oklab</code>, dadurch bleiben die Töne gleichmäßig hell. Im Dunkelmodus setzt das Skript die dunklen Werte für <code>area</code>, <code>on</code> und <code>fg</code> ein, die Formeln bleiben gleich und mischen dann mit den dunklen KERN-Tokens.</p>
+<h3 class="kern-heading-medium" id="27-browser">2.7 Browser</h3>
+<p class="kern-body">Der Renderer braucht nur Funktionen, die nach Baseline „Widely available“ seit 2023 in allen großen Browsern stehen: <code>DOMParser</code>, <code>URL</code>, <code>color-mix()</code> (seit Mai 2023), <code>aspect-ratio</code>, <code>:focus-visible</code>. Zwei neuere Funktionen nutzt er mit Rückfall: Die Stylesheet-Regeln setzt er über <code>adoptedStyleSheets</code> (Chrome 73, Edge 79, Firefox 101, Safari 16.4; Stand caniuse 2026-10-12), ältere Browser bekommen ein <code>&lt;style&gt;</code>-Element, das ohne strenge CSP ebenso funktioniert. Kartenflächen und Rahmen stehen zuerst als <code>color-mix()</code> und werden von der relativen Farbsyntax <code>oklch(from …)</code> überschrieben, wo sie voll unterstützt ist (Chrome und Edge 131, Firefox 133, Safari 18; Anteil 93 Prozent); ältere Browser zeigen die <code>color-mix()</code>-Fassung, die sich nur in Nuancen unterscheidet. Das KERN-Kit selbst nennt im Paket keine Browserliste. Geprüft am 2026-10-12 in Chromium, Firefox 157 und WebKit 27.2 über Playwright, siehe <a class="kern-link" href="#5-prüfen-und-pflegen">Abschnitt 5</a>.</p>
+<h2 class="kern-heading-large" id="3-verarbeitung-und-ausgabe">3. Verarbeitung und Ausgabe</h2>
+<h3 class="kern-heading-medium" id="31-ablauf">3.1 Ablauf</h3>
+<ol class="kern-list kern-list--number">
+<li><strong>Start:</strong> Beim Laden ruft das Skript für jedes <code>[data-projektschau]</code> die Funktion <code>init</code> auf. Sie liest die Optionen aus den Attributen und holt die Daten aus dem eingebetteten JSON-Block oder per <code>fetch</code> von <code>data-src</code>.</li>
+<li><strong>Rendern:</strong> <code>render(daten, optionen)</code> baut das komplette Markup als String. Es gibt keine Templates; jede Struktur steht in einer kleinen Funktion: <code>karte</code> für eine Karte, <code>zeitleisteHtml</code> für die Zeitleiste, <code>filterBtn</code>, <code>badge</code>, <code>btn</code> und <code>icon</code> für die Bausteine.</li>
+<li><strong>Interaktion:</strong> <code>interaktion(wurzel)</code> hängt die Ereignisse an das gerenderte Markup: Sprachwechsel, Filter, Ansicht, Zurücksetzen, Adresszeile, Aufklapper.</li>
+</ol>
+<p class="kern-body">Über <code>window.Projektschau.render</code> und <code>window.Projektschau.init</code> sind beide Funktionen auch von außen aufrufbar, etwa um das Markup serverseitig vorzuerzeugen.</p>
+<h3 class="kern-heading-medium" id="32-wo-welches-feld-ausgespielt-wird">3.2 Wo welches Feld ausgespielt wird</h3>
+<p class="kern-body">Kartenansicht, von oben nach unten:</p>
+<div class="kern-table-responsive" data-name="Tabelle, seitlich verschiebbar"><table class="kern-table kern-table--striped">
+<thead class="kern-table__header">
+<tr class="kern-table__row">
+<th class="kern-table__cell">Stelle</th>
+<th class="kern-table__cell">Feld</th>
+<th class="kern-table__cell">Markup</th>
+</tr>
+</thead>
+<tbody class="kern-table__body">
+<tr class="kern-table__row">
+<td class="kern-table__cell">Spalte und Karte</td>
+<td class="kern-table__cell">–</td>
+<td class="kern-table__cell"><code>kern-col-12 kern-col-md-6 kern-col-lg-4 kern-col-xxl-3 ps-col</code> &gt; <code>kern-card kern-layer kern-level-1 ps-card</code> mit <code>data-bereich</code> und <code>data-cat</code></td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Badge Bereich</td>
+<td class="kern-table__cell"><code>bereiche[].icon_svg</code>, <code>bereiche[].label</code></td>
+<td class="kern-table__cell"><code>kern-badge kern-badge--small ps-badge</code> in Bereichsfarbe, mit dem Bereichssymbol, auf Karte und Zeitleiste</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Badge Einordnung</td>
+<td class="kern-table__cell"><code>einordnungen[].label</code></td>
+<td class="kern-table__cell"><code>kern-badge kern-badge--small</code> neutral</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Nummer</td>
+<td class="kern-table__cell"><code>nr</code></td>
+<td class="kern-table__cell"><code>ps-num</code>, rechts, Bereichsfarbe gedämpft</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Symbol</td>
+<td class="kern-table__cell"><code>icon_svg</code></td>
+<td class="kern-table__cell"><code>kern-card__media ps-cover</code> über dem Kopf, sichtbar nur mit eingeschaltetem Cover (<code>data-symbole</code> oder Symbolschalter, <a class="kern-link" href="#1-demo-und-einbinden">Abschnitt 1</a>)</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Titel</td>
+<td class="kern-table__cell"><code>titel</code></td>
+<td class="kern-table__cell"><code>kern-title</code> in Bereichsfarbe, eine Stufe größer als im Kit</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Status</td>
+<td class="kern-table__cell"><code>status</code></td>
+<td class="kern-table__cell"><code>kern-subline kern-subline--small</code> in Bereichsfarbe</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Beschreibung</td>
+<td class="kern-table__cell"><code>beschreibung</code></td>
+<td class="kern-table__cell"><code>kern-body</code></td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Abschnitte</td>
+<td class="kern-table__cell"><code>abschnitte[]</code></td>
+<td class="kern-table__cell"><code>label</code> als <code>kern-label</code>, <code>liste</code> als <code>kern-list kern-list--bullet kern-list--small</code>, <code>text</code> als <code>kern-body kern-body--small</code></td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Kennzahl</td>
+<td class="kern-table__cell"><code>kennzahl</code></td>
+<td class="kern-table__cell"><code>kern-body ps-kpi</code> mit <code>&lt;strong&gt;</code>, Bereichsfarbe, direkt nach Text oder Liste</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Trennlinie</td>
+<td class="kern-table__cell">nur wenn <code>links</code> vorhanden</td>
+<td class="kern-table__cell"><code>kern-divider kern-divider--decorative ps-card-divider</code></td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Links</td>
+<td class="kern-table__cell"><code>links[]</code></td>
+<td class="kern-table__cell"><code>kern-link kern-link--small</code> im <code>kern-card__footer</code>, 16 Pixel wie der übrige Kartentext</td>
+</tr>
+</tbody>
+</table></div>
+<p class="kern-body">Zeitleiste, je Jahr eine Gruppe:</p>
+<div class="kern-table-responsive" data-name="Tabelle, seitlich verschiebbar"><table class="kern-table kern-table--striped">
+<thead class="kern-table__header">
+<tr class="kern-table__row">
+<th class="kern-table__cell">Stelle</th>
+<th class="kern-table__cell">Feld</th>
+<th class="kern-table__cell">Markup</th>
+</tr>
+</thead>
+<tbody class="kern-table__body">
+<tr class="kern-table__row">
+<td class="kern-table__cell">Jahresüberschrift</td>
+<td class="kern-table__cell">aus <code>zeitleiste.sortierung</code></td>
+<td class="kern-table__cell"><code>kern-heading kern-heading-medium ps-tl-jahr</code></td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Zeitraum</td>
+<td class="kern-table__cell"><code>zeitleiste.zeitraum</code></td>
+<td class="kern-table__cell"><code>ps-tl-zeit</code>, Spalte links, auf Mobil über dem Eintrag</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Punkt auf der Linie</td>
+<td class="kern-table__cell">Farbe aus <code>bereiche[].farben.*.fg</code></td>
+<td class="kern-table__cell">Pseudo-Element von <code>ps-tl-main</code> (Mobil: von <code>ps-row</code>)</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Nummer, Badge, Titel, Einordnung</td>
+<td class="kern-table__cell"><code>nr</code>, <code>bereiche[].label</code>, <code>titel</code>, <code>einordnungen[].label_zeitleiste</code></td>
+<td class="kern-table__cell">eine Zeile <code>ps-tl-kopf</code>, alle auf gemeinsamer Grundlinie</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Notiz</td>
+<td class="kern-table__cell"><code>zeitleiste.notiz</code></td>
+<td class="kern-table__cell"><code>kern-body kern-body--small ps-tl-notiz</code></td>
+</tr>
+</tbody>
+</table></div>
+<p class="kern-body">Filterleiste: Bereichsfilter aus <code>bereiche</code> mit Symbol und Trefferzahl, Umschalter Karten/Zeitleiste rechts daneben, darunter der Einordnungsfilter aus den Einordnungen mit <code>als_filter_chip: true</code>. Die Trefferzahlen rechnen beide Achsen gegeneinander: der Zähler eines Bereichs zählt nur Projekte, die auch zur gewählten Einordnung passen, und umgekehrt.</p>
+<h3 class="kern-heading-medium" id="33-sprachen">3.3 Sprachen</h3>
+<p class="kern-body">Jedes Sprachpaar wird als Folge von Elementen mit <code>lang</code>-Attribut gerendert, eines je Sprache, zum Beispiel <code>&lt;span lang="de"&gt;Umwelt&lt;/span&gt;&lt;span lang="en"&gt;Environment&lt;/span&gt;</code>. Für Blocktexte mit HTML sind es <code>div</code>-Elemente. Sind alle Varianten gleich oder gibt es nur eine Sprache, steht der Text ohne Hülle.</p>
+<p class="kern-body">Das Skript erzeugt pro Sprache eine CSS-Regel und setzt sie in ein <code>&lt;style&gt;</code> vor den Wrapper: <code>.ps[data-lang="de"] [lang]:not([lang="de"]) { display: none }</code>. Der Sprachwechsel ändert nur <code>data-lang</code> und <code>lang</code> am Wrapper; die Texte bleiben alle im Dokument, Suchmaschinen und Screenreader sehen die aktive Sprache korrekt ausgezeichnet. <code>aria-label</code>-Texte liegen als <code>data-aria-&lt;sprache&gt;</code> am Element und werden beim Wechsel umgeschrieben. Die gewählte Sprache wird unter <code>ps-lang</code> im <code>localStorage</code> gemerkt.</p>
+<h3 class="kern-heading-medium" id="34-bereichsfarben-im-markup">3.4 Bereichsfarben im Markup</h3>
+<p class="kern-body">Beim Rendern schreibt das Skript die hellen Farben aller Bereiche als CSS-Variablen in ein erzeugtes <code>&lt;style&gt;</code> vor dem Wrapper, Regel <code>.ps { … }</code>: <code>--ps-area-umwelt</code>, <code>--ps-area-umwelt-on</code>, <code>--ps-area-umwelt-fg</code> und so weiter je Schlüssel. Ein <code>style</code>-Attribut wäre dafür ungeeignet, weil es die dunklen Regeln überstimmen würde. Die dunklen Farben stehen im selben <code>&lt;style&gt;</code> unter den KERN-Theme-Selektoren <code>[data-kern-theme="dark"] .ps</code>, <code>.kern-dark .ps</code> und, als Fallback für die Systemeinstellung, <code>@media (prefers-color-scheme: dark)</code>.</p>
+<p class="kern-body">Jedes Element, das zu einem Bereich gehört (Karte, Zeitleistenzeile, Bereichsfilter, Badge), bekommt per <code>style</code>-Attribut drei generische Variablen zugewiesen: <code>--ps-area</code>, <code>--ps-area-on</code>, <code>--ps-area-fg</code>, die auf die Variablen seines Bereichs zeigen. Das CSS arbeitet nur mit diesen drei Namen und kennt die Bereiche nicht. Neue Bereiche brauchen deshalb keine CSS-Änderung.</p>
+<h3 class="kern-heading-medium" id="35-filter-ansicht-und-adresszeile">3.5 Filter, Ansicht und Adresszeile</h3>
+<p class="kern-body">Jede Karte und jede Zeitleistenzeile trägt <code>data-bereich</code> und <code>data-cat</code>. Ein Filterklick setzt <code>aria-pressed</code> und die Button-Varianten um, prüft jedes Element gegen beide aktiven Filter und setzt die Klasse <code>is-hidden</code>. Jahre ohne sichtbare Zeile werden ausgeblendet, die erste und die letzte sichtbare Zeile eines Jahres bekommen die Klassen <code>ps-row--erste</code> und <code>ps-row--letzte</code> (dort beginnt und endet die Linie am Punkt), bei null Treffern erscheint der Leerzustand mit Zurücksetzen-Knopf. Die Live-Region <code>ps-live</code> meldet die Trefferzahl an Screenreader; die Texte dafür stehen im Skript (<code>LIVE</code>, <code>LEER</code>) und sind über die Optionen <code>live</code> und <code>leer</code> beim direkten Aufruf von <code>render</code> austauschbar.</p>
+<p class="kern-body">Der Zustand steht in der Adresszeile hinter <code>#</code>, zum Beispiel <code>#bereich=kultur&amp;filter=netzwerk&amp;ansicht=zeitleiste</code>, und wird beim Laden und bei <code>hashchange</code> wiederhergestellt. So lässt sich jede Auswahl als Link weitergeben.</p>
+<p class="kern-body">Bereichs- und Einordnungsfilter liegen je in einer KERN-Details-Komponente. Ab 48rem Fensterbreite setzt das Skript beide auf <code>open</code> und die Klasse <code>ps-panel--offen</code>, das CSS blendet dann die Köpfe aus und zeigt die Beschriftungen in der Zeile. Darunter dienen die Köpfe „Bereich“ und „Filter“ als Aufklapper in der Aktionsfarbe; der Bereichsblock ist anfangs offen, der Einordnungsblock zu.</p>
+<h2 class="kern-heading-large" id="4-styling">4. Styling</h2>
+<h3 class="kern-heading-medium" id="41-das-kern-kit">4.1 Das KERN-Kit</h3>
+<p class="kern-body">Das Kit liegt unverändert unter <code>vendor/kern/</code> (<code>kern.min.css</code>, <a class="kern-link" rel="noopener" href="https://github.com/mozilla/Fira">Fira Sans</a> in den Schnitten 400, 400 kursiv, 500, 600 und 700, Lizenz, Versionsdatei). Die Demo-Seite setzt <code>data-kern-theme</code> vor dem ersten Rendern aus dem <code>localStorage</code> (Schlüssel <code>ps-theme</code>), damit nichts aufblitzt. Das Raster füllt die Breite mit so vielen Spalten, wie Karten von mindestens 18rem Platz finden.</p>
+<h3 class="kern-heading-medium" id="42-verwendete-kern-komponenten">4.2 Verwendete KERN-Komponenten</h3>
+<div class="kern-table-responsive" data-name="Tabelle, seitlich verschiebbar"><table class="kern-table kern-table--striped">
+<thead class="kern-table__header">
+<tr class="kern-table__row">
+<th class="kern-table__cell">Komponente</th>
+<th class="kern-table__cell">Verwendung</th>
+</tr>
+</thead>
+<tbody class="kern-table__body">
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>kern-card</code> mit <code>__container</code>, <code>__header</code>, <code>__body</code>, <code>__footer</code></td>
+<td class="kern-table__cell">die Karte in der kompakten Variante <code>kern-card--small</code> (8 Pixel zwischen Kopf, Rumpf und Fuß, 16-Pixel-Texte), Innenabstand per eigener Regel 24 Pixel (<code>--kern-metric-space-large</code>)</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>kern-hgroup</code>, <code>kern-title</code>, <code>kern-subline</code></td>
+<td class="kern-table__cell">Titelblock der Karte mit Status</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>kern-badge kern-badge--small</code></td>
+<td class="kern-table__cell">Bereich und Einordnung auf Karte und Zeitleiste</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>kern-btn</code> mit <code>--x-small</code>, <code>--primary</code>, <code>--secondary</code>, <code>--tertiary</code>, <code>kern-btn-wrapper</code></td>
+<td class="kern-table__cell">Filter, Ansichts- und Sprachumschalter (x-small), Zurücksetzen (tertiary); aktiv ist <code>--primary</code>, inaktiv <code>--secondary</code>, Zustand zusätzlich in <code>aria-pressed</code></td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>kern-details</code> mit <code>__header</code>, <code>__body</code></td>
+<td class="kern-table__cell">Bereichs- und Einordnungsfilter, optionaler Abschnitt „Über“</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>kern-form-check</code> mit <code>__checkbox</code> und <code>kern-label</code></td>
+<td class="kern-table__cell">Symbolschalter als Checkbox (das Kit hat keinen Schalter)</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>kern-row</code>, <code>kern-col-12</code>, <code>kern-col-md-6</code>, <code>kern-col-lg-4</code>, <code>kern-col-xxl-3</code> (aus <code>kern-grid.min.css</code>)</td>
+<td class="kern-table__cell">Kartenraster: eine, zwei, drei und ab 1600 Pixel vier Spalten nach den KERN-Breakpoints</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>kern-stack-lg</code>, <code>kern-stack-sm</code></td>
+<td class="kern-table__cell">vertikale Abstände im Wrapper und im Kopf</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>kern-layer kern-level-1</code></td>
+<td class="kern-table__cell">die Karte als abgesetzte Fläche mit den Kontext-Tokens des Kits</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>kern-divider kern-divider--decorative</code></td>
+<td class="kern-table__cell">Trennlinie vor den Links</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>kern-heading-x-large</code>, <code>kern-heading-medium</code>, <code>kern-body</code>, <code>kern-label</code>, <code>kern-list</code>, <code>kern-link</code>, <code>kern-sr-only</code></td>
+<td class="kern-table__cell">Typografie, Listen, Links, Screenreader-Text</td>
+</tr>
+</tbody>
+</table></div>
+<p class="kern-body">KERN hat keinen Chip- oder Tag-Toggle, keinen Segmented Control und keine Tabs. Filter und Umschalter sind deshalb Buttons mit <code>aria-pressed</code>. Für den Umschalter Karten/Zeitlich ist im KERN-Projekt eine Komponente „Segmented Control“ vorgeschlagen (<a class="kern-link" rel="noopener" href="https://gitlab.opencode.de/kern-ux/pattern-library/-/work_items/1141">Issue 1141 im KERN-Hauptrepositorium</a>, Stand Oktober 2026 im Refinement, Semantik als <code>radiogroup</code> oder Button-Gruppe mit <code>aria-pressed</code> noch offen). Der Umschalter hier ist bis dahin Eigenbau aus zusammenhängenden KERN-Buttons und wird an die Komponente angeglichen, sobald sie im Kit ist.</p>
+<h3 class="kern-heading-medium" id="43-eigene-ergänzungen">4.3 Eigene Ergänzungen</h3>
+<p class="kern-body">Alle eigenen Klassen tragen das Präfix <code>ps-</code>, alle Werte kommen aus KERN-Tokens oder den drei Bereichsvariablen. Zwei gesetzte Werte bleiben, weil das Kit dafür keine Tokens hat: <code>--ps-tl-mitte</code> (17 Pixel) ist die Höhe der ersten Zeile in der Zeitleiste, an der Punkt und Zeitraum ausgerichtet sind, auf Mobil die halbe Zeilenhöhe aus dem Token; und 200 Millisekunden für den Übergang des Cover-Symbols. Alles andere, auch Punktgröße, Linienstärke und Zeitraumspalte, kommt aus Tokens.</p>
+<div class="kern-table-responsive" data-name="Tabelle, seitlich verschiebbar"><table class="kern-table kern-table--striped">
+<thead class="kern-table__header">
+<tr class="kern-table__row">
+<th class="kern-table__cell">Klasse</th>
+<th class="kern-table__cell">Zweck</th>
+</tr>
+</thead>
+<tbody class="kern-table__body">
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>.ps</code></td>
+<td class="kern-table__cell">Wrapper; die Abstände kommen aus <code>kern-stack-lg</code></td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>.ps-head</code>, <code>.ps-lede</code>, <code>.ps-kopfzeile</code>, <code>.ps-symbolschalter</code>, <code>.ps-lang</code></td>
+<td class="kern-table__cell">Kopfbereich, Einleitung, Zeile rechts oben mit Symbolschalter und Sprachumschalter</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>.ps-controls</code>, <code>.ps-controls-divider</code></td>
+<td class="kern-table__cell">Filterleiste als Raster: Bereichsblock links, Umschalter rechts, Einordnungsblock darunter, <code>kern-divider</code> als Abschluss; haftet oben, leicht transparent mit Weichzeichnung</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>.ps-filter</code>, <code>.ps-filter-label</code>, <code>.ps-view</code>, <code>.ps-count</code></td>
+<td class="kern-table__cell">Filterzeilen als Raster (Beschriftung links, Buttons brechen in ihrer Spalte um), Ansichtsumschalter (bis 64rem als volle Zeile oben), Trefferzahl</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>.ps-btn-bereich</code></td>
+<td class="kern-table__cell">Bereichsfilter in Bereichsfarbe, aktiv gefüllt, inaktiv mit farbigem Rand, Hover und Aktiv als Abmischung der Bereichsfarbe</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>.ps-seg</code></td>
+<td class="kern-table__cell">zwei Buttons stoßen zu einem Umschalter zusammen; Farben und Radius bleiben die der Buttons</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>.ps-panel</code>, <code>.ps-panel-bereich</code>, <code>.ps-panel-cat</code>, <code>.ps-panel--offen</code></td>
+<td class="kern-table__cell">die beiden Filterblöcke als Details: auf Desktop offen ohne Kopf, auf Mobil aufklappbar mit Kopf in Beschriftungsgröße und Aktionsfarbe</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>.ps-grid</code>, <code>.ps-col</code></td>
+<td class="kern-table__cell">Zeile und Spalten des KERN-Grids mit 24 statt 32 Pixel Rinne (12 Pixel je Spaltenseite aus dem Token <code>large</code>); <code>.ps-col</code> streckt die Karte auf Zeilenhöhe</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>.ps-card</code></td>
+<td class="kern-table__cell">Fläche und ganz dezenter Rahmen als Stufen 025 und 100 der Bereichsrampe, im Dunkelmodus 950 und 900</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>.ps-cover</code>, <code>.ps-cover-icon</code></td>
+<td class="kern-table__cell">optionales Cover 16:9 über dem Kartenkopf, Fläche Stufe 100 der Bereichsrampe (dunkel 900), Symbol 22 Prozent der Kartenbreite in <code>fg</code>, wächst bei Zeiger oder Fokus auf der Karte weich auf 115 Prozent (200 Millisekunden, entfällt bei reduzierter Bewegung); nur bei eingeschaltetem Cover sichtbar</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>.ps-tags</code>, <code>.ps-badge</code>, <code>.ps-num</code></td>
+<td class="kern-table__cell">Kopfzeile der Karte, Badge in Bereichsfarbe mit mehr Innenabstand, Nummer rechts</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Regeln auf <code>.kern-title</code>, <code>.kern-subline</code>, <code>.ps-kpi</code> in <code>.ps-card</code></td>
+<td class="kern-table__cell">Bereichsfarbe und Titelgröße; sie stehen in der Spezifität über den Kartenregeln des Kits, weil diese sonst gewinnen</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>.ps-field</code>, Regeln auf <code>.kern-list--bullet</code> in der Karte</td>
+<td class="kern-table__cell">Feldbezeichnung ohne Abstand nach unten, Listen mit 4 statt 24 Pixel Abstand und 20 statt 32 Pixel Einrückung</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>.ps-card-divider</code></td>
+<td class="kern-table__cell">Trennlinie in der Rahmenmischung</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>.ps-tl</code>, <code>.ps-year</code>, <code>.ps-tl-jahr</code>, <code>.ps-tl-liste</code>, <code>.ps-row</code>, <code>.ps-tl-zeit</code>, <code>.ps-tl-main</code>, <code>.ps-tl-kopf</code>, <code>.ps-tl-titel</code>, <code>.ps-tl-cat</code>, <code>.ps-tl-notiz</code></td>
+<td class="kern-table__cell">Zeitleiste: Raster mit 96 Pixel Zeitraumspalte (3 × <code>x-large</code>), Linie 2 Pixel mit Punkt 16 Pixel, Linie beginnt und endet je Jahr am ersten und letzten sichtbaren Punkt, Kopfzeile auf Grundlinie; unter 40rem Zeitraum über dem Eintrag, Linie am Zeilenrand, Punkt beim Zeitraum</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>.ps-empty</code></td>
+<td class="kern-table__cell">Leerzustand: Text und tertiärer Button in <code>kern-stack-sm</code>, mit <code>role="status"</code></td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>.ps-live</code></td>
+<td class="kern-table__cell">Live-Region, visuell verborgen über <code>kern-sr-only</code></td>
+</tr>
+</tbody>
+</table></div>
+<p class="kern-body">Die Abstufung der Bereichsfarbe auf der Karte, von kräftig nach leise: Badge und aktiver Filter (<code>area</code> voll), Titel, Status, Kennzahl, Punkt (<code>fg</code> voll), Nummer (<code>fg</code> mit 75 Prozent Deckung), Rahmen und Trennlinie (Stufe 100), Fläche (Stufe 025).</p>
+<h3 class="kern-heading-medium" id="44-wo-sich-was-anpassen-lässt">4.4 Wo sich was anpassen lässt</h3>
+<div class="kern-table-responsive" data-name="Tabelle, seitlich verschiebbar"><table class="kern-table kern-table--striped">
+<thead class="kern-table__header">
+<tr class="kern-table__row">
+<th class="kern-table__cell">Wunsch</th>
+<th class="kern-table__cell">Stelle</th>
+</tr>
+</thead>
+<tbody class="kern-table__body">
+<tr class="kern-table__row">
+<td class="kern-table__cell">Farben eines Bereichs</td>
+<td class="kern-table__cell">nur in den Daten: <code>bereiche[].farben</code></td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Texte der Oberfläche</td>
+<td class="kern-table__cell">nur in den Daten: <code>texte</code></td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Welche Einordnungen filterbar sind</td>
+<td class="kern-table__cell"><code>einordnungen[].als_filter_chip</code></td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Reihenfolge der Filter und Karten</td>
+<td class="kern-table__cell">Reihenfolge der Listen <code>bereiche</code> und <code>projekte</code></td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Startansicht, Vorfilter, Überschriftenebene, Teile ausblenden</td>
+<td class="kern-table__cell">Attribute am Element, <a class="kern-link" href="#1-demo-und-einbinden">Abschnitt 1</a></td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Stärke der Kartentönung oder des Rahmens</td>
+<td class="kern-table__cell">Prozentwerte in <code>.ps-card</code> und <code>.ps-card-divider</code></td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Größe von Kartentitel oder Zeitleistentitel</td>
+<td class="kern-table__cell">Token-Zuweisung in den Regeln auf <code>.kern-title</code> in <code>.ps-card</code> bzw. <code>.ps-tl-titel</code>; passende Stufen sind <code>medium-static</code> (18), <code>large-static</code> (21), <code>medium-adaptive</code> (21/24)</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Innenabstand der Karte</td>
+<td class="kern-table__cell">Token in der Regel auf <code>.ps-card .kern-card__container</code>; ohne sie gelten die 16 Pixel der kompakten Variante</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Rinne des Rasters</td>
+<td class="kern-table__cell">Token in den Regeln auf <code>.ps-grid.kern-row</code> und <code>.ps-grid.kern-row &gt; .ps-col</code>; ohne diese Regeln gelten die 2rem des Kits</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Spaltenzahl des Rasters</td>
+<td class="kern-table__cell"><code>kern-col-*</code>-Klassen in <code>karte()</code> im Skript (Vorgabe 12, md 6, lg 4, xxl 3)</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Haften der Filterleiste</td>
+<td class="kern-table__cell"><code>position: sticky</code> in <code>.ps-controls</code> entfernen</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Breite der Zeitraumspalte</td>
+<td class="kern-table__cell">Token-Rechnung in <code>.ps-row</code> (3 × <code>x-large</code>, 96 Pixel)</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Umbruchpunkte</td>
+<td class="kern-table__cell"><code>48rem</code> im Skript (Aufklapper), <code>64rem</code> im CSS (Ansichtsumschalter), <code>40rem</code> im CSS (Zeitleiste)</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Texte der Live-Region</td>
+<td class="kern-table__cell">Konstanten <code>LIVE</code> und <code>LEER</code> im Skript oder Optionen <code>live</code>/<code>leer</code> bei <code>render</code></td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Fokusfarbe, Aktionsfarbe, Schrift</td>
+<td class="kern-table__cell">nicht im Pattern, sondern über die KERN-Theme-Tokens der Seite, zum Beispiel <code>--kern-color-action-focus-default</code> auf <code>:root</code></td>
+</tr>
+</tbody>
+</table></div>
+<p class="kern-body">Nicht vorgesehen: eigene Schriften (KERN legt Fira Sans fest), ein eigenes Farbsystem neben den Tokens, und eine Kapselung des Kits für Seiten, die nicht mit KERN gestaltet sind.</p>
+<h3 class="kern-heading-medium" id="45-gestaltungsregeln">4.5 Gestaltungsregeln</h3>
+<p class="kern-body">Diese Regeln beschreiben, wie die Demo gestaltet ist. Wer das Pattern anpasst, hält sie ein oder ändert sie hier mit. Alle Werte sind KERN-Tokens; die Pixelangaben nennen den Wert des Tokens.</p>
+<p class="kern-body"><strong>Grundsätze</strong></p>
+<ul class="kern-list kern-list--bullet">
+<li>Nur Klassen, die im Kit existieren. Eigene Klassen tragen das Präfix <code>ps-</code> und ergänzen nur, was KERN nicht hat. Kein fester Farb- oder Pixelwert außer <code>--ps-tl-mitte</code>.</li>
+<li>Drei Textgrößen im Pattern: 16 Pixel (<code>small-static</code>) für alles Laufende, auch Badges, Nummer, Status, Listen, Links und Zeitraum; 21 Pixel, ab Desktop 24 (<code>medium-adaptive</code>) für den Kartentitel; 21 Pixel (<code>large-static</code>) für den Titel in der Zeitleiste. Dazu <code>kern-heading-x-large</code> für den Seitentitel und <code>kern-heading-medium</code> für das Jahr. Zeilenhöhe 24 Pixel (<code>medium-static</code>), beim Kartentitel 28 bzw. 32.</li>
+<li>Abstände in vier Stufen: 4 (<code>x-small</code>), 8 (<code>small</code>), 16 (<code>default</code>), 24 Pixel (<code>large</code>). Zusammengehöriges steht mit 4 oder 8 beieinander, Blöcke trennen 16 oder 24.</li>
+<li>Bereichsfarbe nur über die drei Variablen <code>--ps-area</code>, <code>--ps-area-on</code>, <code>--ps-area-fg</code>, abgestuft von kräftig nach leise (Ende von 4.3). Alles andere aus Kit-Tokens: Aktionsfarbe für Umschalter, Einordnungsfilter und Links, <code>decorative-border</code> für Linien, <code>text-muted</code> für den Zeitraum.</li>
+<li>Zustände: aktiv ist <code>kern-btn--primary</code>, inaktiv <code>kern-btn--secondary</code>, dazu <code>aria-pressed</code>. Fokus, Hover und Aktiv kommen vom Kit; bei Bereichsbuttons werden sie aus der Bereichsfarbe gemischt, wie das Kit es mit der Aktionsfarbe macht.</li>
+<li>Dunkelmodus spiegelt die Rampe: Fläche 950 statt 025, Rahmen und Trennlinie 900 statt 100, <code>fg</code> 300 statt 700. Keine eigenen Dunkelfarben.</li>
+<li>Symbole: Lucide, 1em in Buttons und Badges (Bereichssymbol auf Karte und Zeitleiste), immer in der Farbe des Textes daneben. Neben dem Kartentitel steht kein Symbol; das Projektsymbol erscheint nur als optionales Cover.</li>
+</ul>
+<p class="kern-body"><strong>Inhalte</strong></p>
+<p class="kern-body">Die Regeln für Texte, damit alle Karten gleich aufgebaut sind.</p>
+<ul class="kern-list kern-list--bullet">
+<li>Titel ohne Schlusspunkt, Status als kurze Zeile nach dem Muster „Laufend – seit 05/2025“, „Geplant für 06/2026“ oder „Idee – noch nicht begonnen“.</li>
+<li>Beschreibung ein bis zwei Sätze, Kennzahl und Listenpunkte jeweils eine Zeile.</li>
+<li>Der erste Abschnitt unter der Beschreibung ist eine Liste mit mindestens zwei Punkten; jeder Punkt beginnt groß und endet ohne Schlusspunkt. Karten ohne Abschnitt bleiben kurz.</li>
+<li>Die Kennzahl beginnt groß („Rund 90 Einsätze je Monat“, nicht „rund …“), endet ohne Schlusspunkt und schreibt Tausender im Deutschen mit Punkt („2.300 Bilder“), im Englischen mit Komma. Sie folgt direkt auf Text oder Liste.</li>
+<li>Links stehen nur im Kartenfuß; der Linktext benennt das Ziel („Zum Garten“, „Programm“), nie „hier“ oder „mehr“.</li>
+<li>Zeitleiste: Zeitraum als „seit 05/2025“ oder „07/2024“, Notiz ein kurzer Satz ohne Schlusspunkt.</li>
+<li>Beide Sprachen gleich lang und gleich aufgebaut; Zahlen und Daten in beiden identisch.</li>
+</ul>
+<p class="kern-body"><strong>Seitenkopf</strong></p>
+<div class="kern-table-responsive" data-name="Tabelle, seitlich verschiebbar"><table class="kern-table kern-table--striped">
+<thead class="kern-table__header">
+<tr class="kern-table__row">
+<th class="kern-table__cell">Element</th>
+<th class="kern-table__cell">Regel</th>
+</tr>
+</thead>
+<tbody class="kern-table__body">
+<tr class="kern-table__row">
+<td class="kern-table__cell">Titel</td>
+<td class="kern-table__cell">Ebene aus <code>data-ebene</code> (Vorgabe <code>h1</code>), <code>kern-heading-x-large</code></td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Einleitung</td>
+<td class="kern-table__cell"><code>kern-body kern-body--large</code>, Absätze mit 8 Pixel Abstand, Hinweis fett im Text</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Sprachumschalter</td>
+<td class="kern-table__cell">rechts oben, zwei <code>kern-btn--x-small</code> (32 Pixel, wie Karten/Zeitlich) als zusammenhängender Umschalter (<code>ps-seg</code>), aktiv <code>primary</code>; <code>role="group"</code> mit Beschriftung aus den Daten</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Symbolschalter</td>
+<td class="kern-table__cell">links neben dem Sprachumschalter mit 8 Pixel Abstand, eine KERN-Checkbox (<code>kern-form-check</code>, 32 Pixel) mit dem Label aus <code>texte.symbole.label</code>, <code>aria-label</code> aus <code>texte.symbole.aria</code>; Rahmen und Label in der Aktionsfarbe des Kits, angehakt wie im Kit; nur mit <code>data-symbolschalter="ja"</code></td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Abstände</td>
+<td class="kern-table__cell">im Kopf <code>kern-stack-sm</code> (8 Pixel), zwischen Kopf, Filterleiste und Raster <code>kern-stack-lg</code> (32 Pixel)</td>
+</tr>
+</tbody>
+</table></div>
+<p class="kern-body"><strong>Filterleiste</strong></p>
+<div class="kern-table-responsive" data-name="Tabelle, seitlich verschiebbar"><table class="kern-table kern-table--striped">
+<thead class="kern-table__header">
+<tr class="kern-table__row">
+<th class="kern-table__cell">Element</th>
+<th class="kern-table__cell">Regel</th>
+</tr>
+</thead>
+<tbody class="kern-table__body">
+<tr class="kern-table__row">
+<td class="kern-table__cell">Leiste</td>
+<td class="kern-table__cell">haftet am oberen Rand, Hintergrund 88 Prozent der Seitenfarbe mit 8 Pixel Weichzeichnung, 16 Pixel Innenabstand oben, Abschluss <code>kern-divider--decorative</code></td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Aufbau</td>
+<td class="kern-table__cell">Raster: Bereichsblock links, Umschalter Karten/Zeitlich rechts in derselben Zeile, Einordnungsblock darunter; 16 Pixel zwischen den Blöcken</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Beschriftung</td>
+<td class="kern-table__cell"><code>kern-label</code> in einer 80 Pixel breiten Spalte (2,5 × <code>x-large</code>), 4 Pixel nach unten versetzt, damit sie mittig zur ersten Buttonzeile steht</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Buttons</td>
+<td class="kern-table__cell"><code>kern-btn--x-small</code>, 32 Pixel hoch, 8 Pixel Abstand in beiden Richtungen (der 8-Pixel-Außenabstand des Kits oben und unten ist entfernt), brechen in ihrer Spalte um</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Bereichsbuttons</td>
+<td class="kern-table__cell">aktiv Fläche <code>area</code> und Text <code>on</code>, inaktiv Rand <code>area</code> und Text <code>fg</code>; Hover und Aktiv als Abmischung von <code>area</code> (88 und 78 Prozent mit Schwarz bzw. 10 und 18 Prozent über transparent); Symbol des Bereichs davor</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Einordnungsbuttons</td>
+<td class="kern-table__cell">Aktionsfarbe des Kits, sonst wie Bereichsbuttons</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Trefferzahl</td>
+<td class="kern-table__cell">in Klammern hinter dem Label, 80 Prozent Deckung, Zustand des Labels</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Umschalter Karten/Zeitlich</td>
+<td class="kern-table__cell">zwei <code>kern-btn--x-small</code> als <code>ps-seg</code>, auf Höhe der ersten Buttonzeile; bis 64rem als volle Zeile über den Filtern mit zwei gleich breiten Hälften</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Mobil (unter 48rem)</td>
+<td class="kern-table__cell">beide Blöcke als <code>kern-details</code>, Kopf in Beschriftungsgröße und Aktionsfarbe mit 20 Pixel Pfeil, Beschriftung auf eigener Zeile, Inhalt nicht eingerückt</td>
+</tr>
+</tbody>
+</table></div>
+<p class="kern-body"><strong>Kartenraster</strong></p>
+<div class="kern-table-responsive" data-name="Tabelle, seitlich verschiebbar"><table class="kern-table kern-table--striped">
+<thead class="kern-table__header">
+<tr class="kern-table__row">
+<th class="kern-table__cell">Element</th>
+<th class="kern-table__cell">Regel</th>
+</tr>
+</thead>
+<tbody class="kern-table__body">
+<tr class="kern-table__row">
+<td class="kern-table__cell">Spalten</td>
+<td class="kern-table__cell">KERN-Grid: 1, ab <code>md</code> 2, ab <code>lg</code> 3, ab <code>xxl</code> 4 Spalten</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Rinne</td>
+<td class="kern-table__cell">24 Pixel (<code>large</code>) statt der 32 des Kits, 12 je Spaltenseite</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Höhe</td>
+<td class="kern-table__cell">alle Karten einer Zeile gleich hoch; der Rumpf dehnt sich, Trennlinie und Links stehen immer am unteren Rand</td>
+</tr>
+</tbody>
+</table></div>
+<p class="kern-body"><strong>Karte</strong></p>
+<div class="kern-table-responsive" data-name="Tabelle, seitlich verschiebbar"><table class="kern-table kern-table--striped">
+<thead class="kern-table__header">
+<tr class="kern-table__row">
+<th class="kern-table__cell">Element</th>
+<th class="kern-table__cell">Regel</th>
+</tr>
+</thead>
+<tbody class="kern-table__body">
+<tr class="kern-table__row">
+<td class="kern-table__cell">Komponente</td>
+<td class="kern-table__cell"><code>kern-card kern-card--small</code> als <code>kern-layer kern-level-1</code>; kompakte Variante wegen 8 Pixel Lücke zwischen Kopf, Rumpf und Fuß und 16-Pixel-Texten, Innenabstand aber 24 Pixel (<code>large</code>)</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Fläche, Rahmen</td>
+<td class="kern-table__cell">Stufe 025 und 100 der Bereichsrampe (hell), 950 und 900 (dunkel), Rahmen 1 Pixel, Radius des Kits</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Reihenfolge</td>
+<td class="kern-table__cell">optionales Cover, Kopfzeile, Titel, Status, Text, Felder mit Listen, Kennzahl, Trennlinie, Links</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Cover (Option)</td>
+<td class="kern-table__cell"><code>kern-card__media</code> im Seitenverhältnis 16:9, Fläche Stufe 100 der Bereichsrampe, Projektsymbol 22 Prozent der Kartenbreite in <code>fg</code>, obere Ecken im Kartenradius; bei Zeiger oder Fokus auf der Karte wächst das Symbol weich auf 115 Prozent, bei reduzierter Bewegung ohne Übergang; nur bei eingeschaltetem Cover, sonst ist die Kopfzeile das erste Element</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Kopfzeile</td>
+<td class="kern-table__cell">Bereichs-Badge mit Symbol, Einordnungs-Badge ohne Fläche, Nummer rechts; 4 Pixel zwischen den Badges, 8 Pixel nach unten</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Badge</td>
+<td class="kern-table__cell"><code>kern-badge--small</code>, Innenabstand 2 und 8 Pixel, Fläche <code>area</code>, Text <code>on</code>, 16 Pixel halbfett; Symbol 1em mit 4 Pixel Abstand</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Nummer</td>
+<td class="kern-table__cell">zweistellig mit führender Null, 16 Pixel normal, <code>fg</code> mit 75 Prozent Deckung, Tabellenziffern, ohne Grundlinien-Innenabstand, damit sie mit dem Badge auf einer Linie steht</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Titel</td>
+<td class="kern-table__cell"><code>kern-title</code>, 21/24 Pixel, Farbe <code>fg</code>, ohne Symbol</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Status</td>
+<td class="kern-table__cell"><code>kern-subline--small</code> direkt unter dem Titel ohne den oberen Grundlinienabstand des Kits, 16 Pixel, Farbe <code>fg</code></td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Text</td>
+<td class="kern-table__cell"><code>kern-body</code>, 16 Pixel, Textfarbe des Kits</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Feld</td>
+<td class="kern-table__cell">Bezeichnung <code>kern-label</code> halbfett, 4 Pixel Abstand zum Inhalt; darunter immer eine Liste <code>kern-list--bullet kern-list--small</code> mit mindestens zwei Punkten und 4 Pixel dazwischen, 20 Pixel eingerückt (<code>default</code> + <code>x-small</code>, das Kit nimmt 32). Kein Fließtext als erster Abschnitt, damit die Karten gleich aufgebaut sind; Karten ohne Abschnitt bleiben kurz</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Kennzahl</td>
+<td class="kern-table__cell"><code>kern-body</code> fett, Farbe <code>fg</code>, folgt direkt auf Text oder Liste, nie an den unteren Rand geschoben (der ist für die Links reserviert); beginnt immer mit Großbuchstaben („Rund 90 Einsätze je Monat“), ohne Schlusspunkt; Tausender im Deutschen mit Punkt („2.300 Bilder“), im Englischen mit Komma</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Trennlinie</td>
+<td class="kern-table__cell"><code>kern-divider--decorative</code> in Stufe 100, 16 Pixel darüber und 0 darunter; mit der 8-Pixel-Lücke der Karte sind es 24 zur Kennzahl und 8 zu den Links</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Links</td>
+<td class="kern-table__cell"><code>kern-link kern-link--small</code>, 16 Pixel, Aktionsfarbe, unterstrichen, 16 Pixel nebeneinander, umbrechend</td>
+</tr>
+</tbody>
+</table></div>
+<p class="kern-body"><strong>Zeitleiste</strong></p>
+<div class="kern-table-responsive" data-name="Tabelle, seitlich verschiebbar"><table class="kern-table kern-table--striped">
+<thead class="kern-table__header">
+<tr class="kern-table__row">
+<th class="kern-table__cell">Element</th>
+<th class="kern-table__cell">Regel</th>
+</tr>
+</thead>
+<tbody class="kern-table__body">
+<tr class="kern-table__row">
+<td class="kern-table__cell">Jahr</td>
+<td class="kern-table__cell"><code>kern-heading-medium</code>, 8 Pixel darunter, 24 Pixel zwischen den Jahren; Jahre ohne sichtbare Einträge werden ausgeblendet</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Zeile</td>
+<td class="kern-table__cell">Raster mit 96 Pixel Zeitraumspalte (3 × <code>x-large</code>) und 16 Pixel Abstand zur Linie; 24 Pixel unter jedem Eintrag, 4 unter dem letzten</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Zeitraum</td>
+<td class="kern-table__cell"><code>kern-body--small kern-body--muted</code>, rechtsbündig, auf Höhe der ersten Zeile</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Linie, Punkt</td>
+<td class="kern-table__cell">Linie 2 Pixel (<code>border-width-default</code>) in <code>decorative-border</code>, Punkt 16 Pixel (<code>dimension-x-small</code>) in <code>area</code>, mittig auf der Linie; Linie beginnt am ersten und endet am letzten sichtbaren Punkt des Jahres</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Kopfzeile</td>
+<td class="kern-table__cell">auf der Grundlinie: Nummer, Bereichs-Badge mit Bereichssymbol (2 Pixel angehoben, damit es mittig zur Titelzeile sitzt), Titel <code>kern-title</code> 21 Pixel in <code>fg</code>, Einordnung <code>kern-label--subtle</code> in <code>fg</code>; 8 Pixel Abstand, 4 beim Umbruch</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Notiz</td>
+<td class="kern-table__cell"><code>kern-body--small</code>, 4 Pixel unter der Kopfzeile, Textfarbe des Kits</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Mobil (unter 40rem)</td>
+<td class="kern-table__cell">Zeitraum über dem Eintrag, 8 Pixel darunter; Linie am linken Rand der ganzen Zeile, Punkt auf Höhe des Zeitraums; Leiste 8 Pixel eingerückt, damit der Punkt beim Scrollen hinter der Filterleiste verschwindet</td>
+</tr>
+</tbody>
+</table></div>
+<p class="kern-body"><strong>Leerzustand und Meldungen</strong></p>
+<div class="kern-table-responsive" data-name="Tabelle, seitlich verschiebbar"><table class="kern-table kern-table--striped">
+<thead class="kern-table__header">
+<tr class="kern-table__row">
+<th class="kern-table__cell">Element</th>
+<th class="kern-table__cell">Regel</th>
+</tr>
+</thead>
+<tbody class="kern-table__body">
+<tr class="kern-table__row">
+<td class="kern-table__cell">Leerzustand</td>
+<td class="kern-table__cell"><code>kern-body</code> und <code>kern-btn--tertiary</code> in <code>kern-stack-sm</code>, kein Kasten, <code>role="status"</code>; Button nicht gedehnt</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Live-Region</td>
+<td class="kern-table__cell"><code>kern-sr-only</code>, <code>aria-live="polite"</code>, meldet die Trefferzahl nach jedem Filtern</td>
+</tr>
+</tbody>
+</table></div>
+<h2 class="kern-heading-large" id="5-prüfen-und-pflegen">5. Prüfen und pflegen</h2>
+<ul class="kern-list kern-list--bullet">
+<li><code>python3 skripte/pruefe.py</code> muss „ALLE PRÜFUNGEN BESTANDEN“ melden. Es prüft, dass jede verwendete <code>kern-*</code>-Klasse und jedes <code>--kern-*</code>-Token im Kit existiert, dass das Datenpaket schlüssig ist (bekannte Schlüssel, Titel in jeder Sprache), dass Badge- und Titelkontraste reichen und dass die eingebetteten Daten der JSON-Datei entsprechen.</li>
+<li>Nach jeder Änderung an <code>daten/beispiel.json</code>: <code>python3 skripte/einbetten.py</code>.</li>
+<li>Nach jeder Änderung an <code>README.md</code> oder <code>README.en.md</code>: <code>python3 skripte/doku_html.py</code> (braucht das Python-Modul <a class="kern-link" rel="noopener" href="https://python-markdown.github.io"><code>markdown</code></a>).</li>
+<li><code>node skripte/pruefe_fuzz.js 1000 42</code> muss „ALLE PRÜFUNGEN BESTANDEN“ melden (Anzahl und Startwert frei wählbar).</li>
+<li>Druckansicht: Demo im Browser drucken oder über Playwright <code>emulateMedia({ media: 'print' })</code> prüfen; es dürfen nur Titel, Einleitung und Karten erscheinen.</li>
+<li>Lasttest: <code>python3 skripte/erzeuge_last.py 1000</code> schreibt <code>last-test.html</code> mit 1000 Karten (nicht im Repositorium); im Browser öffnen und Filter, Zeitleiste und Sprache prüfen. Gemessen: 205 ms bis zum ersten Rendern, 5 ms je Filterklick. Browser-Matrix und Barrierefreiheit (axe-core über Playwright) gehören nicht zu diesem Paket und laufen vor einem Release von Hand, die Content-Security-Policy mit einem Server, der <code>style-src 'self'</code> setzt.</li>
+<li><code>node skripte/pruefe_xss.js</code> muss ebenfalls „ALLE PRÜFUNGEN BESTANDEN“ melden: Es rendert die Beispieldaten mit Nutzlasten in Bereichsfarbe, Schlüssel, Sprachcode, Icon, Nummer, Link und Jahr und sucht in der Ausgabe nach aktivem Markup. Nach jeder Änderung am Renderer laufen lassen.</li>
+<li>Sicherheitslücken melden: <a class="kern-link" href="../SECURITY.md"><code>SECURITY.md</code></a> nennt Adresse, Fristen und was zum Pattern gehört.</li>
+<li>Stückliste: <code>SPDX_projektschau-kern.spdx.json</code> (SPDX 2.3) nennt das Pattern, KERN-Kit, Fira Sans und die Symbole der Beispieldaten mit Version, Lizenz, Urheberangabe und Prüfsumme; die Lizenztexte liegen als <code>LICENSE</code>, <code>vendor/kern/LICENSE.md</code>, <code>LICENSE-fira-sans.txt</code> und <code>LICENSE-lucide.txt</code> daneben; sie wird beim Bauen des Pakets erzeugt, nicht von Hand ändern.</li>
+<li>Release: Zum Zip gehört eine Datei mit der SHA-256-Prüfsumme (<code>shasum -a 256 -c &lt;zip&gt;.sha256</code>).</li>
+<li>Kit aktualisieren: Version und Prüfsumme in <code>skripte/kern-sync.sh</code> eintragen, Skript ausführen, danach <code>pruefe.py</code>, weil neue Kit-Versionen Klassen umbenennen können.</li>
+<li>Im Browser prüfen: Kartenzahl, Filter mit Zählern, Sprachwechsel, Zeitleiste, hell und dunkel, Tastaturbedienung mit sichtbarem Fokus, Breiten 400, 820 und 1280 Pixel.</li>
+</ul>
+<h2 class="kern-heading-large" id="6-barrierefreiheit">6. Barrierefreiheit</h2>
+<p class="kern-body">Selbsttest, kein Nachweis. Alle Bedienelemente sind Buttons oder Links mit dem Fokusrahmen des Kits, in Darstellungsreihenfolge erreichbar. Filter und Umschalter tragen <code>aria-pressed</code>, Gruppen tragen <code>aria-label</code> in der aktiven Sprache. Ergebnisse werden über eine Live-Region angesagt. Symbole sind dekorativ (<code>aria-hidden</code>), jede Information steht auch als Text. Kontraste für Text und Flächen kommen aus KERN, für die Bereichsfarben gelten die Anforderungen aus 2.4. Ohne JavaScript bleibt das Element leer, weil die Karten aus dem Datenpaket gerendert werden; wer das vermeiden will, erzeugt das Markup mit <code>Projektschau.render</code> vorab auf dem Server.</p>
+<h2 class="kern-heading-large" id="7-sicherheit">7. Sicherheit</h2>
+<p class="kern-body">Dieses Pattern ist mit <a class="kern-link" rel="noopener" href="https://claude.com/claude-code">Claude Code</a> entstanden (<a class="kern-link" href="#9-entstehung-und-weiterführung">Abschnitt 9</a>). Deshalb steht hier, was ich geprüft habe, mit welchen Werkzeugen und was noch aussteht. Alle Prüfungen habe ich selbst gemacht, mit automatischen Werkzeugen und KI-gestützten Reviews. Eine Prüfung durch unabhängige Dritte gab es nicht. Stand 13. Oktober 2026, Fassung 0.1.0.</p>
+<p class="kern-body">Das Pattern läuft vollständig im Browser. Es hat keinen Server-Teil und keine Anmeldung, es erhebt keine Daten von Besucher:innen und stellt keine externen Anfragen; Kit, Schriften und Daten liegen lokal. Von außen kommt nur das Datenpaket: die JSON-Datei mit Bereichen, Projekten und Texten, die der Betreiber selbst bereitstellt (<a class="kern-link" href="#2-daten">Abschnitt 2</a>; in der Demo <code>daten/beispiel.json</code>). Aus ihr baut der Renderer die Karten. Er prüft jedes Feld daraus, bevor es in die Seite gelangt, auch wenn die Datei vom Betreiber selbst stammt, denn sie kann aus einem Redaktionssystem mit mehreren Rollen kommen. Welches Feld wie behandelt wird, steht in <a class="kern-link" href="#25-eigene-daten-anlegen">Abschnitt 2.5</a>. Die Prüfungen unten gelten vor allem dieser Strecke.</p>
+<p class="kern-body">Alles, was das Paket von anderen mitbringt (KERN-Kit, Fira Sans, Symbole von Lucide), steht mit Herkunft und Lizenz in der Stückliste, das Kit zusätzlich mit Prüfsumme. Die Bestandteile mit Versionsnummer sind in der Schwachstellen-Datenbank <a class="kern-link" rel="noopener" href="https://osv.dev">OSV</a> abgefragt, ohne Treffer (<a class="kern-link" href="#71-was-geprüft-wurde">Abschnitt 7.1</a>).</p>
+<h3 class="kern-heading-medium" id="71-was-geprüft-wurde">7.1 Was geprüft wurde</h3>
+<div class="kern-table-responsive" data-name="Tabelle, seitlich verschiebbar"><table class="kern-table kern-table--striped">
+<thead class="kern-table__header">
+<tr class="kern-table__row">
+<th class="kern-table__cell">Prüfung</th>
+<th class="kern-table__cell">Vorgehen</th>
+<th class="kern-table__cell">Ergebnis</th>
+</tr>
+</thead>
+<tbody class="kern-table__body">
+<tr class="kern-table__row">
+<td class="kern-table__cell">Review auf DOM-XSS</td>
+<td class="kern-table__cell">KI-gestützter Code-Review von Renderer, Demo und Skripten; Quellen: Datenpaket, Adresse, Hash, Browserspeicher, eingebettetes JSON</td>
+<td class="kern-table__cell">7 Befunde, behoben</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Nutzlasten im Renderer</td>
+<td class="kern-table__cell"><code>skripte/pruefe_xss.js</code> rendert die Beispieldaten mit Nutzlasten in Farbe, Schlüssel, Sprachcode, Symbol, Nummer, Link und Jahr und sucht nach aktivem Markup</td>
+<td class="kern-table__cell">bestanden</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Fuzzing</td>
+<td class="kern-table__cell"><code>skripte/pruefe_fuzz.js</code>: 1000 und 2000 zufällig verstümmelte Pakete mit festem Startwert (Felder entfernt, falsch typisiert, verschachtelt)</td>
+<td class="kern-table__cell">keine Ausnahme, kein aktives Markup</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Unicode-Steuerzeichen</td>
+<td class="kern-table__cell">Bidi-, Zero-Width- und Steuerzeichen in Texten und Linktexten</td>
+<td class="kern-table__cell">werden entfernt</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Fehlbedienung (Sharp Edges)</td>
+<td class="kern-table__cell">Methode von Trail of Bits: Optionen, Datenfelder, Einbettung und stille Fehlerpfade aus Sicht von Betrieb und Redaktion</td>
+<td class="kern-table__cell">3 Befunde, behoben</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Unsichere Voreinstellungen (Insecure Defaults)</td>
+<td class="kern-table__cell">Methode von Trail of Bits: von Zugangsdaten bis zu Fehlern, die offen statt geschlossen enden</td>
+<td class="kern-table__cell">kein Befund</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Security-Review des gesamten Codes</td>
+<td class="kern-table__cell">Datenfluss von der Quelle bis zur Ausgabe</td>
+<td class="kern-table__cell">kein Befund ab Stufe Mittel; ein Hinweis umgesetzt</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Content-Security-Policy</td>
+<td class="kern-table__cell">Demo unter <code>default-src 'self'</code> ohne <code>unsafe-inline</code></td>
+<td class="kern-table__cell">läuft; der Renderer setzt seine Regeln über <code>adoptedStyleSheets</code>, die Demo kommt ohne Inline-Skripte und Inline-Stile aus</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Geheimnisse in der Historie</td>
+<td class="kern-table__cell">gitleaks über alle Commits</td>
+<td class="kern-table__cell">keine Funde</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Linter und Datenprüfung</td>
+<td class="kern-table__cell">ESLint und stylelint; <code>skripte/pruefe.py</code> prüft jede KERN-Klasse und jedes Token gegen das Kit, das Datenpaket und die Kontraste hell und dunkel</td>
+<td class="kern-table__cell">ohne Befund</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Markup</td>
+<td class="kern-table__cell">html-validate auf Demo, Dokumentation und gerendertem DOM</td>
+<td class="kern-table__cell">ohne Befund</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Barrierefreiheit</td>
+<td class="kern-table__cell">axe-core nach WCAG 2.1 AA und 2.2 AA mit Best Practices: Karten, Zeitleiste, hell und dunkel, beide Sprachen, Breiten 1280, 390 und 320 Pixel; Kontraste aller Texte nachgerechnet, auch beim Überfahren; Tastaturdurchgang mit Prüfung des Fokusrahmens; Textabstände, Schrift 200 %, reduzierte Bewegung</td>
+<td class="kern-table__cell">keine offenen Verstöße</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Browser und Last</td>
+<td class="kern-table__cell">Chromium, Firefox und WebKit ohne Konsolenfehler; 1000 Karten</td>
+<td class="kern-table__cell">bestanden; 205 ms bis zum Rendern, 5 ms je Filterklick</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Lighthouse 13.5</td>
+<td class="kern-table__cell">Demo-Seite des Pakets, Mobil-Profil mit simulierter Drosselung, komprimierte Auslieferung</td>
+<td class="kern-table__cell">Barrierefreiheit 100, Best Practices 100, Leistung 81. Das Pattern selbst bringt komprimiert rund 29 KB mit (CSS, JavaScript, Beispieldaten); Kit und Schrift lädt eine KERN-Seite ohnehin</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Lieferkette</td>
+<td class="kern-table__cell">KERN-Kit in fester Version, SHA-512-Prüfsumme vor dem Entpacken; SHA-256-Prüfsumme zum Zip</td>
+<td class="kern-table__cell">Kit, Fira Sans und Lucide erfasst, Lizenztexte im Paket</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Stückliste</td>
+<td class="kern-table__cell">gegen das JSON-Schema von SPDX 2.3 geprüft; bei jedem Bauen mit dem Paketinhalt verglichen; KERN-Kit 2.8.2 und Lucide 1.49.0 in der Schwachstellen-Datenbank OSV abgefragt (13. Oktober 2026)</td>
+<td class="kern-table__cell">gültig und aktuell; keine bekannten Schwachstellen</td>
+</tr>
+</tbody>
+</table></div>
+<h3 class="kern-heading-medium" id="72-werkzeuge">7.2 Werkzeuge</h3>
+<div class="kern-table-responsive" data-name="Tabelle, seitlich verschiebbar"><table class="kern-table kern-table--striped">
+<thead class="kern-table__header">
+<tr class="kern-table__row">
+<th class="kern-table__cell">Werkzeug</th>
+<th class="kern-table__cell">Wofür</th>
+<th class="kern-table__cell">Im Paket</th>
+</tr>
+</thead>
+<tbody class="kern-table__body">
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>skripte/pruefe.py</code>, <code>skripte/pruefe_xss.js</code>, <code>skripte/pruefe_fuzz.js</code></td>
+<td class="kern-table__cell">Datenpaket, Klassen, Tokens und Kontraste; Nutzlasten; Fuzzing</td>
+<td class="kern-table__cell">ja</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><a class="kern-link" rel="noopener" href="https://claude.com/claude-code">Claude Code</a> mit <a class="kern-link" rel="noopener" href="https://github.com/anthropics/claude-code-security-review"><code>/security-review</code></a></td>
+<td class="kern-table__cell">Code-Reviews auf DOM-XSS und Security-Review des gesamten Codes</td>
+<td class="kern-table__cell">nein</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><a class="kern-link" rel="noopener" href="https://github.com/trailofbits/skills">Trail of Bits Skills</a>: <a class="kern-link" rel="noopener" href="https://github.com/trailofbits/skills/tree/main/plugins/sharp-edges">sharp-edges</a>, <a class="kern-link" rel="noopener" href="https://github.com/trailofbits/skills/tree/main/plugins/insecure-defaults">insecure-defaults</a></td>
+<td class="kern-table__cell">Reviews auf Fehlbedienung und unsichere Voreinstellungen</td>
+<td class="kern-table__cell">nein</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><a class="kern-link" rel="noopener" href="https://github.com/dequelabs/axe-core">axe-core</a> 4.14</td>
+<td class="kern-table__cell">Barrierefreiheit</td>
+<td class="kern-table__cell">nein</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><a class="kern-link" rel="noopener" href="https://github.com/microsoft/playwright">Playwright</a> 1.64</td>
+<td class="kern-table__cell">Browser-Matrix, Tastatur, Kontraste, Content-Security-Policy, Druckansicht</td>
+<td class="kern-table__cell">nein</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><a class="kern-link" rel="noopener" href="https://github.com/GoogleChrome/lighthouse">Lighthouse</a> 13.5</td>
+<td class="kern-table__cell">Barrierefreiheit, Best Practices, Leistung</td>
+<td class="kern-table__cell">nein</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><a class="kern-link" rel="noopener" href="https://gitlab.com/html-validate/html-validate">html-validate</a> 11.16</td>
+<td class="kern-table__cell">Markup</td>
+<td class="kern-table__cell">nein</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><a class="kern-link" rel="noopener" href="https://github.com/eslint/eslint">ESLint</a> 10.12, <a class="kern-link" rel="noopener" href="https://github.com/stylelint/stylelint">stylelint</a> 17.16</td>
+<td class="kern-table__cell">JavaScript und CSS</td>
+<td class="kern-table__cell">nein</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><a class="kern-link" rel="noopener" href="https://github.com/gitleaks/gitleaks">gitleaks</a> 8.30</td>
+<td class="kern-table__cell">Geheimnisse in der Historie</td>
+<td class="kern-table__cell">nein</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><a class="kern-link" rel="noopener" href="https://spdx.github.io/spdx-spec/v2.3/">SPDX 2.3</a> mit <a class="kern-link" rel="noopener" href="https://github.com/spdx/spdx-spec/blob/support/2.3/schemas/spdx-schema.json">JSON-Schema</a></td>
+<td class="kern-table__cell">Format und Prüfung der Stückliste <code>SPDX_projektschau-kern.spdx.json</code></td>
+<td class="kern-table__cell">Stückliste ja, Schema nein</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><a class="kern-link" rel="noopener" href="https://osv.dev">OSV</a> (<a class="kern-link" rel="noopener" href="https://github.com/google/osv.dev">Repositorium</a>)</td>
+<td class="kern-table__cell">bekannte Schwachstellen der Bestandteile</td>
+<td class="kern-table__cell">nein</td>
+</tr>
+</tbody>
+</table></div>
+<p class="kern-body">Die Werkzeuge außerhalb des Pakets laufen vor jedem Stand lokal. Die drei Prüfskripte im Paket brauchen nur Python und Node.js und laufen nach jeder Änderung am Renderer (<a class="kern-link" href="#5-prüfen-und-pflegen">Abschnitt 5</a>).</p>
+<h3 class="kern-heading-medium" id="73-was-aussteht">7.3 Was aussteht</h3>
+<ul class="kern-list kern-list--bullet">
+<li>Unabhängige Prüfung: Es gab keinen Pentest und kein Audit durch Dritte.</li>
+<li>Screenreader und Nutzungstest: axe-core deckt nur einen Teil der Kriterien ab. Ein Durchgang mit Screenreader und ein Test mit Nutzer:innen stehen aus.</li>
+<li>KERN-Kit: Das <a class="kern-link" rel="noopener" href="https://gitlab.opencode.de/kern-ux/kern-ux-plain">Kit</a> ist unverändert in fester Version eingebunden. Geprüft ist, dass das Paket der Registry entspricht und dass jede verwendete Klasse darin existiert. Das Kit selbst habe ich nicht geprüft.</li>
+<li><a class="kern-link" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API">Trusted Types</a>: nicht getestet. Der Renderer setzt das geprüfte Markup an einer Stelle über <code>innerHTML</code>; eine Seite, die Trusted Types erzwingt, braucht dafür eine eigene Richtlinie.</li>
+<li>Automatische Prüfkette: Die Prüfungen laufen noch nicht bei jedem Stand von selbst, sondern lokal von Hand.</li>
+<li>Signatur: Zum Zip gehört eine SHA-256-Prüfsumme, eine Signatur noch nicht.</li>
+<li>Schwachstellen der Bestandteile: Die <a class="kern-link" rel="noopener" href="https://osv.dev">Abfrage bei OSV</a> ist eine Momentaufnahme. Eine regelmäßige Abfrage gibt es noch nicht; für Fira Sans nennt die Stückliste keine Version, die sich abfragen ließe.</li>
+<li>Einbettende Seite: Server, Header und Content-Security-Policy gehören dem Betreiber. Wer <code>Projektschau.render</code> selbst aufruft und das Ergebnis weiterverarbeitet, verlässt die geprüfte Strecke.</li>
+</ul>
+<p class="kern-body">Sicherheitslücken bitte vertraulich melden: <a class="kern-link" href="../SECURITY.md"><code>SECURITY.md</code></a> nennt Adresse und Fristen.</p>
+<h2 class="kern-heading-large" id="8-lizenz">8. Lizenz</h2>
+<p class="kern-body">Code und Dokumentation: <a class="kern-link" href="../LICENSE">EUPL-1.2</a> (<a class="kern-link" rel="noopener" href="https://eupl.eu/1.2/de/">Lizenztext bei der EU</a>). KERN-Kit: EUPL-1.2 (<code>vendor/kern/LICENSE.md</code>). <a class="kern-link" rel="noopener" href="https://github.com/mozilla/Fira">Fira Sans</a>: <a class="kern-link" rel="noopener" href="https://openfontlicense.org">SIL Open Font License 1.1</a>. Symbole in den Beispieldaten nach <a class="kern-link" rel="noopener" href="https://lucide.dev">Lucide</a> (<a class="kern-link" rel="noopener" href="https://github.com/lucide-icons/lucide/blob/main/LICENSE">ISC</a>).</p>
+<h2 class="kern-heading-large" id="9-entstehung-und-weiterführung">9. Entstehung und Weiterführung</h2>
+<h3 class="kern-heading-medium" id="91-wie-dieses-projekt-entstanden-ist">9.1 Wie dieses Projekt entstanden ist</h3>
+<p class="kern-body">Ausgangspunkt ist die <a class="kern-link" rel="noopener" href="https://ankerpunkt-hoherflaeming.de/projekte/">Projektübersicht des Ankerpunkts Hoher Fläming</a>, die dort als laufendes Projekt im Einsatz ist; parallel entsteht daraus ein WordPress-Plugin. Von dort stammen das Datenpaket-Format, die Logik für Filter, Zeitleiste, Sprachen und Adresszeile sowie die Gestaltungsentscheidungen, die hier auf KERN übertragen wurden. Das KERN-Pattern ist mit Claude Code entstanden, dem Kommandozeilen-Werkzeug von Anthropic. Die Rollen: Der User gibt Richtung, Maßstab und Entscheidungen vor und prüft jeden Stand im Browser; die KI liest die Quellen (<a class="kern-link" rel="noopener" href="https://www.npmjs.com/package/@kern-ux/native">KERN-Kit</a>, <a class="kern-link" rel="noopener" href="https://www.kern-ux.de">KERN-Doku</a>, <a class="kern-link" rel="noopener" href="https://katalog.kern-ux.de/de/nutzungsbedingungen">Katalog-Bedingungen</a>, die bestehende Projektübersicht), schreibt Code und Doku, misst im Browser nach und erklärt, was Kit ist und was Eigenbau.</p>
+<p class="kern-body">Der Ablauf in Stufen:</p>
+<ol class="kern-list kern-list--number">
+<li><strong>Plan:</strong> Erst wurde im Plan-Modus geklärt, was realistisch ist. Ergebnis: ein eigenständiges Projekt, EUPL-1.2 wegen der Katalog-Bedingungen, Standalone-Demo, Ziel KERN-Katalog.</li>
+<li><strong>Gerüst:</strong> KERN-Kit in fester Version holen, Renderer und CSS schreiben, Demo mit erfundenen Beispieldaten, Prüfskript.</li>
+<li><strong>Angleichen ans Original:</strong> Schritt für Schritt wurde die Darstellung an die bestehende Projektübersicht herangeführt, immer mit der Frage, was davon KERN-Standard ist. Bausteine aus dem Kit vor Eigenbau; Eigenbau nur aus KERN-Tokens und im README benannt.</li>
+<li><strong>Feinarbeit per Screenshot:</strong> Die meisten Anweisungen waren ein Bildschirmfoto plus ein Satz, etwa „Symbol mittig zur ersten Zeile der Überschrift“, „Bereich und Filter auf Höhe der ersten Zeile“, „der Strich darf nicht über den Punkt hinausschauen“. Jede Änderung wurde im Browser nachgemessen, dokumentiert und einzeln committet.</li>
+<li><strong>Doku:</strong> Eine README mit Abschnitten statt mehrerer Dokumente, zweisprachig, als Seiten im KERN-Stil erzeugt.</li>
+</ol>
+<p class="kern-body">Was sich bewährt hat: Jede Antwort der KI nennt, was Kit ist und was Abweichung. Das Prüfskript läuft vor jedem Commit. Entscheidungen fallen klein und einzeln, nicht als großer Umbau. Und die Frage „ist das KERN-Standard?“ stand über jedem Vorschlag.</p>
+<h3 class="kern-heading-medium" id="92-dankeschön">9.2 Dankeschön</h3>
+<p class="kern-body">Danke an <a class="kern-link" rel="noopener" href="https://gitlab.opencode.de/OC000011858689">Axel Wolters</a>, Senatskanzlei Hamburg und Vertreter des Auftraggebers Hamburg im Projekt KERN, für den Blick auf das KERN-Pattern, und an das ganze Team von <a class="kern-link" rel="noopener" href="https://www.kern-ux.de">KERN</a> für den kontinuierlichen, tollen Austausch und die wohlwollende Atmosphäre. Kommt gerne dazu: <a class="kern-link" rel="noopener" href="https://www.kern-ux.de/community-und-mitwirken/">Community und Mitwirken bei KERN</a>. Danke an <a class="kern-link" rel="noopener" href="https://michaelplas.de">Michael Plas</a> für den Blick auf die WordPress-Fassung. Was aus den Rückmeldungen wird, steht im Änderungsprotokoll.</p>
+<h3 class="kern-heading-medium" id="93-die-prompts-zum-kopieren">9.3 Die Prompts zum Kopieren</h3>
+<p class="kern-body">Die wichtigsten Anweisungen in der Reihenfolge, in der sie gegeben wurden, sprachlich geglättet. Sie lassen sich für ein ähnliches Vorhaben übernehmen; Pfade und Adressen anpassen.</p>
+<div class="doku-code"><pre><code>Bau eine KERN-Version hier in diesem Projekt neu auf, mit dem Wissen aus dem WordPress-Plugin. Nimm das Wissen aus dem KERN-UX-Theme für WordPress auf openCode mit und die letzte KERN-Version, sofern nötig. Gerne erst im Plan-Modus klären, was realistisch ist, gegebenenfalls eine Standalone-Version nur für KERN, da das Plugin für WordPress schon existiert.
+</code></pre><button type="button" class="kern-btn kern-btn--tertiary kern-btn--x-small doku-kopieren" aria-label="Code in die Zwischenablage kopieren" data-kopiert="Kopiert"><svg class="ps-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><span class="kern-label" aria-live="polite"></span></button></div>
+<div class="doku-code"><pre><code>Ergänze als Ziel, dass es in den KERN-Katalog gehen soll. Lies dazu die Doku und alle Anforderungen. Das WordPress-Plugin ist davon unabhängig, also ein Unterprojekt.
+</code></pre><button type="button" class="kern-btn kern-btn--tertiary kern-btn--x-small doku-kopieren" aria-label="Code in die Zwischenablage kopieren" data-kopiert="Kopiert"><svg class="ps-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><span class="kern-label" aria-live="polite"></span></button></div>
+<div class="doku-code"><pre><code>Fülle die Standalone-Demo-Seite mit Beispielinhalten, gerne rund 32 Karten und ein weiterer Filter. Bitte auch eine Kombination möglich machen, bei der nichts zu finden ist.
+</code></pre><button type="button" class="kern-btn kern-btn--tertiary kern-btn--x-small doku-kopieren" aria-label="Code in die Zwischenablage kopieren" data-kopiert="Kopiert"><svg class="ps-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><span class="kern-label" aria-live="polite"></span></button></div>
+<div class="doku-code"><pre><code>Fällt dir sonst noch etwas ein oder auf, was ich KERN-Standard machen kann? Bei deinen Vorschlägen bitte alles außer den KERN-Symbolen umsetzen.
+</code></pre><button type="button" class="kern-btn kern-btn--tertiary kern-btn--x-small doku-kopieren" aria-label="Code in die Zwischenablage kopieren" data-kopiert="Kopiert"><svg class="ps-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><span class="kern-label" aria-live="polite"></span></button></div>
+<div class="doku-code"><pre><code>Könntest du den Algorithmus auf das Farbsystem umstellen, das auch KERN für die Farbberechnung nutzt, und das in OKLCH rechnen? Siehe die KERN-Seite zur Farbe. Schreibe bitte auch, wie die Farben programmatisch aus den Grundfarben berechnet werden.
+</code></pre><button type="button" class="kern-btn kern-btn--tertiary kern-btn--x-small doku-kopieren" aria-label="Code in die Zwischenablage kopieren" data-kopiert="Kopiert"><svg class="ps-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><span class="kern-label" aria-live="polite"></span></button></div>
+<div class="doku-code"><pre><code>Beschreibe die Daten speziell für diesen Prototypen: wie sie angelegt werden und wie sie aufbereitet sind. Ziel ist, dass ein Programmierer eine komplette Doku liest, mit dem Hintergrund, wie die Daten aufgebaut sind und wo sie ausgespielt werden, dazu ein Teil zum Styling, was KERN-Komponenten sind, welche ergänzt wurden und wo sich was anpassen lässt.
+</code></pre><button type="button" class="kern-btn kern-btn--tertiary kern-btn--x-small doku-kopieren" aria-label="Code in die Zwischenablage kopieren" data-kopiert="Kopiert"><svg class="ps-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><span class="kern-label" aria-live="polite"></span></button></div>
+<div class="doku-code"><pre><code>README und Entwicklerdoku bitte als Standard-KERN-Doku wie auf der Webseite gestalten, DE und EN, als ein Dokument mit Abschnitten. Gibt es ein mitlaufendes Inhaltsverzeichnis in der Standard-Doku? Dann bitte übernehmen. Codebeispiele immer mit einem dezenten Kopierknopf und umbrechen lassen. Bitte immer die README aktualisieren und ganz unten ein Änderungsprotokoll nach Standard führen, wie beim Plugin.
+</code></pre><button type="button" class="kern-btn kern-btn--tertiary kern-btn--x-small doku-kopieren" aria-label="Code in die Zwischenablage kopieren" data-kopiert="Kopiert"><svg class="ps-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><span class="kern-label" aria-live="polite"></span></button></div>
+<p class="kern-body">Für die Feinarbeit reicht jeweils ein Bildschirmfoto mit ein, zwei Sätzen. Jede Zeile hier war ein eigener Auftrag:</p>
+<div class="doku-code"><pre><code>Das Symbol soll mittig zur ersten Zeile der Überschrift stehen.
+Bereich und Filter auf der Höhe der ersten Zeile.
+Hier geht der Strich noch raus; beim letzten Punkt soll die Linie auch nicht mehr weiterlaufen.
+Mobil sollen Bereich und Filter gleich aussehen, mit Aufklapper; der Filter-Aufklapper ist viel zu groß.
+Ist der Abstand jetzt der Standard? Darf er auch kleiner als 1rem sein?
+</code></pre><button type="button" class="kern-btn kern-btn--tertiary kern-btn--x-small doku-kopieren" aria-label="Code in die Zwischenablage kopieren" data-kopiert="Kopiert"><svg class="ps-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><span class="kern-label" aria-live="polite"></span></button></div>
+<h3 class="kern-heading-medium" id="94-wie-sich-das-projekt-erweitern-lässt">9.4 Wie sich das Projekt erweitern lässt</h3>
+<ul class="kern-list kern-list--bullet">
+<li><strong>Eigene Daten:</strong> <code>daten/beispiel.json</code> ersetzen, Farben je Bereich mit <code>skripte/farben.py</code> aus einer Grundfarbe ableiten, mit <code>skripte/pruefe.py</code> prüfen, mit <code>skripte/einbetten.py</code> in die Demo schreiben. <a class="kern-link" href="#25-eigene-daten-anlegen">Abschnitt 2.5</a>.</li>
+<li><strong>In eine bestehende KERN-Seite einbauen:</strong> die drei Dateien und das Kit einbinden, ein Element mit <code>data-projektschau</code> und <code>data-src</code> setzen. Startansicht, Vorfilter und Überschriftenebene über die Attribute aus <a class="kern-link" href="#1-demo-und-einbinden">Abschnitt 1</a>.</li>
+<li><strong>Server-seitig rendern:</strong> <code>Projektschau.render(daten, optionen)</code> liefert das Markup als String; so lässt sich die Übersicht auch ohne JavaScript im Browser ausliefern, zum Beispiel aus einem CMS oder einem kleinen Node-Skript.</li>
+<li><strong>Daten aus einer Quelle ziehen:</strong> Das Datenpaket ist einfaches JSON. Ein Export aus einer Tabelle oder einem CMS genügt; das WordPress-Plugin, das parallel entsteht, nutzt dasselbe Paketformat.</li>
+<li><strong>Mehr Sprachen:</strong> <code>sprachen</code> erweitern und jedes Sprachpaar ergänzen; der Umschalter wächst mit. Bei mehr als drei Sprachen wird die Reihe aus Knöpfen breit und auf schmalen Bildschirmen unübersichtlich; dann passt eine Auswahlliste (Dropdown) als Muster besser, etwa das Select-Feld des KERN-Kits. Die Doku-Seiten brauchen je Sprache eine Markdown-Datei und einen Eintrag in <code>skripte/doku_html.py</code>.</li>
+<li><strong>KERN-Symbole:</strong> Für Kopierknopf, Hell/Dunkel und Aufklapper hat das Kit eigene Symbole (<code>kern-icon--content-copy</code>, <code>--light-mode</code>, <code>--dark-mode</code>, <code>--chevron-*</code>). Projekt- und Bereichssymbole bleiben Lucide, dafür hat KERN keine Motive.</li>
+<li><strong>Kit-Updates:</strong> Version und Prüfsumme in <code>skripte/kern-sync.sh</code> eintragen, Skript laufen lassen, <code>pruefe.py</code> meldet umbenannte Klassen.</li>
+<li><strong>Dunkelmodus-Kontrast prüfen:</strong> <code>pruefe.py</code> rechnet bisher nur die hellen Werte nach; eine Prüfung von <code>fg</code> dunkel gegen den dunklen KERN-Hintergrund wäre die nächste Ergänzung.</li>
+<li><strong>Kapselung des Kits:</strong> Für Seiten, die nicht mit KERN gestaltet sind, bräuchte es ein auf den Wrapper gekapseltes Kit. Das ist bewusst nicht Teil des Patterns.</li>
+</ul>
+<h2 class="kern-heading-large" id="10-über-den-absender">10. Über den Absender</h2>
+<div class="doku-autor"><img class="doku-foto" alt="Don Ludwig" src="don-ludwig.jpg" width="320" height="320" /><div class="kern-stack-sm"><p class="kern-body">Feedback, Fragen oder einfach Hallo sagen: ich freu mich.</p><p class="kern-body">Don Ludwig, freier UX-Designer. Ich baue Design-Systeme, begleite agile Produktentwicklung und arbeite daran, die Zusammenarbeit zwischen Design und Entwicklung besser zu machen. Mein Prozess: nutzerzentriert denken, iterativ arbeiten, technische Rahmenbedingungen verstehen statt ignorieren. Für dieses Pattern habe ich mit Claude Code gearbeitet; wie, steht in <a class="kern-link" href="#9-entstehung-und-weiterführung">Abschnitt 9</a>. Dieses Pattern ist aus der Projektübersicht des <a class="kern-link" rel="noopener" href="https://ankerpunkt-hoherflaeming.de/">Ankerpunkts Hoher Fläming</a> entstanden, eines regionalen Netzwerks in Brandenburg; ein WordPress-Plugin mit demselben Datenformat ist in Arbeit.</p><ul class="kern-list kern-list--horizontal doku-autor-links"><li><a class="kern-link" rel="noopener" href="https://www.linkedin.com/in/donludwig/">LinkedIn</a></li><li><a class="kern-link" href="mailto:don@thinkrepeat.com">don@thinkrepeat.com</a></li><li><a class="kern-link" rel="noopener" href="https://thinkrepeat.com">thinkrepeat.com</a></li><li><a class="kern-link" rel="noopener" href="https://github.com/donludwig">GitHub</a></li></ul></div></div>
+<h2 class="kern-heading-large" id="11-änderungen">11. Änderungen</h2>
+<p class="kern-body">Alle nennenswerten Änderungen stehen hier, neueste Version zuerst. Das Format folgt <a class="kern-link" rel="noopener" href="https://keepachangelog.com/de/1.1.0/">Keep a Changelog</a>, die Versionsnummern der <a class="kern-link" rel="noopener" href="https://semver.org/lang/de/">semantischen Versionierung</a>. Jede Version trägt einen Namen.</p>
+<h3 class="kern-heading-medium" id="010-musterstadt">0.1.0 „Musterstadt“</h3>
+<p class="kern-body">Erste Veröffentlichung, benannt nach dem erfundenen Ort der Beispieldaten. Stand 2026-10-13.</p>
+<h4 class="kern-heading-small" id="hinzugefügt">Hinzugefügt</h4>
+<ul class="kern-list kern-list--bullet">
+<li><strong>Karten:</strong> jedes Projekt als Karte mit Bereich, Titel, Status, Beschreibung, Listen, Kennzahl und Links, in der Farbe seines Bereichs; wahlweise mit großem Symbol über dem Kartenkopf (<a class="kern-link" href="#32-wo-welches-feld-ausgespielt-wird">Abschnitt 3.2</a>).</li>
+<li><strong>Zeitleiste:</strong> dieselben Projekte nach Jahren geordnet, mit Zeitraum und Notiz (<a class="kern-link" href="#22-zeitleiste">Abschnitt 2.2</a>).</li>
+<li><strong>Filter:</strong> nach Bereich und Einordnung, mit Trefferzahlen und einem Hinweis, wenn nichts passt. Filter, Ansicht und Sprache stehen in der Adresszeile, ein Link führt also genau zu dieser Auswahl (<a class="kern-link" href="#35-filter-ansicht-und-adresszeile">Abschnitt 3.5</a>).</li>
+<li><strong>Zwei Sprachen</strong> mit Umschalter (<a class="kern-link" href="#33-sprachen">Abschnitt 3.3</a>).</li>
+<li><strong>Hell und dunkel:</strong> beide Farbschemata des KERN-Kits; die Farben eines Bereichs entstehen aus einer Grundfarbe (<a class="kern-link" href="#26-farben-programmatisch-ableiten">Abschnitt 2.6</a>).</li>
+<li><strong>Druckansicht:</strong> Titel, Einleitung und die gefilterte Ansicht, ohne Bedienelemente.</li>
+<li><strong>Ohne Framework und Build:</strong> eine JavaScript-Datei und eine CSS-Datei auf dem KERN-Kit 2.8.2, das unverändert im Paket liegt; keine externen Anfragen (<a class="kern-link" href="#1-demo-und-einbinden">Abschnitt 1</a>).</li>
+<li><strong>Datenpaket:</strong> eine JSON-Datei mit Bereichen, Einordnungen, Projekten und Texten (<a class="kern-link" href="#2-daten">Abschnitt 2</a>); 32 erfundene Beispielprojekte in vier Bereichen liegen bei.</li>
+<li><strong>Barrierefreiheit:</strong> Tastaturbedienung mit sichtbarem Fokus, Ansage der Ergebnisse, geprüfte Kontraste, die Systemeinstellung „Bewegung reduzieren“ wird beachtet. Selbsttest mit axe-core nach WCAG 2.1 AA und 2.2 AA ohne offene Verstöße (<a class="kern-link" href="#6-barrierefreiheit">Abschnitt 6</a>).</li>
+<li><strong>Sicherheit:</strong> Der Renderer prüft jedes Feld des Datenpakets und läuft unter einer strengen Content-Security-Policy. Prüfskripte, Sicherheitsrichtlinie (<code>SECURITY.md</code>) und Stückliste (SPDX 2.3) liegen bei (<a class="kern-link" href="#7-sicherheit">Abschnitt 7</a>).</li>
+<li><strong>Demo und Dokumentation:</strong> Demo-Seite, diese README in Deutsch und Englisch, beide auch als HTML-Seiten im KERN-Stil; Gestaltungs- und Inhaltsregeln für eigene Karten (<a class="kern-link" href="#45-gestaltungsregeln">Abschnitt 4.5</a>).</li>
+</ul>
+		</main>
+		<nav class="doku-toc" aria-label="Auf dieser Seite"><span class="kern-label">Auf dieser Seite</span><ul><li><a class="kern-link" href="#1-demo-und-einbinden">1. Demo und Einbinden</a></li><li><a class="kern-link" href="#2-daten">2. Daten</a></li><li><a class="kern-link" href="#3-verarbeitung-und-ausgabe">3. Verarbeitung und Ausgabe</a></li><li><a class="kern-link" href="#4-styling">4. Styling</a></li><li><a class="kern-link" href="#5-prüfen-und-pflegen">5. Prüfen und pflegen</a></li><li><a class="kern-link" href="#6-barrierefreiheit">6. Barrierefreiheit</a></li><li><a class="kern-link" href="#7-sicherheit">7. Sicherheit</a></li><li><a class="kern-link" href="#8-lizenz">8. Lizenz</a></li><li><a class="kern-link" href="#9-entstehung-und-weiterführung">9. Entstehung und Weiterführung</a></li><li><a class="kern-link" href="#10-über-den-absender">10. Über den Absender</a></li><li><a class="kern-link" href="#11-änderungen">11. Änderungen</a></li></ul></nav>
+		</div>
+		<footer class="demo-fuss">
+			<hr class="kern-divider kern-divider--decorative">
+			<p class="kern-body kern-body--small kern-body--muted">Code unter <a class="kern-link" href="../LICENSE">EUPL-1.2</a>. KERN-Kit (<a class="kern-link" href="../vendor/kern/LICENSE.md">EUPL-1.2</a>, Version in <code>vendor/kern/VERSION</code>), <a class="kern-link" href="https://github.com/mozilla/Fira">Fira Sans</a> (<a class="kern-link" href="https://openfontlicense.org">SIL OFL 1.1</a>), Symbole nach <a class="kern-link" href="https://lucide.dev">Lucide</a> (ISC). Alle Inhalte der Demo sind erfunden.</p>
+		</footer>
+	</div>
+	<script>
+		( function () {
+			var b = document.getElementById( 'farbschema' ), h = document.documentElement;
+			function zeige() { b.setAttribute( 'aria-checked', h.getAttribute( 'data-kern-theme' ) === 'dark' ? 'true' : 'false' ); }
+			b.addEventListener( 'click', function () {
+				var t = h.getAttribute( 'data-kern-theme' ) === 'dark' ? 'light' : 'dark';
+				h.setAttribute( 'data-kern-theme', t );
+				try { localStorage.setItem( 'ps-theme', t ); } catch ( e ) {}
+				zeige();
+			} );
+			zeige();
+			/* Inhaltsverzeichnis: den Abschnitt markieren, der gerade oben im Fenster steht */
+			var tocLinks = Array.prototype.slice.call( document.querySelectorAll( '.doku-toc a' ) ), abschnitte = tocLinks.map( function ( a ) { return document.getElementById( a.getAttribute( 'href' ).slice( 1 ) ); } );
+			var ziel = null;
+			function markiere() {
+				var aktiv = 0, ende = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+				/* Nach einem Klick bleibt das Ziel markiert, bis es oben angekommen ist oder die Seite zu Ende ist */
+				if ( ziel !== null ) { if ( ende || ( abschnitte[ ziel ] && abschnitte[ ziel ].getBoundingClientRect().top <= 120 ) ) { ziel = null; } else { return; } }
+				abschnitte.forEach( function ( el, i ) { if ( el && el.getBoundingClientRect().top <= 120 ) { aktiv = i; } } );
+				/* Am Seitenende gilt der letzte Abschnitt, auch wenn er nicht mehr bis oben scrollen kann */
+				if ( ende ) { aktiv = tocLinks.length - 1; }
+				setzeAktiv( aktiv );
+			}
+			function setzeAktiv( aktiv ) { tocLinks.forEach( function ( a, i ) { if ( i === aktiv ) { a.setAttribute( 'aria-current', 'true' ); } else { a.removeAttribute( 'aria-current' ); } } ); }
+			/* Klick im Verzeichnis markiert sofort den gewählten Abschnitt */
+			tocLinks.forEach( function ( a, i ) { a.addEventListener( 'click', function () { ziel = i; setzeAktiv( i ); } ); } );
+			window.addEventListener( 'scroll', markiere, { passive: true } );
+			markiere();
+			/* Codeblöcke in die Zwischenablage kopieren */
+			Array.prototype.slice.call( document.querySelectorAll( '.doku-kopieren' ) ).forEach( function ( k ) {
+				k.addEventListener( 'click', function () {
+					var code = k.parentNode.querySelector( 'pre' ).textContent, label = k.querySelector( '.kern-label' );
+					navigator.clipboard.writeText( code ).then( function () { label.textContent = k.getAttribute( 'data-kopiert' ); setTimeout( function () { label.textContent = ''; }, 1500 ); } );
+				} );
+			} );
+			/* Alle Seitenlinks tragen Farbschema und Sprache in der Adresse mit, damit der Wechsel auch ohne Browserspeicher stimmt */
+			var sy = new URLSearchParams( location.search ).get( 'symbole' );
+			function zustand( ziel, lang ) { return ziel + '?theme=' + h.getAttribute( 'data-kern-theme' ) + '&lang=' + lang + ( sy ? '&symbole=' + sy : '' ); }
+			Array.prototype.slice.call( document.querySelectorAll( '.doku-lang a' ) ).forEach( function ( x ) { x.addEventListener( 'click', function () { var l = x.getAttribute( 'data-lang' ); try { localStorage.setItem( 'ps-lang', l ); } catch ( e ) {} x.href = zustand( x.getAttribute( 'href' ).split( '?' )[ 0 ], l ); } ); } );
+			var demoLink = document.querySelector( '.demo-navi a[href$="index.html"]' );
+			demoLink.addEventListener( 'click', function () { demoLink.href = zustand( '../index.html', 'de' ); } );
+			/* Tabellen, die breiter sind als ihr Rahmen: Rahmen mit der Tastatur erreichbar machen und benennen, sonst nicht */
+			function tabellen() {
+				document.querySelectorAll( '.kern-table-responsive' ).forEach( function ( r ) {
+					if ( r.scrollWidth > r.clientWidth ) {
+						r.setAttribute( 'tabindex', '0' ); r.setAttribute( 'role', 'group' ); r.setAttribute( 'aria-label', r.getAttribute( 'data-name' ) );
+					} else {
+						r.removeAttribute( 'tabindex' ); r.removeAttribute( 'role' ); r.removeAttribute( 'aria-label' );
+					}
+				} );
+			}
+			tabellen(); window.addEventListener( 'resize', tabellen );
+		} )();
+	</script>
+</body>
+</html>

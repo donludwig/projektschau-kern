@@ -1,0 +1,21 @@
+/* Demo-Seite: Kopfzeile, Navigation, Fuß, Hell/Dunkel-Symbol. Kein Teil des Patterns; die Pattern-Regeln liegen in projektschau.css. */
+.demo-kopf { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--kern-metric-space-small, 8px); padding: var(--kern-metric-space-small, 8px) 0; margin-bottom: var(--kern-metric-space-large, 24px); border-bottom: var(--kern-metric-border-width-light, 1px) solid var(--kern-color-decorative-border-contextual, #c0c3d5); }
+.demo-navi { display: flex; gap: var(--kern-metric-space-default, 16px); margin-inline: auto var(--kern-metric-space-default, 16px); }
+@media (max-width: 48rem) { .demo-kopf > p { flex: 1 1 100%; } .demo-navi { margin-inline-start: 0; } #farbschema { margin-inline-start: auto; } }
+.demo-navi .kern-link { display: inline-flex; align-items: center; min-height: 24px; padding-block: 0; line-height: 1; }
+/* Sprunglink: erst bei Tastaturfokus sichtbar, über der Kopfzeile */
+.demo-skip { position: absolute; inset-block-start: var(--kern-metric-space-small, 8px); inset-inline-start: var(--kern-metric-space-small, 8px); z-index: 100; padding: var(--kern-metric-space-small, 8px) var(--kern-metric-space-default, 16px); border-radius: var(--kern-metric-border-radius-default, 4px); background: var(--kern-color-layout-background-default, #fff); transform: translateY(-300%); }
+.demo-skip:focus { transform: none; }
+/* Links im Fuß in der Schriftgröße des Fußtexts, ohne den Grundlinienabstand des Kit-Links */
+.demo-fuss .kern-link { font-size: inherit; line-height: inherit; padding: 0; }
+.demo-navi [aria-current] { text-decoration: none; color: var(--kern-color-layout-text-default, #131525); font-weight: var(--kern-typography-font-weight-semi-bold, 600); }
+.demo-fuss { margin-top: calc(var(--kern-metric-space-x-large, 32px) * 3); padding-bottom: var(--kern-metric-space-x-large, 32px); }
+.demo-fuss .kern-divider { margin-bottom: var(--kern-metric-space-default, 16px); }
+[data-kern-theme="dark"] .demo-sonne, :root:not([data-kern-theme="dark"]) .demo-mond { display: none; }
+/* Druck: Kopf- und Fußzeile der Demo-Seite entfallen, es bleibt die Projektschau (ihre Druckregeln stehen in projektschau.css). */
+@media print { .demo-kopf, .demo-fuss, .demo-kopf + hr, .kern-divider { display: none !important; } }
+/* Wer im System weniger Bewegung eingestellt hat, bekommt Sprünge statt des weichen Scrollens aus dem Kit. */
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+/* Platz für die Projektschau freihalten, bis sie gerendert ist; sonst springt der Fuß beim Laden nach unten (Layout Shift). */
+[data-projektschau] { min-height: 100vh; }
+@media print { [data-projektschau] { min-height: 0; } }

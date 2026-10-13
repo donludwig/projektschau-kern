@@ -1,0 +1,1873 @@
+{
+  "version": 1,
+  "sprachen": [
+    "de",
+    "en"
+  ],
+  "texte": {
+    "kopf": {
+      "titel": {
+        "de": "Projektübersicht Musterinitiative",
+        "en": "Project overview – sample initiative"
+      },
+      "einleitung": {
+        "de": "<p>Alle Vorhaben der Musterinitiative seit 2024 aus den Bereichen Umwelt, Kultur, Digital und Soziales. Der Status jeder Karte zeigt, ob ein Vorhaben läuft, geplant ist oder eine Idee bleibt. Alle Orte, Partner und Zahlen dieser Demo sind erfunden.</p>",
+        "en": "<p>All projects of the sample initiative since 2024 in the areas of environment, culture, digital and community. The status on each card shows whether a project is running, planned or still an idea. All places, partners and figures in this demo are fictitious.</p>"
+      }
+    },
+    "filter": {
+      "bereich_label": {
+        "de": "Bereich",
+        "en": "Area"
+      },
+      "einordnung_label": {
+        "de": "Filter",
+        "en": "Filter"
+      },
+      "aria_bereich": {
+        "de": "Nach Bereich filtern",
+        "en": "Filter by area"
+      },
+      "aria_einordnung": {
+        "de": "Nach Einordnung filtern",
+        "en": "Filter by category"
+      }
+    },
+    "ansicht": {
+      "karten": {
+        "de": "Karten",
+        "en": "Cards"
+      },
+      "zeitleiste": {
+        "de": "Zeitlich",
+        "en": "Timeline"
+      },
+      "aria": {
+        "de": "Ansicht wählen",
+        "en": "Choose view"
+      }
+    },
+    "sprache": {
+      "aria": {
+        "de": "Sprache wählen",
+        "en": "Choose language"
+      }
+    },
+    "symbole": {
+      "label": {
+        "de": "Symbole",
+        "en": "Icons"
+      },
+      "aria": {
+        "de": "Große Symbole auf den Karten",
+        "en": "Large icons on the cards"
+      }
+    },
+    "farbschema": {
+      "aria": {
+        "de": "Dunkles Farbschema",
+        "en": "Dark colour scheme"
+      }
+    },
+    "leerzustand": {
+      "meldung": {
+        "de": "Kein Projekt passt zu dieser Auswahl.",
+        "en": "No project matches this selection."
+      },
+      "zuruecksetzen": {
+        "de": "Filter zurücksetzen",
+        "en": "Reset filters"
+      }
+    },
+    "zeitleiste": {
+      "aria": {
+        "de": "Zeitleiste der Projekte",
+        "en": "Project timeline"
+      }
+    }
+  },
+  "farben": [],
+  "bereiche": [
+    {
+      "schluessel": "umwelt",
+      "label": {
+        "de": "Umwelt",
+        "en": "Environment"
+      },
+      "icon_svg": "<path d=\"M11 20a10 10 0 0010-10 25.9 25.9 0 00-1.04-7.281 1 1 0 00-1.755-.325C15.833 5.5 13 5.5 9.8 6.1A7 7 0 0011 20\"/><path d=\"M2 21a5 5 0 012.911-4.544C7.613 15.212 8.351 15.24 11 13\"/>",
+      "farben": {
+        "hell": {
+          "area": "#4d833a",
+          "brand": "#4f8a3a",
+          "on": "#ffffff",
+          "fg": "#225e01"
+        },
+        "dunkel": {
+          "area": "#4d833a",
+          "brand": "#4f8a3a",
+          "on": "#ffffff",
+          "fg": "#99bb8e"
+        }
+      }
+    },
+    {
+      "schluessel": "kultur",
+      "label": {
+        "de": "Kultur",
+        "en": "Culture"
+      },
+      "icon_svg": "<path d=\"M9 18V5l12-2v13\"/><circle cx=\"6\" cy=\"18\" r=\"3\"/><circle cx=\"18\" cy=\"16\" r=\"3\"/>",
+      "farben": {
+        "hell": {
+          "area": "#b74b7e",
+          "brand": "#b4457a",
+          "on": "#ffffff",
+          "fg": "#8b0e55"
+        },
+        "dunkel": {
+          "area": "#b74b7e",
+          "brand": "#b4457a",
+          "on": "#ffffff",
+          "fg": "#dd97b3"
+        }
+      }
+    },
+    {
+      "schluessel": "digital",
+      "label": {
+        "de": "Digital",
+        "en": "Digital"
+      },
+      "icon_svg": "<path d=\"M12 20v2\"/><path d=\"M12 2v2\"/><path d=\"M17 20v2\"/><path d=\"M17 2v2\"/><path d=\"M2 12h2\"/><path d=\"M2 17h2\"/><path d=\"M2 7h2\"/><path d=\"M20 12h2\"/><path d=\"M20 17h2\"/><path d=\"M20 7h2\"/><path d=\"M7 20v2\"/><path d=\"M7 2v2\"/><rect x=\"4\" y=\"4\" width=\"16\" height=\"16\" rx=\"2\"/><rect x=\"8\" y=\"8\" width=\"8\" height=\"8\" rx=\"1\"/>",
+      "farben": {
+        "hell": {
+          "area": "#2f7cb2",
+          "brand": "#2b7fb8",
+          "on": "#ffffff",
+          "fg": "#025381"
+        },
+        "dunkel": {
+          "area": "#2f7cb2",
+          "brand": "#2b7fb8",
+          "on": "#ffffff",
+          "fg": "#8ab5d7"
+        }
+      }
+    },
+    {
+      "schluessel": "soziales",
+      "label": {
+        "de": "Soziales",
+        "en": "Community"
+      },
+      "icon_svg": "<path d=\"M19.414 14.414C21 12.828 22 11.5 22 9.5a5.5 5.5 0 0 0-9.591-3.676.6.6 0 0 1-.818.001A5.5 5.5 0 0 0 2 9.5c0 2.3 1.5 4 3 5.5l5.535 5.362a2 2 0 0 0 2.879.052 2.12 2.12 0 0 0-.004-3 2.124 2.124 0 1 0 3-3 2.124 2.124 0 0 0 3.004 0 2 2 0 0 0 0-2.828l-1.881-1.882a2.41 2.41 0 0 0-3.409 0l-1.71 1.71a2 2 0 0 1-2.828 0 2 2 0 0 1 0-2.828l2.823-2.762\"/>",
+      "farben": {
+        "hell": {
+          "area": "#b55937",
+          "brand": "#a8441c",
+          "on": "#ffffff",
+          "fg": "#862c00"
+        },
+        "dunkel": {
+          "area": "#b55937",
+          "brand": "#a8441c",
+          "on": "#ffffff",
+          "fg": "#db9f8a"
+        }
+      }
+    }
+  ],
+  "einordnungen": [
+    {
+      "schluessel": "hauptprojekt",
+      "label": {
+        "de": "Hauptprojekt",
+        "en": "Main project"
+      },
+      "label_zeitleiste": {
+        "de": "Hauptprojekt",
+        "en": "Main project"
+      },
+      "als_filter_chip": true
+    },
+    {
+      "schluessel": "netzwerk",
+      "label": {
+        "de": "Netzwerk",
+        "en": "Network"
+      },
+      "label_zeitleiste": {
+        "de": "Netzwerk",
+        "en": "Network"
+      },
+      "als_filter_chip": true
+    },
+    {
+      "schluessel": "veranstaltung",
+      "label": {
+        "de": "Veranstaltung",
+        "en": "Event"
+      },
+      "label_zeitleiste": {
+        "de": "Veranstaltung",
+        "en": "Event"
+      },
+      "als_filter_chip": true
+    },
+    {
+      "schluessel": "idee",
+      "label": {
+        "de": "Idee",
+        "en": "Idea"
+      },
+      "label_zeitleiste": {
+        "de": "Idee",
+        "en": "Idea"
+      },
+      "als_filter_chip": true
+    }
+  ],
+  "filter_alle": {
+    "bereich": {
+      "label": {
+        "de": "Alle",
+        "en": "All"
+      },
+      "icon_svg": "<path d=\"M12 3v18\"/><path d=\"M3 12h18\"/><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\"/>"
+    }
+  },
+  "projekte": [
+    {
+      "nr": 1,
+      "bereich": "umwelt",
+      "einordnung": "hauptprojekt",
+      "icon_svg": "<path d=\"M14 9.536V7a4 4 0 0 1 4-4h1.5a.5.5 0 0 1 .5.5V5a4 4 0 0 1-4 4 4 4 0 0 0-4 4c0 2 1 3 1 5a5 5 0 0 1-1 3\"/><path d=\"M4 9a5 5 0 0 1 8 4 5 5 0 0 1-8-4\"/><path d=\"M5 21h14\"/>",
+      "titel": {
+        "de": "Gemeinschaftsgarten am Bahnhof",
+        "en": "Community garden at the station"
+      },
+      "status": {
+        "de": "Laufend – seit 05/2025",
+        "en": "Ongoing – since 05/2025"
+      },
+      "beschreibung": {
+        "de": "Vierzig Beete auf der Brachfläche hinter dem Bahnhof, gemeinsam bewirtschaftet von Nachbarschaft, Schule und Gartenverein.",
+        "en": "Forty plots on the wasteland behind the station, tended jointly by neighbours, the school and the garden club."
+      },
+      "abschnitte": [
+        {
+          "typ": "liste",
+          "label": {
+            "de": "Aktivitäten 2025",
+            "en": "Activities 2025"
+          },
+          "punkte": [
+            {
+              "de": "Flächenfreigabe durch die Stadt (04/2025)",
+              "en": "Land released by the town (04/2025)"
+            },
+            {
+              "de": "Erste Pflanzaktion mit 60 Teilnehmenden",
+              "en": "First planting day with 60 participants"
+            }
+          ]
+        }
+      ],
+      "kennzahl": {
+        "de": "40 Beete, 25 Familien",
+        "en": "40 plots, 25 families"
+      },
+      "links": [
+        {
+          "url": "https://example.org/garten",
+          "text": {
+            "de": "Zum Garten",
+            "en": "About the garden"
+          }
+        }
+      ],
+      "zeitleiste": {
+        "sortierung": 202505,
+        "zeitraum": {
+          "de": "seit 05/2025",
+          "en": "since 05/2025"
+        },
+        "notiz": {
+          "de": "Erste Saison abgeschlossen, zweite in Vorbereitung",
+          "en": "First season completed, second in preparation"
+        }
+      }
+    },
+    {
+      "nr": 2,
+      "bereich": "umwelt",
+      "einordnung": "veranstaltung",
+      "icon_svg": "<path d=\"M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z\"/>",
+      "titel": {
+        "de": "Repair-Café",
+        "en": "Repair café"
+      },
+      "status": {
+        "de": "Monatlich, jeden ersten Samstag",
+        "en": "Monthly, every first Saturday"
+      },
+      "beschreibung": {
+        "de": "Reparieren statt wegwerfen: Ehrenamtliche helfen bei Toaster, Fahrrad und Hose.",
+        "en": "Repair instead of discard: volunteers help with toasters, bicycles and trousers."
+      },
+      "abschnitte": [
+        {
+          "typ": "liste",
+          "label": {
+            "de": "Aktivitäten",
+            "en": "Activities"
+          },
+          "punkte": [
+            {
+              "de": "Zwölf Termine im Jahr",
+              "en": "Twelve sessions a year"
+            },
+            {
+              "de": "Reparaturquote rund zwei Drittel",
+              "en": "Around two thirds of items repaired"
+            }
+          ]
+        }
+      ],
+      "kennzahl": {
+        "de": "Über 300 Reparaturen",
+        "en": "Over 300 repairs"
+      },
+      "links": [],
+      "zeitleiste": {
+        "sortierung": 202409,
+        "zeitraum": {
+          "de": "seit 09/2024",
+          "en": "since 09/2024"
+        },
+        "notiz": {
+          "de": "Läuft im Gemeindehaus",
+          "en": "Runs at the community hall"
+        }
+      }
+    },
+    {
+      "nr": 3,
+      "bereich": "umwelt",
+      "einordnung": "idee",
+      "icon_svg": "<circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M12 2v2\"/><path d=\"M12 20v2\"/><path d=\"m4.93 4.93 1.41 1.41\"/><path d=\"m17.66 17.66 1.41 1.41\"/><path d=\"M2 12h2\"/><path d=\"M20 12h2\"/><path d=\"m6.34 17.66-1.41 1.41\"/><path d=\"m19.07 4.93-1.41 1.41\"/>",
+      "titel": {
+        "de": "Solardach für die Turnhalle",
+        "en": "Solar roof for the sports hall"
+      },
+      "status": {
+        "de": "Idee – noch nicht begonnen",
+        "en": "Idea – not yet started"
+      },
+      "beschreibung": {
+        "de": "Bürgerenergie-Anlage auf dem Dach der Turnhalle, finanziert über Anteile aus dem Ort.",
+        "en": "Community energy plant on the sports hall roof, financed by shares from the village."
+      },
+      "abschnitte": [],
+      "kennzahl": null,
+      "links": [
+        {
+          "url": "https://example.org/solar",
+          "text": {
+            "de": "Bürgerenergie-Genossenschaft",
+            "en": "Citizens’ energy cooperative"
+          }
+        }
+      ],
+      "zeitleiste": null
+    },
+    {
+      "nr": 4,
+      "bereich": "kultur",
+      "einordnung": "hauptprojekt",
+      "icon_svg": "<path d=\"m12.296 3.464 3.02 3.956\"/><path d=\"M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3z\"/><path d=\"M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\"/><path d=\"m6.18 5.276 3.1 3.899\"/>",
+      "titel": {
+        "de": "Dorfkino unter freiem Himmel",
+        "en": "Open-air village cinema"
+      },
+      "status": {
+        "de": "Laufend – dritte Saison",
+        "en": "Ongoing – third season"
+      },
+      "beschreibung": {
+        "de": "Sommerkino auf dem Marktplatz mit Filmen, die das Publikum vorher abstimmt.",
+        "en": "Summer cinema on the market square with films chosen by audience vote."
+      },
+      "abschnitte": [
+        {
+          "typ": "liste",
+          "label": {
+            "de": "Aktivitäten 2024–2026",
+            "en": "Activities 2024–2026"
+          },
+          "punkte": [
+            {
+              "de": "Sechs Vorführungen je Sommer",
+              "en": "Six screenings each summer"
+            },
+            {
+              "de": "Kooperation mit dem Jugendclub für Technik und Ausschank",
+              "en": "Youth club runs projection and refreshments"
+            }
+          ]
+        }
+      ],
+      "kennzahl": {
+        "de": "Bis zu 250 Gäste je Abend",
+        "en": "Up to 250 guests per evening"
+      },
+      "links": [],
+      "zeitleiste": {
+        "sortierung": 202407,
+        "zeitraum": {
+          "de": "07/2024",
+          "en": "07/2024"
+        },
+        "notiz": {
+          "de": "Erste Vorführung; seither jeden Sommer",
+          "en": "First screening; every summer since"
+        }
+      }
+    },
+    {
+      "nr": 5,
+      "bereich": "kultur",
+      "einordnung": "netzwerk",
+      "icon_svg": "<path d=\"M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719\"/>",
+      "titel": {
+        "de": "Kulturstammtisch",
+        "en": "Culture round table"
+      },
+      "status": {
+        "de": "Alle zwei Monate",
+        "en": "Every two months"
+      },
+      "beschreibung": {
+        "de": "Offenes Treffen von Vereinen, Künstler:innen und Verwaltung, um Termine und Räume abzustimmen.",
+        "en": "Open meeting of associations, artists and administration to coordinate dates and venues."
+      },
+      "abschnitte": [
+        {
+          "typ": "liste",
+          "label": {
+            "de": "Ergebnis",
+            "en": "Outcome"
+          },
+          "punkte": [
+            {
+              "de": "Gemeinsamer Veranstaltungskalender seit 2025",
+              "en": "Shared events calendar since 2025"
+            },
+            {
+              "de": "Abgestimmte Termine, keine Doppelungen mehr",
+              "en": "Coordinated dates, no more clashes"
+            }
+          ]
+        }
+      ],
+      "kennzahl": null,
+      "links": [],
+      "zeitleiste": {
+        "sortierung": 202501,
+        "zeitraum": {
+          "de": "seit 01/2025",
+          "en": "since 01/2025"
+        },
+        "notiz": {
+          "de": "Sechs Treffen, Kalender online",
+          "en": "Six meetings, calendar online"
+        }
+      }
+    },
+    {
+      "nr": 6,
+      "bereich": "kultur",
+      "einordnung": "veranstaltung",
+      "icon_svg": "<path d=\"M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z\"/><circle cx=\"13.5\" cy=\"6.5\" r=\".5\" fill=\"currentColor\"/><circle cx=\"17.5\" cy=\"10.5\" r=\".5\" fill=\"currentColor\"/><circle cx=\"6.5\" cy=\"12.5\" r=\".5\" fill=\"currentColor\"/><circle cx=\"8.5\" cy=\"7.5\" r=\".5\" fill=\"currentColor\"/>",
+      "titel": {
+        "de": "Tag der offenen Ateliers",
+        "en": "Open studios day"
+      },
+      "status": {
+        "de": "Geplant für 06/2026",
+        "en": "Planned for 06/2026"
+      },
+      "beschreibung": {
+        "de": "Zwölf Werkstätten und Ateliers öffnen an einem Wochenende ihre Türen.",
+        "en": "Twelve workshops and studios open their doors on one weekend."
+      },
+      "abschnitte": [],
+      "kennzahl": {
+        "de": "12 Ateliers",
+        "en": "12 studios"
+      },
+      "links": [
+        {
+          "url": "https://example.org/ateliers",
+          "text": {
+            "de": "Programm der Ateliers",
+            "en": "Studio programme"
+          }
+        }
+      ],
+      "zeitleiste": {
+        "sortierung": 202606,
+        "zeitraum": {
+          "de": "06/2026",
+          "en": "06/2026"
+        },
+        "notiz": {
+          "de": "In Vorbereitung",
+          "en": "In preparation"
+        }
+      }
+    },
+    {
+      "nr": 7,
+      "bereich": "digital",
+      "einordnung": "hauptprojekt",
+      "icon_svg": "<rect width=\"14\" height=\"20\" x=\"5\" y=\"2\" rx=\"2\" ry=\"2\"/><path d=\"M12 18h.01\"/>",
+      "titel": {
+        "de": "Dorf-App Musterstadt",
+        "en": "Musterstadt village app"
+      },
+      "status": {
+        "de": "Laufend – Pilot mit zwei Ortsteilen",
+        "en": "Ongoing – pilot with two districts"
+      },
+      "beschreibung": {
+        "de": "Mitfahrbörse, Termine und Mängelmelder in einer App, betrieben von der Gemeinde mit offener Software.",
+        "en": "Ride sharing, events and a fault reporter in one app, run by the municipality on open-source software."
+      },
+      "abschnitte": [
+        {
+          "typ": "liste",
+          "label": {
+            "de": "Aktivitäten 2025",
+            "en": "Activities 2025"
+          },
+          "punkte": [
+            {
+              "de": "Anforderungen mit 40 Haushalten erhoben",
+              "en": "Requirements gathered with 40 households"
+            },
+            {
+              "de": "Pilotbetrieb seit 10/2025",
+              "en": "Pilot running since 10/2025"
+            }
+          ]
+        }
+      ],
+      "kennzahl": {
+        "de": "380 Nutzer:innen",
+        "en": "380 users"
+      },
+      "links": [
+        {
+          "url": "https://example.org/app",
+          "text": {
+            "de": "Projektseite",
+            "en": "Project page"
+          }
+        }
+      ],
+      "zeitleiste": {
+        "sortierung": 202410,
+        "zeitraum": {
+          "de": "seit 10/2024",
+          "en": "since 10/2024"
+        },
+        "notiz": {
+          "de": "Konzept, Pilot seit 10/2025",
+          "en": "Concept; pilot since 10/2025"
+        }
+      }
+    },
+    {
+      "nr": 8,
+      "bereich": "digital",
+      "einordnung": "netzwerk",
+      "icon_svg": "<path d=\"M18 5a2 2 0 0 1 2 2v8.526a2 2 0 0 0 .212.897l1.068 2.127a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45l1.068-2.127A2 2 0 0 0 4 15.526V7a2 2 0 0 1 2-2z\"/><path d=\"M20.054 15.987H3.946\"/>",
+      "titel": {
+        "de": "Digital-Sprechstunde",
+        "en": "Digital help desk"
+      },
+      "status": {
+        "de": "Wöchentlich in der Bibliothek",
+        "en": "Weekly at the library"
+      },
+      "beschreibung": {
+        "de": "Hilfe bei Smartphone, Online-Behördengang und Videotelefonie, von Freiwilligen für alle Generationen.",
+        "en": "Help with smartphones, online public services and video calls, by volunteers for all generations."
+      },
+      "abschnitte": [],
+      "kennzahl": {
+        "de": "Rund 20 Fragen je Woche",
+        "en": "Around 20 questions a week"
+      },
+      "links": [],
+      "zeitleiste": {
+        "sortierung": 202502,
+        "zeitraum": {
+          "de": "seit 02/2025",
+          "en": "since 02/2025"
+        },
+        "notiz": {
+          "de": "Fest im Bibliotheksprogramm",
+          "en": "Now part of the library programme"
+        }
+      }
+    },
+    {
+      "nr": 9,
+      "bereich": "digital",
+      "einordnung": "veranstaltung",
+      "icon_svg": "<path d=\"m16 18 6-6-6-6\"/><path d=\"m8 6-6 6 6 6\"/>",
+      "titel": {
+        "de": "Hackathon Ländlicher Raum",
+        "en": "Rural hackathon"
+      },
+      "status": {
+        "de": "Abgeschlossen 03/2026",
+        "en": "Completed 03/2026"
+      },
+      "beschreibung": {
+        "de": "Ein Wochenende, acht Teams, drei Prototypen für Nahverkehr, Leerstand und Vereinsverwaltung.",
+        "en": "One weekend, eight teams, three prototypes for local transport, vacancies and club administration."
+      },
+      "abschnitte": [
+        {
+          "typ": "liste",
+          "label": {
+            "de": "Ergebnisse",
+            "en": "Results"
+          },
+          "punkte": [
+            {
+              "de": "Fahrplan-Auskunft für den Rufbus",
+              "en": "Timetable lookup for the on-demand bus"
+            },
+            {
+              "de": "Leerstandskarte mit Meldeformular",
+              "en": "Vacancy map with reporting form"
+            }
+          ]
+        }
+      ],
+      "kennzahl": {
+        "de": "8 Teams, 3 Prototypen",
+        "en": "8 teams, 3 prototypes"
+      },
+      "links": [],
+      "zeitleiste": {
+        "sortierung": 202603,
+        "zeitraum": {
+          "de": "03/2026",
+          "en": "03/2026"
+        },
+        "notiz": {
+          "de": "Prototypen werden mit der Gemeinde weiterentwickelt",
+          "en": "Prototypes being developed further with the municipality"
+        }
+      }
+    },
+    {
+      "nr": 10,
+      "bereich": "soziales",
+      "einordnung": "hauptprojekt",
+      "icon_svg": "<path d=\"M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2\"/><path d=\"M16 3.128a4 4 0 0 1 0 7.744\"/><path d=\"M22 21v-2a4 4 0 0 0-3-3.87\"/><circle cx=\"9\" cy=\"7\" r=\"4\"/>",
+      "titel": {
+        "de": "Nachbarschaftshilfe Musterstadt",
+        "en": "Neighbourhood help Musterstadt"
+      },
+      "status": {
+        "de": "Laufend – seit 03/2025",
+        "en": "Ongoing – since 03/2025"
+      },
+      "beschreibung": {
+        "de": "Ehrenamtliche übernehmen Einkäufe, Fahrten zum Arzt und kleine Reparaturen für Menschen, die das nicht mehr allein schaffen.",
+        "en": "Volunteers take on shopping, trips to the doctor and small repairs for people who can no longer manage alone."
+      },
+      "abschnitte": [
+        {
+          "typ": "liste",
+          "label": {
+            "de": "Aktivitäten 2025",
+            "en": "Activities 2025"
+          },
+          "punkte": [
+            {
+              "de": "Telefonzentrale an drei Vormittagen",
+              "en": "Phone desk on three mornings a week"
+            },
+            {
+              "de": "Zwanzig Helfende geschult",
+              "en": "Twenty helpers trained"
+            }
+          ]
+        }
+      ],
+      "kennzahl": {
+        "de": "Rund 90 Einsätze je Monat",
+        "en": "Around 90 assignments per month"
+      },
+      "links": [
+        {
+          "url": "https://example.org/nachbarschaftshilfe",
+          "text": {
+            "de": "Hilfe anfragen",
+            "en": "Request help"
+          }
+        }
+      ],
+      "zeitleiste": {
+        "sortierung": 202503,
+        "zeitraum": {
+          "de": "seit 03/2025",
+          "en": "since 03/2025"
+        },
+        "notiz": {
+          "de": "Nachfrage steigt, zweite Telefonschicht geplant",
+          "en": "Demand is rising, second phone shift planned"
+        }
+      }
+    },
+    {
+      "nr": 11,
+      "bereich": "soziales",
+      "einordnung": "netzwerk",
+      "icon_svg": "<path d=\"M11 14h2a2 2 0 0 0 0-4h-3c-.6 0-1.1.2-1.4.6L3 16\"/><path d=\"m14.45 13.39 5.05-4.694C20.196 8 21 6.85 21 5.75a2.75 2.75 0 0 0-4.797-1.837.276.276 0 0 1-.406 0A2.75 2.75 0 0 0 11 5.75c0 1.2.802 2.248 1.5 2.946L16 11.95\"/><path d=\"m2 15 6 6\"/><path d=\"m7 20 1.6-1.4c.3-.4.8-.6 1.4-.6h4c1.1 0 2.1-.4 2.8-1.2l4.6-4.4a1 1 0 0 0-2.75-2.91\"/>",
+      "titel": {
+        "de": "Runder Tisch Ehrenamt",
+        "en": "Volunteering round table"
+      },
+      "status": {
+        "de": "Vierteljährlich",
+        "en": "Quarterly"
+      },
+      "beschreibung": {
+        "de": "Vereine, Feuerwehr und Verwaltung stimmen Termine, Räume und Förderanträge ab.",
+        "en": "Clubs, fire brigade and administration coordinate dates, rooms and funding applications."
+      },
+      "abschnitte": [
+        {
+          "typ": "liste",
+          "label": {
+            "de": "Ergebnis",
+            "en": "Result"
+          },
+          "punkte": [
+            {
+              "de": "Gemeinsamer Förderantrag für die Vereinsheime gestellt",
+              "en": "Joint funding application for the club houses submitted"
+            },
+            {
+              "de": "Geräte-Tauschbörse zwischen den Vereinen",
+              "en": "Equipment exchange between the clubs"
+            }
+          ]
+        }
+      ],
+      "kennzahl": {
+        "de": "14 Vereine am Tisch",
+        "en": "14 clubs at the table"
+      },
+      "links": [
+        {
+          "url": "https://example.org/runder-tisch",
+          "text": {
+            "de": "Protokolle",
+            "en": "Minutes"
+          }
+        }
+      ],
+      "zeitleiste": {
+        "sortierung": 202411,
+        "zeitraum": {
+          "de": "seit 11/2024",
+          "en": "since 11/2024"
+        },
+        "notiz": {
+          "de": "Fünf Treffen bisher",
+          "en": "Five meetings so far"
+        }
+      }
+    },
+    {
+      "nr": 12,
+      "bereich": "soziales",
+      "einordnung": "idee",
+      "icon_svg": "<path d=\"M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8\"/><path d=\"M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\"/>",
+      "titel": {
+        "de": "Wohnen für Hilfe",
+        "en": "Housing for help"
+      },
+      "status": {
+        "de": "Idee – Partner gesucht",
+        "en": "Idea – looking for partners"
+      },
+      "beschreibung": {
+        "de": "Ältere Menschen mit freiem Zimmer und junge Leute, die im Haushalt helfen, finden zusammen.",
+        "en": "Older people with a spare room and young people who help in the household find each other."
+      },
+      "abschnitte": [],
+      "kennzahl": null,
+      "links": [
+        {
+          "url": "https://example.org/wohnen",
+          "text": {
+            "de": "Mitmachen",
+            "en": "Get involved"
+          }
+        }
+      ],
+      "zeitleiste": null
+    },
+    {
+      "nr": 13,
+      "bereich": "umwelt",
+      "einordnung": "hauptprojekt",
+      "icon_svg": "<circle cx=\"18.5\" cy=\"17.5\" r=\"3.5\"/><circle cx=\"5.5\" cy=\"17.5\" r=\"3.5\"/><circle cx=\"15\" cy=\"5\" r=\"1\"/><path d=\"M12 17.5V14l-3-3 4-3 2 3h2\"/>",
+      "titel": {
+        "de": "Radweg zum Nachbarort",
+        "en": "Cycle path to the next village"
+      },
+      "status": {
+        "de": "Laufend – Bau seit 04/2026",
+        "en": "Ongoing – construction since 04/2026"
+      },
+      "beschreibung": {
+        "de": "Drei Kilometer Radweg entlang der Kreisstraße, geplant mit Schule und Landwirten.",
+        "en": "Three kilometres of cycle path along the county road, planned with the school and farmers."
+      },
+      "abschnitte": [
+        {
+          "typ": "liste",
+          "label": {
+            "de": "Bauabschnitte",
+            "en": "Construction stages"
+          },
+          "punkte": [
+            {
+              "de": "Mühle bis Ortsrand, fertig 06/2026",
+              "en": "Mill to village edge, completed 06/2026"
+            },
+            {
+              "de": "Ortsrand bis Nachbarort, ab 09/2026",
+              "en": "Village edge to next village, from 09/2026"
+            }
+          ]
+        }
+      ],
+      "kennzahl": {
+        "de": "3 km, 2 Rastplätze",
+        "en": "3 km, 2 rest areas"
+      },
+      "links": [
+        {
+          "url": "https://example.org/radweg",
+          "text": {
+            "de": "Planung einsehen",
+            "en": "View the plans"
+          }
+        }
+      ],
+      "zeitleiste": {
+        "sortierung": 202604,
+        "zeitraum": {
+          "de": "seit 04/2026",
+          "en": "since 04/2026"
+        },
+        "notiz": {
+          "de": "Erster Abschnitt bis zur Mühle fertig",
+          "en": "First section to the mill completed"
+        }
+      }
+    },
+    {
+      "nr": 14,
+      "bereich": "umwelt",
+      "einordnung": "veranstaltung",
+      "icon_svg": "<path d=\"M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z\"/><path d=\"M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97\"/>",
+      "titel": {
+        "de": "Wasserwerkstatt",
+        "en": "Water workshop"
+      },
+      "status": {
+        "de": "Alle zwei Monate",
+        "en": "Every two months"
+      },
+      "beschreibung": {
+        "de": "Anwohnende, Wasserverband und Bauhof besprechen Starkregen, Versickerung und Brunnen.",
+        "en": "Residents, water board and public works discuss heavy rain, infiltration and wells."
+      },
+      "abschnitte": [
+        {
+          "typ": "liste",
+          "label": {
+            "de": "Partner",
+            "en": "Partners"
+          },
+          "punkte": [
+            {
+              "de": "Wasserverband Musterland",
+              "en": "Musterland water board"
+            },
+            {
+              "de": "Bauhof und Feuerwehr",
+              "en": "Public works and fire brigade"
+            }
+          ]
+        }
+      ],
+      "kennzahl": {
+        "de": "6 Treffen im Jahr",
+        "en": "6 meetings a year"
+      },
+      "links": [],
+      "zeitleiste": {
+        "sortierung": 202502,
+        "zeitraum": {
+          "de": "seit 02/2025",
+          "en": "since 02/2025"
+        },
+        "notiz": {
+          "de": "Regenrückhaltebecken auf der Liste",
+          "en": "Rain retention basin on the list"
+        }
+      }
+    },
+    {
+      "nr": 15,
+      "bereich": "umwelt",
+      "einordnung": "veranstaltung",
+      "icon_svg": "<path d=\"M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5\"/><path d=\"M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12\"/><path d=\"m14 16-3 3 3 3\"/><path d=\"M8.293 13.596 7.196 9.5 3.1 10.598\"/><path d=\"m9.344 5.811 1.093-1.892A1.83 1.83 0 0 1 11.985 3a1.784 1.784 0 0 1 1.546.888l3.943 6.843\"/><path d=\"m13.378 9.633 4.096 1.098 1.097-4.096\"/>",
+      "titel": {
+        "de": "Tauschtag auf dem Marktplatz",
+        "en": "Swap day on the market square"
+      },
+      "status": {
+        "de": "Zweimal im Jahr",
+        "en": "Twice a year"
+      },
+      "beschreibung": {
+        "de": "Kleidung, Spielzeug und Werkzeug wechseln den Besitzer, ohne dass Geld fließt.",
+        "en": "Clothes, toys and tools change hands without money."
+      },
+      "abschnitte": [
+        {
+          "typ": "liste",
+          "label": {
+            "de": "Stationen",
+            "en": "Stations"
+          },
+          "punkte": [
+            {
+              "de": "Kleidung und Schuhe",
+              "en": "Clothes and shoes"
+            },
+            {
+              "de": "Werkzeug und Fahrradteile",
+              "en": "Tools and bicycle parts"
+            }
+          ]
+        }
+      ],
+      "kennzahl": {
+        "de": "Rund 400 Gäste",
+        "en": "Around 400 visitors"
+      },
+      "links": [
+        {
+          "url": "https://example.org/tauschtag",
+          "text": {
+            "de": "Termine",
+            "en": "Dates"
+          }
+        }
+      ],
+      "zeitleiste": {
+        "sortierung": 202509,
+        "zeitraum": {
+          "de": "09/2025",
+          "en": "09/2025"
+        },
+        "notiz": {
+          "de": "Nächster Termin im Frühjahr",
+          "en": "Next date in spring"
+        }
+      }
+    },
+    {
+      "nr": 16,
+      "bereich": "umwelt",
+      "einordnung": "idee",
+      "icon_svg": "<path d=\"m17 14 3 3.3a1 1 0 0 1-.7 1.7H4.7a1 1 0 0 1-.7-1.7L7 14h-.3a1 1 0 0 1-.7-1.7L9 9h-.2A1 1 0 0 1 8 7.3L12 3l4 4.3a1 1 0 0 1-.8 1.7H15l3 3.3a1 1 0 0 1-.7 1.7H17Z\"/><path d=\"M12 22v-3\"/>",
+      "titel": {
+        "de": "Waldkindergruppe",
+        "en": "Forest playgroup"
+      },
+      "status": {
+        "de": "Idee – Träger gesucht",
+        "en": "Idea – looking for a sponsor"
+      },
+      "beschreibung": {
+        "de": "Eine Vormittagsgruppe im Gemeindewald als Ergänzung zur Kita.",
+        "en": "A morning group in the municipal forest to complement the nursery."
+      },
+      "abschnitte": [],
+      "kennzahl": null,
+      "links": [
+        {
+          "url": "https://example.org/waldgruppe",
+          "text": {
+            "de": "Interesse melden",
+            "en": "Register interest"
+          }
+        }
+      ],
+      "zeitleiste": null
+    },
+    {
+      "nr": 17,
+      "bereich": "umwelt",
+      "einordnung": "hauptprojekt",
+      "icon_svg": "<circle cx=\"12\" cy=\"12\" r=\"3\"/><path d=\"M12 16.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 1 1 12 7.5a4.5 4.5 0 1 1 4.5 4.5 4.5 4.5 0 1 1-4.5 4.5\"/><path d=\"M12 7.5V9\"/><path d=\"M7.5 12H9\"/><path d=\"M16.5 12H15\"/><path d=\"M12 16.5V15\"/><path d=\"m8 8 1.88 1.88\"/><path d=\"M14.12 9.88 16 8\"/><path d=\"m8 16 1.88-1.88\"/><path d=\"M14.12 14.12 16 16\"/>",
+      "titel": {
+        "de": "Blühstreifen an den Feldwegen",
+        "en": "Flower strips along the field paths"
+      },
+      "status": {
+        "de": "Laufend – dritte Saison",
+        "en": "Ongoing – third season"
+      },
+      "beschreibung": {
+        "de": "Landwirte stellen Randstreifen zur Verfügung, der Verein sät und pflegt.",
+        "en": "Farmers provide field margins, the club sows and maintains them."
+      },
+      "abschnitte": [
+        {
+          "typ": "liste",
+          "label": {
+            "de": "Partner",
+            "en": "Partners"
+          },
+          "punkte": [
+            {
+              "de": "Vier Höfe und der Imkerverein",
+              "en": "Four farms and the beekeepers’ club"
+            },
+            {
+              "de": "Grundschule am Park",
+              "en": "Park Primary School"
+            }
+          ]
+        }
+      ],
+      "kennzahl": {
+        "de": "4,2 km Blühstreifen",
+        "en": "4.2 km of flower strips"
+      },
+      "links": [
+        {
+          "url": "https://example.org/bluehstreifen",
+          "text": {
+            "de": "Karte der Streifen",
+            "en": "Map of the strips"
+          }
+        }
+      ],
+      "zeitleiste": {
+        "sortierung": 202404,
+        "zeitraum": {
+          "de": "seit 04/2024",
+          "en": "since 04/2024"
+        },
+        "notiz": {
+          "de": "Insektenzählung mit der Schule",
+          "en": "Insect count with the school"
+        }
+      }
+    },
+    {
+      "nr": 18,
+      "bereich": "kultur",
+      "einordnung": "hauptprojekt",
+      "icon_svg": "<path d=\"M12 5v16\"/><path d=\"M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z\"/>",
+      "titel": {
+        "de": "Bücherschrank am Bahnhof",
+        "en": "Book cabinet at the station"
+      },
+      "status": {
+        "de": "Laufend – seit 06/2024",
+        "en": "Ongoing – since 06/2024"
+      },
+      "beschreibung": {
+        "de": "Ein alter Schaltschrank wurde zum Tauschregal für Bücher, betreut von drei Nachbarn.",
+        "en": "An old switch cabinet became a book exchange shelf, looked after by three neighbours."
+      },
+      "abschnitte": [],
+      "kennzahl": {
+        "de": "Etwa 150 Bücher im Umlauf",
+        "en": "About 150 books in circulation"
+      },
+      "links": [
+        {
+          "url": "https://example.org/buecherschrank",
+          "text": {
+            "de": "Spielregeln",
+            "en": "House rules"
+          }
+        }
+      ],
+      "zeitleiste": {
+        "sortierung": 202406,
+        "zeitraum": {
+          "de": "seit 06/2024",
+          "en": "since 06/2024"
+        },
+        "notiz": {
+          "de": "Zweiter Schrank am Sportplatz geplant",
+          "en": "Second cabinet at the sports ground planned"
+        }
+      }
+    },
+    {
+      "nr": 19,
+      "bereich": "kultur",
+      "einordnung": "veranstaltung",
+      "icon_svg": "<path d=\"M12 19v3\"/><path d=\"M19 10v2a7 7 0 0 1-14 0v-2\"/><rect x=\"9\" y=\"2\" width=\"6\" height=\"13\" rx=\"3\"/>",
+      "titel": {
+        "de": "Lesebühne im Gasthof",
+        "en": "Reading stage at the inn"
+      },
+      "status": {
+        "de": "Monatlich",
+        "en": "Monthly"
+      },
+      "beschreibung": {
+        "de": "Jeden ersten Donnerstag lesen Menschen aus dem Ort eigene und fremde Texte.",
+        "en": "Every first Thursday, locals read their own and other people's texts."
+      },
+      "abschnitte": [
+        {
+          "typ": "liste",
+          "label": {
+            "de": "Nächste Abende",
+            "en": "Next evenings"
+          },
+          "punkte": [
+            {
+              "de": "Krimis aus dem Landkreis",
+              "en": "Crime stories from the district"
+            },
+            {
+              "de": "Offene Bühne für eigene Texte",
+              "en": "Open stage for your own texts"
+            }
+          ]
+        }
+      ],
+      "kennzahl": {
+        "de": "Rund 40 Gäste je Abend",
+        "en": "Around 40 guests per evening"
+      },
+      "links": [
+        {
+          "url": "https://example.org/lesebuehne",
+          "text": {
+            "de": "Programm",
+            "en": "Programme"
+          }
+        }
+      ],
+      "zeitleiste": {
+        "sortierung": 202410,
+        "zeitraum": {
+          "de": "seit 10/2024",
+          "en": "since 10/2024"
+        },
+        "notiz": {
+          "de": "Programm bis Sommer steht",
+          "en": "Programme set until summer"
+        }
+      }
+    },
+    {
+      "nr": 20,
+      "bereich": "kultur",
+      "einordnung": "netzwerk",
+      "icon_svg": "<path d=\"M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z\"/><circle cx=\"12\" cy=\"13\" r=\"3\"/>",
+      "titel": {
+        "de": "Fotoarchiv Musterstadt",
+        "en": "Musterstadt photo archive"
+      },
+      "status": {
+        "de": "Laufend",
+        "en": "Ongoing"
+      },
+      "beschreibung": {
+        "de": "Alte Fotos aus Familienalben werden gescannt, beschriftet und online gezeigt.",
+        "en": "Old photos from family albums are scanned, labelled and shown online."
+      },
+      "abschnitte": [
+        {
+          "typ": "liste",
+          "label": {
+            "de": "Mitmachen",
+            "en": "Get involved"
+          },
+          "punkte": [
+            {
+              "de": "Alben zum Scannen im Rathaus abgeben",
+              "en": "Hand in albums for scanning at the town hall"
+            },
+            {
+              "de": "Rückgabe nach einer Woche",
+              "en": "Returned after one week"
+            }
+          ]
+        }
+      ],
+      "kennzahl": {
+        "de": "2.300 Bilder erfasst",
+        "en": "2,300 pictures recorded"
+      },
+      "links": [
+        {
+          "url": "https://example.org/fotoarchiv",
+          "text": {
+            "de": "Archiv ansehen",
+            "en": "View the archive"
+          }
+        }
+      ],
+      "zeitleiste": {
+        "sortierung": 202501,
+        "zeitraum": {
+          "de": "seit 01/2025",
+          "en": "since 01/2025"
+        },
+        "notiz": {
+          "de": "Ausstellung im Rathaus geplant",
+          "en": "Exhibition at the town hall planned"
+        }
+      }
+    },
+    {
+      "nr": 21,
+      "bereich": "kultur",
+      "einordnung": "idee",
+      "icon_svg": "<path d=\"M2 10s3-3 3-8\"/><path d=\"M22 10s-3-3-3-8\"/><path d=\"M10 2c0 4.4-3.6 8-8 8\"/><path d=\"M14 2c0 4.4 3.6 8 8 8\"/><path d=\"M2 10s2 2 2 5\"/><path d=\"M22 10s-2 2-2 5\"/><path d=\"M8 15h8\"/><path d=\"M2 22v-1a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1\"/><path d=\"M14 22v-1a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1\"/>",
+      "titel": {
+        "de": "Freilichtbühne im Steinbruch",
+        "en": "Open-air stage in the quarry"
+      },
+      "status": {
+        "de": "Idee",
+        "en": "Idea"
+      },
+      "beschreibung": {
+        "de": "Der stillgelegte Steinbruch könnte im Sommer Bühne für Theater und Konzerte werden.",
+        "en": "The disused quarry could become a summer stage for theatre and concerts."
+      },
+      "abschnitte": [
+        {
+          "typ": "liste",
+          "label": {
+            "de": "Offene Fragen",
+            "en": "Open questions"
+          },
+          "punkte": [
+            {
+              "de": "Lärmschutz und Zufahrt",
+              "en": "Noise protection and access"
+            },
+            {
+              "de": "Versicherung",
+              "en": "Insurance"
+            }
+          ]
+        }
+      ],
+      "kennzahl": null,
+      "links": [],
+      "zeitleiste": null
+    },
+    {
+      "nr": 22,
+      "bereich": "kultur",
+      "einordnung": "veranstaltung",
+      "icon_svg": "<path d=\"M9 18V5l12-2v13\"/><circle cx=\"6\" cy=\"18\" r=\"3\"/><circle cx=\"18\" cy=\"16\" r=\"3\"/>",
+      "titel": {
+        "de": "Hofkonzerte",
+        "en": "Courtyard concerts"
+      },
+      "status": {
+        "de": "Geplant für 07/2026",
+        "en": "Planned for 07/2026"
+      },
+      "beschreibung": {
+        "de": "Vier Konzerte in vier Höfen an einem Wochenende, Eintritt frei, Hut geht rum.",
+        "en": "Four concerts in four courtyards on one weekend, free entry, hat goes round."
+      },
+      "abschnitte": [
+        {
+          "typ": "liste",
+          "label": {
+            "de": "Höfe",
+            "en": "Courtyards"
+          },
+          "punkte": [
+            {
+              "de": "Pfarrhof, Alter Krug",
+              "en": "Vicarage yard, Old Inn"
+            },
+            {
+              "de": "Schmiede, Gutshof",
+              "en": "Forge, manor farm"
+            }
+          ]
+        }
+      ],
+      "kennzahl": {
+        "de": "4 Höfe, 4 Bands",
+        "en": "4 courtyards, 4 bands"
+      },
+      "links": [
+        {
+          "url": "https://example.org/hofkonzerte",
+          "text": {
+            "de": "Bands und Zeiten",
+            "en": "Bands and times"
+          }
+        }
+      ],
+      "zeitleiste": {
+        "sortierung": 202607,
+        "zeitraum": {
+          "de": "07/2026",
+          "en": "07/2026"
+        },
+        "notiz": {
+          "de": "Höfe und Bands sind bestätigt",
+          "en": "Courtyards and bands confirmed"
+        }
+      }
+    },
+    {
+      "nr": 23,
+      "bereich": "digital",
+      "einordnung": "hauptprojekt",
+      "icon_svg": "<path d=\"M12 20h.01\"/><path d=\"M2 8.82a15 15 0 0 1 20 0\"/><path d=\"M5 12.859a10 10 0 0 1 14 0\"/><path d=\"M8.5 16.429a5 5 0 0 1 7 0\"/>",
+      "titel": {
+        "de": "Freies WLAN am Marktplatz",
+        "en": "Free Wi-Fi on the market square"
+      },
+      "status": {
+        "de": "Laufend – seit 09/2024",
+        "en": "Ongoing – since 09/2024"
+      },
+      "beschreibung": {
+        "de": "Drei Zugangspunkte am Marktplatz und am Bahnhof, betrieben vom Freifunk-Verein.",
+        "en": "Three access points on the market square and at the station, run by the community network club."
+      },
+      "abschnitte": [
+        {
+          "typ": "liste",
+          "label": {
+            "de": "Partner",
+            "en": "Partners"
+          },
+          "punkte": [
+            {
+              "de": "Freifunk Musterland und Gemeinde",
+              "en": "Musterland community network and municipality"
+            },
+            {
+              "de": "Bäckerei am Markt",
+              "en": "Bakery on the square"
+            }
+          ]
+        }
+      ],
+      "kennzahl": {
+        "de": "Rund 200 Geräte am Tag",
+        "en": "Around 200 devices a day"
+      },
+      "links": [
+        {
+          "url": "https://example.org/wlan",
+          "text": {
+            "de": "Standorte",
+            "en": "Locations"
+          }
+        }
+      ],
+      "zeitleiste": {
+        "sortierung": 202409,
+        "zeitraum": {
+          "de": "seit 09/2024",
+          "en": "since 09/2024"
+        },
+        "notiz": {
+          "de": "Erweiterung zum Sportplatz in Prüfung",
+          "en": "Extension to the sports ground under review"
+        }
+      }
+    },
+    {
+      "nr": 24,
+      "bereich": "digital",
+      "einordnung": "veranstaltung",
+      "icon_svg": "<rect width=\"14\" height=\"20\" x=\"5\" y=\"2\" rx=\"2\" ry=\"2\"/><path d=\"M12 18h.01\"/>",
+      "titel": {
+        "de": "Handy-Sprechstunde für Ältere",
+        "en": "Phone clinic for seniors"
+      },
+      "status": {
+        "de": "Monatlich",
+        "en": "Monthly"
+      },
+      "beschreibung": {
+        "de": "Jugendliche erklären Älteren Messenger, Fotos und Online-Termine.",
+        "en": "Young people explain messengers, photos and online appointments to seniors."
+      },
+      "abschnitte": [
+        {
+          "typ": "liste",
+          "label": {
+            "de": "Themen",
+            "en": "Topics"
+          },
+          "punkte": [
+            {
+              "de": "Messenger und Videoanruf",
+              "en": "Messenger and video calls"
+            },
+            {
+              "de": "Online-Termine beim Amt",
+              "en": "Online appointments with the authority"
+            }
+          ]
+        }
+      ],
+      "kennzahl": {
+        "de": "Rund 15 Gäste je Termin",
+        "en": "Around 15 guests per session"
+      },
+      "links": [],
+      "zeitleiste": {
+        "sortierung": 202503,
+        "zeitraum": {
+          "de": "seit 03/2025",
+          "en": "since 03/2025"
+        },
+        "notiz": {
+          "de": "Fester Termin im Gemeindehaus",
+          "en": "Regular slot at the community centre"
+        }
+      }
+    },
+    {
+      "nr": 25,
+      "bereich": "digital",
+      "einordnung": "netzwerk",
+      "icon_svg": "<path d=\"M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z\"/><path d=\"M15 5.764v15\"/><path d=\"M9 3.236v15\"/>",
+      "titel": {
+        "de": "Offene Ortskarte",
+        "en": "Open village map"
+      },
+      "status": {
+        "de": "Laufend",
+        "en": "Ongoing"
+      },
+      "beschreibung": {
+        "de": "Bänke, Wanderwege und Mülleimer werden gemeinsam in der freien Weltkarte eingetragen.",
+        "en": "Benches, hiking trails and bins are mapped together in the free world map."
+      },
+      "abschnitte": [],
+      "kennzahl": {
+        "de": "Über 900 Einträge",
+        "en": "Over 900 entries"
+      },
+      "links": [
+        {
+          "url": "https://example.org/ortskarte",
+          "text": {
+            "de": "Karte öffnen",
+            "en": "Open the map"
+          }
+        },
+        {
+          "url": "https://example.org/mapping-abend",
+          "text": {
+            "de": "Mapping-Abend",
+            "en": "Mapping evening"
+          }
+        }
+      ],
+      "zeitleiste": {
+        "sortierung": 202411,
+        "zeitraum": {
+          "de": "seit 11/2024",
+          "en": "since 11/2024"
+        },
+        "notiz": {
+          "de": "Mapping-Abend alle sechs Wochen",
+          "en": "Mapping evening every six weeks"
+        }
+      }
+    },
+    {
+      "nr": 26,
+      "bereich": "digital",
+      "einordnung": "idee",
+      "icon_svg": "<rect width=\"20\" height=\"8\" x=\"2\" y=\"2\" rx=\"2\" ry=\"2\"/><rect width=\"20\" height=\"8\" x=\"2\" y=\"14\" rx=\"2\" ry=\"2\"/><line x1=\"6\" x2=\"6.01\" y1=\"6\" y2=\"6\"/><line x1=\"6\" x2=\"6.01\" y1=\"18\" y2=\"18\"/>",
+      "titel": {
+        "de": "Gemeinde-Cloud",
+        "en": "Municipal cloud"
+      },
+      "status": {
+        "de": "Idee – Kosten werden geprüft",
+        "en": "Idea – costs under review"
+      },
+      "beschreibung": {
+        "de": "Ein gemeinsamer Speicher für Vereine, betrieben auf einem Server im Rathaus.",
+        "en": "Shared storage for clubs, run on a server at the town hall."
+      },
+      "abschnitte": [
+        {
+          "typ": "liste",
+          "label": {
+            "de": "Stand",
+            "en": "Status"
+          },
+          "punkte": [
+            {
+              "de": "Angebot für Server und Wartung liegt vor",
+              "en": "Quote for server and maintenance received"
+            },
+            {
+              "de": "Entscheidung im Gemeinderat",
+              "en": "Decision by the council"
+            }
+          ]
+        }
+      ],
+      "kennzahl": null,
+      "links": [],
+      "zeitleiste": null
+    },
+    {
+      "nr": 27,
+      "bereich": "digital",
+      "einordnung": "hauptprojekt",
+      "icon_svg": "<path d=\"M8 2v3\"/><path d=\"M16 2v3\"/><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\"/><path d=\"M3 9h18\"/>",
+      "titel": {
+        "de": "Veranstaltungskalender",
+        "en": "Event calendar"
+      },
+      "status": {
+        "de": "Laufend – seit 05/2025",
+        "en": "Ongoing – since 05/2025"
+      },
+      "beschreibung": {
+        "de": "Alle Termine im Ort an einer Stelle, Vereine tragen selbst ein.",
+        "en": "All local dates in one place, clubs enter them themselves."
+      },
+      "abschnitte": [],
+      "kennzahl": {
+        "de": "38 Vereine nutzen ihn",
+        "en": "38 clubs use it"
+      },
+      "links": [
+        {
+          "url": "https://example.org/kalender",
+          "text": {
+            "de": "Zum Kalender",
+            "en": "Open the calendar"
+          }
+        },
+        {
+          "url": "https://example.org/kalender-eintragen",
+          "text": {
+            "de": "Termin eintragen",
+            "en": "Add an event"
+          }
+        }
+      ],
+      "zeitleiste": {
+        "sortierung": 202505,
+        "zeitraum": {
+          "de": "seit 05/2025",
+          "en": "since 05/2025"
+        },
+        "notiz": {
+          "de": "Druckfassung im Amtsblatt",
+          "en": "Print version in the official gazette"
+        }
+      }
+    },
+    {
+      "nr": 28,
+      "bereich": "soziales",
+      "einordnung": "veranstaltung",
+      "icon_svg": "<path d=\"M12 21a9 9 0 0 0 9-9H3a9 9 0 0 0 9 9Z\"/><path d=\"M7 21h10\"/><path d=\"M19.5 12 22 6\"/><path d=\"M16.25 3c.27.1.8.53.75 1.36-.06.83-.93 1.2-1 2.02-.05.78.34 1.24.73 1.62\"/><path d=\"M11.25 3c.27.1.8.53.74 1.36-.05.83-.93 1.2-.98 2.02-.06.78.33 1.24.72 1.62\"/><path d=\"M6.25 3c.27.1.8.53.75 1.36-.06.83-.93 1.2-1 2.02-.05.78.34 1.24.74 1.62\"/>",
+      "titel": {
+        "de": "Suppenabend im Winter",
+        "en": "Soup evening in winter"
+      },
+      "status": {
+        "de": "Dezember bis Februar",
+        "en": "December to February"
+      },
+      "beschreibung": {
+        "de": "Jeden Mittwoch kocht ein anderer Verein, alle sind eingeladen.",
+        "en": "Every Wednesday a different club cooks, everyone is invited."
+      },
+      "abschnitte": [
+        {
+          "typ": "liste",
+          "label": {
+            "de": "Kochplan",
+            "en": "Cooking rota"
+          },
+          "punkte": [
+            {
+              "de": "Feuerwehr, Sportverein, Landfrauen",
+              "en": "Fire brigade, sports club, country women"
+            },
+            {
+              "de": "Jugendclub, Kirchengemeinde",
+              "en": "Youth club, parish"
+            }
+          ]
+        }
+      ],
+      "kennzahl": {
+        "de": "Rund 60 Gäste je Abend",
+        "en": "Around 60 guests per evening"
+      },
+      "links": [],
+      "zeitleiste": {
+        "sortierung": 202512,
+        "zeitraum": {
+          "de": "12/2025 – 02/2026",
+          "en": "12/2025 – 02/2026"
+        },
+        "notiz": {
+          "de": "Zweite Saison abgeschlossen",
+          "en": "Second season completed"
+        }
+      }
+    },
+    {
+      "nr": 29,
+      "bereich": "soziales",
+      "einordnung": "hauptprojekt",
+      "icon_svg": "<path d=\"M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z\"/><path d=\"M22 10v6\"/><path d=\"M6 12.5V16a6 3 0 0 0 12 0v-3.5\"/>",
+      "titel": {
+        "de": "Lernpaten",
+        "en": "Learning mentors"
+      },
+      "status": {
+        "de": "Laufend – seit 09/2025",
+        "en": "Ongoing – since 09/2025"
+      },
+      "beschreibung": {
+        "de": "Ehrenamtliche begleiten Grundschulkinder beim Lesen und Rechnen.",
+        "en": "Volunteers support primary school children with reading and maths."
+      },
+      "abschnitte": [
+        {
+          "typ": "liste",
+          "label": {
+            "de": "Partner",
+            "en": "Partners"
+          },
+          "punkte": [
+            {
+              "de": "Grundschule am Park und Elternrat",
+              "en": "Park Primary School and parents’ council"
+            },
+            {
+              "de": "Bücherei",
+              "en": "Library"
+            }
+          ]
+        }
+      ],
+      "kennzahl": {
+        "de": "12 Paten, 18 Kinder",
+        "en": "12 mentors, 18 children"
+      },
+      "links": [
+        {
+          "url": "https://example.org/lernpaten",
+          "text": {
+            "de": "Pate werden",
+            "en": "Become a mentor"
+          }
+        }
+      ],
+      "zeitleiste": {
+        "sortierung": 202509,
+        "zeitraum": {
+          "de": "seit 09/2025",
+          "en": "since 09/2025"
+        },
+        "notiz": {
+          "de": "Weitere Paten gesucht",
+          "en": "More mentors wanted"
+        }
+      }
+    },
+    {
+      "nr": 30,
+      "bereich": "soziales",
+      "einordnung": "netzwerk",
+      "icon_svg": "<path d=\"M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z\"/>",
+      "titel": {
+        "de": "Kleiderkammer",
+        "en": "Clothing bank"
+      },
+      "status": {
+        "de": "Zwei Nachmittage pro Woche",
+        "en": "Two afternoons a week"
+      },
+      "beschreibung": {
+        "de": "Gespendete Kleidung wird sortiert und kostenlos abgegeben.",
+        "en": "Donated clothing is sorted and given away free of charge."
+      },
+      "abschnitte": [],
+      "kennzahl": {
+        "de": "Rund 80 Besuche im Monat",
+        "en": "Around 80 visits a month"
+      },
+      "links": [
+        {
+          "url": "https://example.org/kleiderkammer",
+          "text": {
+            "de": "Öffnungszeiten",
+            "en": "Opening hours"
+          }
+        }
+      ],
+      "zeitleiste": {
+        "sortierung": 202408,
+        "zeitraum": {
+          "de": "seit 08/2024",
+          "en": "since 08/2024"
+        },
+        "notiz": {
+          "de": "Neuer Raum im alten Feuerwehrhaus",
+          "en": "New room in the old fire station"
+        }
+      }
+    },
+    {
+      "nr": 31,
+      "bereich": "soziales",
+      "einordnung": "idee",
+      "icon_svg": "<path d=\"M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-6 4.5-6C9.37 2 10 3.8 10 5.5c0 3.11-2 5.66-2 8.68V16a2 2 0 1 1-4 0Z\"/><path d=\"M20 20v-2.38c0-2.12 1.03-3.12 1-5.62-.03-2.72-1.49-6-4.5-6C14.63 6 14 7.8 14 9.5c0 3.11 2 5.66 2 8.68V20a2 2 0 1 0 4 0Z\"/><path d=\"M16 17h4\"/><path d=\"M4 13h4\"/>",
+      "titel": {
+        "de": "Mitfahrbank",
+        "en": "Ride-share bench"
+      },
+      "status": {
+        "de": "Idee – Standorte in Abstimmung",
+        "en": "Idea – locations under discussion"
+      },
+      "beschreibung": {
+        "de": "Wer an der Bank sitzt, möchte mitgenommen werden; ein Schild zeigt das Ziel.",
+        "en": "Whoever sits on the bench wants a lift; a sign shows the destination."
+      },
+      "abschnitte": [
+        {
+          "typ": "liste",
+          "label": {
+            "de": "Mögliche Standorte",
+            "en": "Possible locations"
+          },
+          "punkte": [
+            {
+              "de": "Bahnhof und Marktplatz",
+              "en": "Station and market square"
+            },
+            {
+              "de": "Abzweig zum Nachbarort",
+              "en": "Junction to the next village"
+            }
+          ]
+        }
+      ],
+      "kennzahl": null,
+      "links": [],
+      "zeitleiste": null
+    },
+    {
+      "nr": 32,
+      "bereich": "soziales",
+      "einordnung": "veranstaltung",
+      "icon_svg": "<path d=\"M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5\"/><path d=\"M9 18h6\"/><path d=\"M10 22h4\"/>",
+      "titel": {
+        "de": "Ideenwerkstatt Dorfmitte",
+        "en": "Village centre ideas workshop"
+      },
+      "status": {
+        "de": "Geplant für 05/2026",
+        "en": "Planned for 05/2026"
+      },
+      "beschreibung": {
+        "de": "Ein Samstag, an dem alle ihre Wünsche für den Platz vor dem Rathaus aufschreiben.",
+        "en": "A Saturday when everyone writes down their wishes for the square in front of the town hall."
+      },
+      "abschnitte": [
+        {
+          "typ": "liste",
+          "label": {
+            "de": "Ablauf",
+            "en": "Schedule"
+          },
+          "punkte": [
+            {
+              "de": "Vormittags Rundgang",
+              "en": "Walkabout in the morning"
+            },
+            {
+              "de": "Nachmittags Ideen sammeln und gewichten",
+              "en": "Collecting and ranking ideas in the afternoon"
+            }
+          ]
+        }
+      ],
+      "kennzahl": null,
+      "links": [
+        {
+          "url": "https://example.org/ideenwerkstatt",
+          "text": {
+            "de": "Anmeldung",
+            "en": "Registration"
+          }
+        }
+      ],
+      "zeitleiste": {
+        "sortierung": 202605,
+        "zeitraum": {
+          "de": "05/2026",
+          "en": "05/2026"
+        },
+        "notiz": {
+          "de": "Einladung geht im April raus",
+          "en": "Invitation goes out in April"
+        }
+      }
+    }
+  ]
+}

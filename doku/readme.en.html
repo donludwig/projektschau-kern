@@ -1,0 +1,1494 @@
+<!DOCTYPE html>
+<html lang="en" data-kern-theme="light">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Documentation – Projektschau für KERN</title>
+	<script>
+		/* Reihenfolge: Adresse (?theme=, für Seitenwechsel ohne Browserspeicher), gespeicherte Wahl, Systemeinstellung */
+		( function () { var t = new URLSearchParams( location.search ).get( 'theme' ); if ( t !== 'dark' && t !== 'light' ) { t = null; try { t = localStorage.getItem( 'ps-theme' ); } catch ( e ) {} } if ( ! t && window.matchMedia && matchMedia( '(prefers-color-scheme: dark)' ).matches ) { t = 'dark'; } if ( t ) { document.documentElement.setAttribute( 'data-kern-theme', t ); try { localStorage.setItem( 'ps-theme', t ); } catch ( e ) {} } } )();
+	</script>
+	<link rel="icon" href="data:,">
+	<link rel="stylesheet" href="../vendor/kern/fonts/fira-sans.css">
+	<link rel="stylesheet" href="../vendor/kern/kern.min.css">
+	<link rel="stylesheet" href="../vendor/kern/kern-grid.min.css">
+	<style>
+		.demo-kopf { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--kern-metric-space-small, 8px); padding: var(--kern-metric-space-small, 8px) 0; margin-bottom: var(--kern-metric-space-large, 24px); border-bottom: var(--kern-metric-border-width-light, 1px) solid var(--kern-color-decorative-border-contextual, #c0c3d5); }
+		.demo-navi { display: flex; gap: var(--kern-metric-space-default, 16px); margin-inline-start: auto; margin-inline-end: var(--kern-metric-space-default, 16px); }
+		@media (max-width: 48rem) { .demo-kopf > p { flex: 1 1 100%; } .demo-navi { margin-inline-start: 0; } #farbschema { margin-inline-start: auto; } }
+		.demo-fuss { margin-top: calc(var(--kern-metric-space-x-large, 32px) * 3); padding-bottom: var(--kern-metric-space-x-large, 32px); }
+		.demo-fuss .kern-divider { margin-bottom: var(--kern-metric-space-default, 16px); }
+		.demo-navi .kern-link { display: inline-flex; align-items: center; min-height: 24px; padding-block: 0; line-height: 1; }
+		.demo-skip { position: absolute; inset-block-start: var(--kern-metric-space-small, 8px); inset-inline-start: var(--kern-metric-space-small, 8px); z-index: 100; padding: var(--kern-metric-space-small, 8px) var(--kern-metric-space-default, 16px); border-radius: var(--kern-metric-border-radius-default, 4px); background: var(--kern-color-layout-background-default, #fff); transform: translateY(-300%); }
+		.demo-skip:focus { transform: none; }
+		/* Links im Fuß in der Schriftgröße des Fußtexts, ohne den Grundlinienabstand des Kit-Links */
+		.demo-fuss .kern-link { font-size: inherit; line-height: inherit; padding: 0; }
+		.demo-navi [aria-current] { text-decoration: none; color: var(--kern-color-layout-text-default, #131525); font-weight: var(--kern-typography-font-weight-semi-bold, 600); }
+		.ps-icon { width: 1em; height: 1em; flex: none; margin-inline-end: var(--kern-metric-space-x-small, 4px); color: var(--kern-color-action-default-contextual, #2044aa); }
+		[data-kern-theme="dark"] .demo-sonne, :root:not([data-kern-theme="dark"]) .demo-mond { display: none; }
+		/* Gleiche Lage wie der Sprachumschalter der Demo: 24 px unter der Kopfzeile, 24 px über dem Inhalt */
+		.doku-lang { gap: 0; justify-content: flex-end; margin-bottom: var(--kern-metric-space-small, 8px); }
+		/* Überschrift und Einleitung wie in der Demo: 8 px unter dem Schalter, Einleitung in der großen Textstufe */
+		.doku > h1 + p { margin-top: calc(-1 * var(--kern-metric-space-small, 8px)); }
+		.doku-lang .kern-btn { margin: 0; border-radius: 0; }
+		.doku-lang .kern-btn--secondary { border-color: var(--kern-color-action-default-contextual, #2044aa); }
+		.doku-lang .kern-btn + .kern-btn { margin-inline-start: -1px; }
+		.doku-lang .kern-btn:first-child { border-start-start-radius: var(--kern-metric-border-radius-default, 4px); border-end-start-radius: var(--kern-metric-border-radius-default, 4px); }
+		.doku-lang .kern-btn:last-child { border-start-end-radius: var(--kern-metric-border-radius-default, 4px); border-end-end-radius: var(--kern-metric-border-radius-default, 4px); }
+		.doku-lang .kern-btn:focus-visible, .doku-lang .kern-btn--primary { z-index: 1; }
+		.doku-layout { display: grid; grid-template-columns: minmax(0, 52rem) 1fr; gap: var(--kern-metric-space-x-large, 32px); align-items: start; }
+		.doku { max-width: 52rem; display: flex; flex-direction: column; gap: var(--kern-metric-space-default, 16px); }
+		/* Mitlaufendes Inhaltsverzeichnis wie in der KERN-Doku: rechts, haftet beim Scrollen, aktiver Abschnitt hervorgehoben */
+		.doku-toc { position: sticky; top: var(--kern-metric-space-large, 24px); max-width: 18rem; justify-self: end; width: 100%; border-left: var(--kern-metric-border-width-light, 1px) solid var(--kern-color-decorative-border-contextual, #c0c3d5); padding-left: var(--kern-metric-space-default, 16px); }
+		.doku-toc .kern-label { display: block; padding: 0 0 var(--kern-metric-space-small, 8px); }
+		.doku-toc ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--kern-metric-space-x-small, 4px); }
+		.doku-toc .kern-link { text-decoration: none; color: var(--kern-color-layout-text-muted, #51577a); font-size: var(--kern-typography-font-size-small-static, 16px); line-height: var(--kern-typography-line-height-medium-static, 24px); }
+		.doku-toc .kern-link:hover, .doku-toc .kern-link:focus-visible { text-decoration: underline; }
+		.doku-toc .kern-link[aria-current="true"] { color: var(--kern-color-action-default, #2044aa); font-weight: var(--kern-typography-font-weight-semi-bold, 600); }
+		@media (max-width: 64rem) { .doku-layout { grid-template-columns: 1fr; } .doku-toc { position: static; order: -1; max-width: none; border-left: 0; padding-left: 0; } }
+		.doku h2 { margin-top: var(--kern-metric-space-x-large, 32px); }
+		.doku h3 { margin-top: var(--kern-metric-space-default, 16px); }
+		.doku-code { position: relative; }
+		.doku-code .kern-btn { position: absolute; right: var(--kern-metric-space-small, 8px); bottom: var(--kern-metric-space-small, 8px); margin: 0; min-height: 0; padding: var(--kern-metric-space-x-small, 4px); opacity: .6; }
+		.doku-code .kern-btn .kern-label:empty { display: none; }
+		.doku-code .kern-btn:hover, .doku-code .kern-btn:focus-visible { opacity: 1; }
+		.doku-code .kern-btn .kern-label { padding: var(--kern-metric-space-2x-small, 2px) var(--kern-metric-space-x-small, 4px); font-size: var(--kern-font-size-14, .875rem); }
+		.doku-code .ps-icon { margin: 0; width: 1.25rem; height: 1.25rem; }
+		.doku pre { width: 100%; box-sizing: border-box; margin: 0; padding: var(--kern-metric-space-default, 16px) var(--kern-metric-space-default, 16px) calc(var(--kern-metric-space-x-large, 32px) + var(--kern-metric-space-small, 8px)); white-space: pre-wrap; overflow-wrap: anywhere; border-radius: var(--kern-metric-border-radius-default, 4px); background: var(--kern-color-layout-background-default-surface, #f3f4f7); border: var(--kern-metric-border-width-light, 1px) solid var(--kern-color-decorative-border-contextual, #c0c3d5); }
+		.doku code { overflow-wrap: anywhere; font-family: var(--kern-typography-font-family-fira-mono, monospace); font-size: var(--kern-font-size-14, .875rem); color: var(--kern-color-layout-text-default, #131525); }
+		.doku :not(pre) > code { padding: 0 var(--kern-metric-space-x-small, 4px); border-radius: var(--kern-metric-border-radius-small, 2px); background: var(--kern-color-layout-background-default-surface, #f3f4f7); }
+		.doku .kern-list--bullet li, .doku .kern-list--number li { padding-block: 0; }
+		.doku .kern-table__cell { vertical-align: top; }
+		.doku .kern-table__cell:first-child code { white-space: nowrap; }
+		/* Links im Fließtext erben Zeilenhöhe und Schriftgröße, sonst vergrößert der Grundlinienabstand des Kit-Links die Zeile */
+		.doku p .kern-link, .doku li .kern-link, .doku td .kern-link { display: inline; padding: 0; line-height: inherit; font-size: inherit; }
+		.doku-autor { display: flex; gap: var(--kern-metric-space-large, 24px); align-items: flex-start; }
+		.doku-foto { width: 6rem; height: 6rem; flex: none; object-fit: cover; border-radius: 50%; }
+		.doku-autor-links { margin-top: var(--kern-metric-space-small, 8px); gap: var(--kern-metric-space-default, 16px) var(--kern-metric-space-large, 24px); flex-wrap: wrap; }
+		@media (max-width: 40rem) { .doku-autor { flex-direction: column; } }
+		/* Tabellen scrollen auf schmalen Bildschirmen in ihrer KERN-Hülle statt die Seite zu verbreitern */
+		.doku { min-width: 0; }
+		.doku > * { min-width: 0; max-width: 100%; }
+		.doku .kern-table-responsive { width: 100%; }
+		@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+		.doku .kern-table-responsive[tabindex]:focus-visible { outline: 4px solid var(--kern-color-action-focus-default-contextual, #454B6B); outline-offset: 2px; }
+		.doku .kern-table { min-width: 36rem; }
+	</style>
+</head>
+<body>
+	<a class="kern-link demo-skip" href="#inhalt">Skip to content</a>
+	<div class="kern-container">
+		<header class="demo-kopf">
+			<p class="kern-body kern-body--bold">Projektschau für KERN · Documentation</p>
+			<nav class="demo-navi" aria-label="Pages"><a class="kern-link" href="../index.html">Demo</a><a class="kern-link" href="readme.en.html" aria-current="page">Documentation</a></nav>
+			<button type="button" class="kern-btn kern-btn--tertiary kern-btn--small" id="farbschema" role="switch" aria-checked="false" aria-label="Dark colour scheme">
+				<svg class="ps-icon demo-sonne" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+				<svg class="ps-icon demo-mond" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+				<span class="kern-label">Light / Dark</span>
+			</button>
+		</header>
+		<div class="kern-btn-wrapper doku-lang" role="group" aria-label="Choose language">
+			<a class="kern-btn kern-btn--x-small kern-btn--secondary" href="readme.html" data-lang="de" aria-current="false"><span class="kern-label">DE</span></a>
+			<a class="kern-btn kern-btn--x-small kern-btn--primary" href="readme.en.html" data-lang="en" aria-current="page"><span class="kern-label">EN</span></a>
+		</div>
+		<div class="doku-layout">
+		<main id="inhalt" class="doku">
+<h1 class="kern-heading-x-large" id="projektschau-for-kern">Projektschau for KERN</h1>
+<p class="kern-body">A project overview with cards, filters and a timeline, built on the <a class="kern-link" rel="noopener" href="https://www.kern-ux.de">KERN UX standard</a>. A pattern for initiatives, associations and public administrations that want to show their projects on one page: each card is a project with area, category, status, description, activities, partners, key figure and links. Two languages, light and dark mode, filters by area and category, a timeline by year, deep links via the address bar.</p>
+<p class="kern-body">Three files, no framework, no build step: <code>projektschau.js</code>, <code>projektschau.css</code> and a JSON data package. The KERN kit is included unchanged under <code>vendor/kern/</code>.</p>
+<p class="kern-body">The pattern grew out of the <a class="kern-link" rel="noopener" href="https://ankerpunkt-hoherflaeming.de/projekte/">project overview of the Ankerpunkt Hoher Fläming</a>, which is in use there as a running project. A WordPress plugin with the same data format is being developed in parallel. The sample data in <code>daten/beispiel.json</code> is fictitious.</p>
+<p class="kern-body">Source code: <a class="kern-link" rel="noopener" href="https://github.com/donludwig/projektschau-kern">github.com/donludwig/projektschau-kern</a>. This page is also available in German: <code>README.md</code>.</p>
+<h2 class="kern-heading-large" id="1-demo-and-integration">1. Demo and integration</h2>
+<p class="kern-body">Open <code>index.html</code> in a browser; no server is needed. The sample data is embedded in the page; the same data is in <code>daten/beispiel.json</code> for loading via <code>data-src</code>.</p>
+<div class="doku-code"><pre><code class="language-html">&lt;link rel=&quot;stylesheet&quot; href=&quot;vendor/kern/fonts/fira-sans.css&quot;&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;vendor/kern/kern.min.css&quot;&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;vendor/kern/kern-grid.min.css&quot;&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;projektschau.css&quot;&gt;
+&lt;script src=&quot;projektschau.js&quot; defer&gt;&lt;/script&gt;
+
+&lt;div data-projektschau data-src=&quot;daten/beispiel.json&quot;&gt;&lt;/div&gt;
+</code></pre><button type="button" class="kern-btn kern-btn--tertiary kern-btn--x-small doku-kopieren" aria-label="Copy code to clipboard" data-kopiert="Copied"><svg class="ps-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><span class="kern-label" aria-live="polite"></span></button></div>
+<p class="kern-body">Alternatively without <code>data-src</code>, with the data package inside the element:</p>
+<div class="doku-code"><pre><code class="language-html">&lt;div data-projektschau&gt;
+  &lt;script type=&quot;application/json&quot;&gt;{ &quot;version&quot;: 1, &quot;sprachen&quot;: [&quot;de&quot;, &quot;en&quot;], … }&lt;/script&gt;
+&lt;/div&gt;
+</code></pre><button type="button" class="kern-btn kern-btn--tertiary kern-btn--x-small doku-kopieren" aria-label="Copy code to clipboard" data-kopiert="Copied"><svg class="ps-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><span class="kern-label" aria-live="polite"></span></button></div>
+<p class="kern-body">When embedding, write <code>&lt;/</code> as <code>&lt;\/</code> (<code>skripte/einbetten.py</code> does this); otherwise a <code>&lt;/script&gt;</code> in a text field ends the block before the renderer runs.</p>
+<p class="kern-body">The page must load the KERN kit (kit version in <code>vendor/kern/VERSION</code>). The kit is not scoped: it styles <code>html</code>, <code>body</code> and <code>:root</code>, so it belongs on pages designed with KERN throughout. The page sets the width, for example with <code>kern-container</code> (96 percent of the viewport, at most 1536 pixels). Light and dark follow the KERN mechanism: <code>data-kern-theme="light|dark"</code> on <code>&lt;html&gt;</code> or the system setting.</p>
+<div class="kern-table-responsive" data-name="Table, scrolls sideways"><table class="kern-table kern-table--striped">
+<thead class="kern-table__header">
+<tr class="kern-table__row">
+<th class="kern-table__cell">File</th>
+<th class="kern-table__cell">Purpose</th>
+</tr>
+</thead>
+<tbody class="kern-table__body">
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>index.html</code></td>
+<td class="kern-table__cell">Demo page. Loads the kit, the supplementary CSS and the script, contains the embedded sample data and a light/dark toggle. Without inline scripts or styles, so it also runs under a strict Content Security Policy.</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>demo-theme.js</code>, <code>demo.js</code>, <code>demo.css</code></td>
+<td class="kern-table__cell">Demo page only: colour scheme before the first render, address parameters, switches, documentation link and the styling of header and footer. Not part of the pattern.</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>projektschau.js</code></td>
+<td class="kern-table__cell">Reads the data package, generates all markup and handles filters, view, language and address bar. About 340 lines, no dependencies.</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>projektschau.css</code></td>
+<td class="kern-table__cell">Additions to the kit: grid, area colours, filter bar, timeline. About 160 lines, only KERN tokens and the area colours from the data.</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>daten/beispiel.json</code></td>
+<td class="kern-table__cell">Data package of the demo, 32 fictitious projects in four areas. Template for your own data.</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>vendor/kern/</code></td>
+<td class="kern-table__cell">KERN kit <a class="kern-link" rel="noopener" href="https://www.npmjs.com/package/@kern-ux/native"><code>@kern-ux/native</code></a> (<a class="kern-link" rel="noopener" href="https://gitlab.opencode.de/kern-ux/kern-ux-plain">source on openCode</a>; <code>kern.min.css</code>, <code>kern-grid.min.css</code>, fonts), version in <code>VERSION</code>, update only via <code>skripte/kern-sync.sh</code>.</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>skripte/pruefe.py</code></td>
+<td class="kern-table__cell">Checks classes and tokens against the kit, the data package (keys, languages, colours, numbers, links), contrasts and the embedded data.</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>skripte/pruefe_xss.js</code></td>
+<td class="kern-table__cell">Renders the data package with Node without a browser and checks payloads in colours, keys, languages, icons, links, number and year.</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>skripte/pruefe_fuzz.js</code></td>
+<td class="kern-table__cell">Sends a thousand randomly mangled packages through the renderer: no exception, no active markup.</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>skripte/erzeuge_last.py</code></td>
+<td class="kern-table__cell">Generates a data package with many cards (default 1000) and a demo page for the load test in the browser.</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>skripte/einbetten.py</code></td>
+<td class="kern-table__cell">Writes <code>daten/beispiel.json</code> into the JSON block of <code>index.html</code>.</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>skripte/farben.py</code></td>
+<td class="kern-table__cell">Derives the values <code>area</code>, <code>on</code> and <code>fg</code> for light and dark from one base colour per area, see 2.6.</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>skripte/doku_html.py</code></td>
+<td class="kern-table__cell">Generates the pages <code>doku/readme.html</code> and <code>doku/readme.en.html</code> in KERN style from <code>README.md</code> and <code>README.en.md</code>: same header and footer as the demo, running table of contents "On this page", copy buttons on code blocks, tables in <code>kern-table-responsive</code>, DE/EN links. Requires the Python module <code>markdown</code>.</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>skripte/kern-sync.sh</code></td>
+<td class="kern-table__cell">Fetches the kit in a pinned version with checksum from the npm registry.</td>
+</tr>
+</tbody>
+</table></div>
+<h3 class="kern-heading-medium" id="the-demo-page">The demo page</h3>
+<p class="kern-body"><code>index.html</code> has a header with the links Demo and Documentation, the light/dark toggle, and a footer with the licence notes; the documentation pages carry the same header and footer. Colour scheme and language are passed along in the address when switching between pages (<code>?theme=dark&amp;lang=en</code>), so the choice survives even when the browser allows no storage, for example Safari with files from disk. Both values are also stored in <code>localStorage</code> under <code>ps-theme</code> and <code>ps-lang</code>. The README link always points to the version in the currently active language.</p>
+<h3 class="kern-heading-medium" id="options-on-the-element">Options on the element</h3>
+<div class="kern-table-responsive" data-name="Table, scrolls sideways"><table class="kern-table kern-table--striped">
+<thead class="kern-table__header">
+<tr class="kern-table__row">
+<th class="kern-table__cell">Attribute</th>
+<th class="kern-table__cell">Values</th>
+<th class="kern-table__cell">Effect</th>
+</tr>
+</thead>
+<tbody class="kern-table__body">
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>data-src</code></td>
+<td class="kern-table__cell">path or URL</td>
+<td class="kern-table__cell">load the data package via <code>fetch</code>; an embedded JSON block takes precedence</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>data-ansicht</code></td>
+<td class="kern-table__cell"><code>karten</code> (default), <code>zeitleiste</code></td>
+<td class="kern-table__cell">initial view (cards or timeline)</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>data-bereich</code></td>
+<td class="kern-table__cell">key of an area</td>
+<td class="kern-table__cell">preselected area filter</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>data-ebene</code></td>
+<td class="kern-table__cell">1 to 4</td>
+<td class="kern-table__cell">heading level of the title; card titles and years are one level below, project titles in the timeline two</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>data-sprache</code></td>
+<td class="kern-table__cell">language code</td>
+<td class="kern-table__cell">initial language. Order of resolution: choice stored in the browser, this attribute, browser language, first language of the package. The demo sets it from <code>?lang=</code> in the address.</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>data-symbole</code></td>
+<td class="kern-table__cell"><code>ja</code>, <code>nein</code></td>
+<td class="kern-table__cell">cover with the large project icon above the card head, surface in the area colour. Without the attribute the choice stored in the browser by the icon switch applies, otherwise off. The demo sets it from <code>?symbole=</code> in the address.</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>data-symbolschalter</code></td>
+<td class="kern-table__cell"><code>ja</code></td>
+<td class="kern-table__cell">"Icons" checkbox in the header left of the language switch, letting readers turn the cover on and off; the choice is stored in the browser (<code>ps-symbole</code>)</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>data-zeitleiste</code>, <code>data-einordnungsfilter</code>, <code>data-sprachumschalter</code></td>
+<td class="kern-table__cell"><code>nein</code></td>
+<td class="kern-table__cell">do not render the respective part (timeline, category filter, language switch)</td>
+</tr>
+</tbody>
+</table></div>
+<h2 class="kern-heading-large" id="2-data">2. Data</h2>
+<h3 class="kern-heading-medium" id="21-structure-of-the-data-package">2.1 Structure of the data package</h3>
+<p class="kern-body">The package is a JSON object. Texts that exist in several languages are always an object with one entry per language code, for example <code>{"de": "Umwelt", "en": "Environment"}</code>. Below this is called a "language pair". Field names are German and stay as they are; they are the interface.</p>
+<div class="doku-code"><pre><code>{
+  &quot;version&quot;: 1,
+  &quot;sprachen&quot;: [&quot;de&quot;, &quot;en&quot;],
+  &quot;texte&quot;: { … },
+  &quot;filter_alle&quot;: { &quot;bereich&quot;: { &quot;label&quot;: language pair, &quot;icon_svg&quot;: &quot;…&quot; } },
+  &quot;bereiche&quot;: [ … ],
+  &quot;einordnungen&quot;: [ … ],
+  &quot;projekte&quot;: [ … ]
+}
+</code></pre><button type="button" class="kern-btn kern-btn--tertiary kern-btn--x-small doku-kopieren" aria-label="Copy code to clipboard" data-kopiert="Copied"><svg class="ps-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><span class="kern-label" aria-live="polite"></span></button></div>
+<p class="kern-body"><strong><code>sprachen</code></strong> (languages): list of language codes. The first one is the default. With a single language the language switch is omitted.</p>
+<p class="kern-body"><strong><code>texte</code></strong> (texts): all interface texts that do not belong to a project.</p>
+<div class="kern-table-responsive" data-name="Table, scrolls sideways"><table class="kern-table kern-table--striped">
+<thead class="kern-table__header">
+<tr class="kern-table__row">
+<th class="kern-table__cell">Path</th>
+<th class="kern-table__cell">Where it appears</th>
+</tr>
+</thead>
+<tbody class="kern-table__body">
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>kopf.titel</code></td>
+<td class="kern-table__cell">main heading above the overview</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>kopf.einleitung</code></td>
+<td class="kern-table__cell">introduction below the heading, HTML allowed</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>filter.bereich_label</code>, <code>filter.einordnung_label</code></td>
+<td class="kern-table__cell">labels of the two filter blocks; on narrow screens also the headers of the collapsible blocks</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>filter.aria_bereich</code>, <code>filter.aria_einordnung</code></td>
+<td class="kern-table__cell"><code>aria-label</code> of the two filter groups</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>ansicht.karten</code>, <code>ansicht.zeitleiste</code>, <code>ansicht.aria</code></td>
+<td class="kern-table__cell">labels of the cards/timeline switch and its <code>aria-label</code></td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>sprache.aria</code></td>
+<td class="kern-table__cell"><code>aria-label</code> of the language switch</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>symbole.label</code>, <code>symbole.aria</code></td>
+<td class="kern-table__cell">label and <code>aria-label</code> of the icon switch (option <code>data-symbolschalter</code>)</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>leerzustand.meldung</code>, <code>leerzustand.zuruecksetzen</code></td>
+<td class="kern-table__cell">message and button when no project matches the filter</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>zeitleiste.aria</code></td>
+<td class="kern-table__cell"><code>aria-label</code> of the timeline</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>fuss.ueber.ueberschrift</code>, <code>fuss.ueber.absaetze</code></td>
+<td class="kern-table__cell">optional collapsible section at the end; <code>absaetze</code> is a list of language pairs, HTML allowed. Without <code>fuss</code> there is no such section.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="kern-body"><strong><code>filter_alle.bereich</code>:</strong> label and icon of the "All" filter that comes first in both filter blocks.</p>
+<p class="kern-body"><strong><code>bereiche</code></strong> (areas): the areas to filter by. The order of the list is the order of the filters.</p>
+<div class="kern-table-responsive" data-name="Table, scrolls sideways"><table class="kern-table kern-table--striped">
+<thead class="kern-table__header">
+<tr class="kern-table__row">
+<th class="kern-table__cell">Field</th>
+<th class="kern-table__cell">Meaning</th>
+</tr>
+</thead>
+<tbody class="kern-table__body">
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>schluessel</code></td>
+<td class="kern-table__cell">technical key, lowercase letters and hyphens only, used in the address bar and in CSS variables</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>label</code></td>
+<td class="kern-table__cell">language pair, shown on filter and badge</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>icon_svg</code></td>
+<td class="kern-table__cell">icon, see 2.3</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>farben.hell</code>, <code>farben.dunkel</code></td>
+<td class="kern-table__cell">one object each for light and dark with <code>area</code>, <code>on</code>, <code>fg</code>, see 2.4. An additional value <code>brand</code> is carried along but not used.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="kern-body"><strong><code>einordnungen</code></strong> (categories): the second filter axis, for example main project, network, event, idea.</p>
+<div class="kern-table-responsive" data-name="Table, scrolls sideways"><table class="kern-table kern-table--striped">
+<thead class="kern-table__header">
+<tr class="kern-table__row">
+<th class="kern-table__cell">Field</th>
+<th class="kern-table__cell">Meaning</th>
+</tr>
+</thead>
+<tbody class="kern-table__body">
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>schluessel</code></td>
+<td class="kern-table__cell">technical key as for areas</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>label</code></td>
+<td class="kern-table__cell">language pair, shown on filter and card</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>label_zeitleiste</code></td>
+<td class="kern-table__cell">language pair for the timeline; if missing, <code>label</code> is used</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>als_filter_chip</code></td>
+<td class="kern-table__cell"><code>true</code> if the category is offered as a filter; with <code>false</code> it stays visible on the card but cannot be filtered</td>
+</tr>
+</tbody>
+</table></div>
+<p class="kern-body"><strong><code>projekte</code></strong> (projects): the cards. One entry per project, the order of the list is the order in the grid.</p>
+<div class="kern-table-responsive" data-name="Table, scrolls sideways"><table class="kern-table kern-table--striped">
+<thead class="kern-table__header">
+<tr class="kern-table__row">
+<th class="kern-table__cell">Field</th>
+<th class="kern-table__cell">Required</th>
+<th class="kern-table__cell">Meaning</th>
+</tr>
+</thead>
+<tbody class="kern-table__body">
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>nr</code></td>
+<td class="kern-table__cell">yes</td>
+<td class="kern-table__cell">running number, shown with two digits</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>bereich</code></td>
+<td class="kern-table__cell">yes</td>
+<td class="kern-table__cell"><code>schluessel</code> of an area</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>einordnung</code></td>
+<td class="kern-table__cell">yes</td>
+<td class="kern-table__cell"><code>schluessel</code> of a category</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>icon_svg</code></td>
+<td class="kern-table__cell">no</td>
+<td class="kern-table__cell">icon, see 2.3; on the card only as a cover with <code>data-symbole="ja"</code></td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>titel</code></td>
+<td class="kern-table__cell">yes</td>
+<td class="kern-table__cell">language pair, the title</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>status</code></td>
+<td class="kern-table__cell">no</td>
+<td class="kern-table__cell">language pair, a short line below the title, for example "Ongoing – since 05/2025"</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>beschreibung</code></td>
+<td class="kern-table__cell">no</td>
+<td class="kern-table__cell">language pair, description, HTML allowed</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>abschnitte</code></td>
+<td class="kern-table__cell">no</td>
+<td class="kern-table__cell">list of sections; each entry has <code>typ</code> <code>liste</code> with <code>label</code> and <code>punkte</code> (list of language pairs) or <code>typ</code> <code>text</code> with <code>label</code> and <code>text</code>. HTML allowed in <code>punkte</code> and <code>text</code>. Demo rule: the first section of a card is always a list with at least two items (<a class="kern-link" href="#45-design-rules">section 4.5</a>).</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>kennzahl</code></td>
+<td class="kern-table__cell">no</td>
+<td class="kern-table__cell">language pair, a highlighted line directly after text or list, HTML allowed; rules in 4.5</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>links</code></td>
+<td class="kern-table__cell">no</td>
+<td class="kern-table__cell">list with <code>url</code> and <code>text</code> (language pair)</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>zeitleiste</code></td>
+<td class="kern-table__cell">no</td>
+<td class="kern-table__cell">object with <code>sortierung</code>, <code>zeitraum</code>, <code>notiz</code>, see 2.2. If missing or <code>null</code>, the project appears in the card view only.</td>
+</tr>
+</tbody>
+</table></div>
+<p class="kern-body">Empty values are written as <code>null</code> or the field is omitted; an empty list <code>[]</code> is also allowed.</p>
+<h3 class="kern-heading-medium" id="22-timeline">2.2 Timeline</h3>
+<p class="kern-body">A project is not maintained twice. The timeline reads number, area, title and category from the project and only needs the small <code>zeitleiste</code> block:</p>
+<div class="kern-table-responsive" data-name="Table, scrolls sideways"><table class="kern-table kern-table--striped">
+<thead class="kern-table__header">
+<tr class="kern-table__row">
+<th class="kern-table__cell">Field</th>
+<th class="kern-table__cell">Meaning</th>
+</tr>
+</thead>
+<tbody class="kern-table__body">
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>sortierung</code></td>
+<td class="kern-table__cell">number in the pattern <code>YYYYMM</code>, for example <code>202505</code>. The first four digits form the year under which the entry is listed; the number sets the order within the year. For equal numbers <code>nr</code> decides.</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>zeitraum</code></td>
+<td class="kern-table__cell">language pair, the text next to the line, for example "since 05/2025" or "07/2024"</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>notiz</code></td>
+<td class="kern-table__cell">language pair, optional, the short status note below the title. Appears in the timeline only, not on the card.</td>
+</tr>
+</tbody>
+</table></div>
+<h3 class="kern-heading-medium" id="23-icons">2.3 Icons</h3>
+<p class="kern-body"><code>icon_svg</code> contains only the inside of an SVG icon on a 24×24 grid, without the <code>&lt;svg&gt;</code> wrapper, for example <code>&lt;path d="M12 20v2"/&gt;&lt;circle cx="12" cy="12" r="4"/&gt;</code>. The script adds the wrapper with <code>viewBox="0 0 24 24"</code>, stroke width 2 and <code>currentColor</code>, so the icon takes the text colour of its surroundings. The demo uses icons from the <a class="kern-link" rel="noopener" href="https://lucide.dev">Lucide</a> set (ISC licence); any set of stroke icons on a 24 grid works.</p>
+<h3 class="kern-heading-medium" id="24-area-colours-and-contrast">2.4 Area colours and contrast</h3>
+<p class="kern-body">Each area brings its own colours, separately for light and dark:</p>
+<div class="kern-table-responsive" data-name="Table, scrolls sideways"><table class="kern-table kern-table--striped">
+<thead class="kern-table__header">
+<tr class="kern-table__row">
+<th class="kern-table__cell">Value</th>
+<th class="kern-table__cell">Use</th>
+</tr>
+</thead>
+<tbody class="kern-table__body">
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>area</code></td>
+<td class="kern-table__cell">fill of the area badge and the active area filter; basis for card tint and divider</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>on</code></td>
+<td class="kern-table__cell">text and icon on <code>area</code>, usually white</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>fg</code></td>
+<td class="kern-table__cell">text colour of the area on a light background: title, status, key figure, number, icon and inactive filter; in the timeline the dot, title and category</td>
+</tr>
+</tbody>
+</table></div>
+<p class="kern-body">Requirements checked by <code>skripte/pruefe.py</code>: <code>on</code> on <code>area</code> at least 4.5:1 in both modes; light <code>fg</code> on white at least 4.5:1. For dark mode, dark <code>fg</code> needs the same contrast against the dark KERN background; there is no automatic check for that yet, so check the value in the browser when creating it. All other colours come from the KERN tokens and are not part of the data.</p>
+<h3 class="kern-heading-medium" id="25-creating-your-own-data">2.5 Creating your own data</h3>
+<ol class="kern-list kern-list--number">
+<li>Copy <code>daten/beispiel.json</code> and replace the lists <code>bereiche</code>, <code>einordnungen</code> and <code>projekte</code>. Assign keys, set colours per area, add icons.</li>
+<li>Adapt <code>texte</code> to your overview, at least <code>kopf.titel</code>.</li>
+<li>Check: <code>python3 skripte/pruefe.py</code> reports unknown or invalid keys, missing titles, wrong formats and insufficient contrast.</li>
+<li>Either load via <code>data-src</code> or embed into <code>index.html</code> with <code>python3 skripte/einbetten.py</code>. The check script reports when embedded data and JSON file diverge.</li>
+</ol>
+<p class="kern-body">Trust boundary: Fields that allow HTML (introduction, description, sections, key figure, footer texts) are reduced to an allowlist: <code>a</code> with a checked <code>href</code>, <code>strong</code>, <code>em</code>, <code>p</code>, <code>br</code>, <code>ul</code>, <code>ol</code>, <code>li</code>; other elements and all other attributes are dropped, their text remains. All other text fields are escaped. Values that cannot be escaped are checked for their format by the renderer and left out otherwise: keys (<code>^[a-z][a-z0-9_-]{0,40}$</code>), language codes, colours (hex), link addresses (only <code>http</code>, <code>https</code>, <code>mailto</code>, <code>tel</code> and relative paths) and the number (integer); <code>icon_svg</code> is reduced to the shapes <code>path</code>, <code>circle</code>, <code>rect</code>, <code>line</code>, <code>polyline</code>, <code>polygon</code>, <code>ellipse</code> with geometry attributes. <code>skripte/pruefe_xss.js</code> verifies this without a browser using payloads.</p>
+<h3 class="kern-heading-medium" id="26-deriving-colours-programmatically">2.6 Deriving colours programmatically</h3>
+<p class="kern-body">Only one base colour per area is maintained by hand. Everything else can be computed from it, on two levels.</p>
+<p class="kern-body"><strong>Level 1, data package:</strong> <code>skripte/farben.py</code> generates a colour ramp from a base colour following the method of the KERN kit, and from it the <code>farben</code> block for <code>bereiche[]</code>:</p>
+<div class="doku-code"><pre><code class="language-bash">python3 skripte/farben.py &quot;#4c8438&quot; &quot;#b4457a&quot;
+python3 skripte/farben.py --rampe &quot;#4c8438&quot;
+</code></pre><button type="button" class="kern-btn kern-btn--tertiary kern-btn--x-small doku-kopieren" aria-label="Copy code to clipboard" data-kopiert="Copied"><svg class="ps-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><span class="kern-label" aria-live="polite"></span></button></div>
+<p class="kern-body">KERN builds its colour ramps after the <a class="kern-link" rel="noopener" href="https://uxdesign.cc/the-universal-color-palette-9826deb94f7">"Universal Color Palette"</a> in the <a class="kern-link" rel="noopener" href="https://bottosson.github.io/posts/oklab/">Oklab</a> colour space, described on the <a class="kern-link" rel="noopener" href="https://www.kern-ux.de/2.0.6/design-system/farbe/">KERN page on colour</a>: the steps 025 to 950 are ordered by lightness, each step has the same contrast across all hues, step 500 is the contrast middle with 4.5:1 on white and on black, and light and dark mode arise by mirroring (800 light corresponds to 200 dark). The script reproduces this:</p>
+<div class="kern-table-responsive" data-name="Table, scrolls sideways"><table class="kern-table kern-table--striped">
+<thead class="kern-table__header">
+<tr class="kern-table__row">
+<th class="kern-table__cell">Step</th>
+<th class="kern-table__cell">Rule</th>
+</tr>
+</thead>
+<tbody class="kern-table__body">
+<tr class="kern-table__row">
+<td class="kern-table__cell">colour space</td>
+<td class="kern-table__cell">calculation in OKLCH (lightness L, chroma C, hue H), not in sRGB or HSL. The hue of the base colour stays the same across the whole ramp.</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">lightness per step</td>
+<td class="kern-table__cell">fixed scale from 025 to 950, the mean of the eleven ramps in <code>@kern-ux/native</code> 2.8.2 (for example 300 = 75.4 %, 500 = 57.0 %, 700 = 42.4 %)</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">chroma per step</td>
+<td class="kern-table__cell">follows the profile of the <a class="kern-link" rel="noopener" href="https://www.kern-ux.de/design-system/foundations/farbe/">kit ramps</a> (peak around 550 to 650, decreasing towards the ends); the height of the profile is chosen so that the ramp meets the chroma of the base colour at its lightness</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">gamut boundary</td>
+<td class="kern-table__cell">if a step falls outside sRGB, only the chroma is reduced; lightness and hue stay</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">step 500</td>
+<td class="kern-table__cell">is darkened in tenths of a percent if needed until white on it safely reaches 4.5:1</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>area</code></td>
+<td class="kern-table__cell">step 500</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>on</code></td>
+<td class="kern-table__cell">white</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>fg</code> light</td>
+<td class="kern-table__cell">step 700, as KERN sets its action colour in light mode (contrast on white about 8:1)</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>fg</code> dark</td>
+<td class="kern-table__cell">step 300, the mirror of 700, as KERN's action colour in dark mode</td>
+</tr>
+</tbody>
+</table></div>
+<p class="kern-body">The base colour itself therefore does not appear unchanged but as a ramp in its hue; <code>area</code> is the 500 step of that hue. The sample data was created this way from the four base colours of the demo. The script prints the contrasts; <code>--rampe</code> shows all twenty steps as OKLCH and hex.</p>
+<p class="kern-body"><strong>Level 2, presentation:</strong> From <code>area</code>, <code>on</code> and <code>fg</code>, <code>projektschau.css</code> derives all further shades at runtime with <code>color-mix</code>; there are no further colour values in the data:</p>
+<div class="kern-table-responsive" data-name="Table, scrolls sideways"><table class="kern-table kern-table--striped">
+<thead class="kern-table__header">
+<tr class="kern-table__row">
+<th class="kern-table__cell">Shade</th>
+<th class="kern-table__cell">Formula</th>
+</tr>
+</thead>
+<tbody class="kern-table__body">
+<tr class="kern-table__row">
+<td class="kern-table__cell">card surface</td>
+<td class="kern-table__cell">step 025 of the area ramp (light) or 950 (dark), computed from <code>area</code> with the relative colour syntax <code>oklch(from var(--ps-area) 96.4% calc(c * 0.08) h)</code>; browsers without that syntax get a <code>color-mix</code> approximation</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">card border, divider</td>
+<td class="kern-table__cell">step 100 (light) or 900 (dark) of the area ramp, computed the same way</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">area filter active, hover and press</td>
+<td class="kern-table__cell"><code>area</code>; hover 88 % <code>area</code> with black, press 78 %</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">area filter inactive, hover and press</td>
+<td class="kern-table__cell">border <code>area</code>, text <code>fg</code>; hover 10 % <code>area</code> over transparent, press 18 %</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">number</td>
+<td class="kern-table__cell"><code>fg</code> at 75 % opacity</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">title, status, key figure, timeline dot</td>
+<td class="kern-table__cell"><code>fg</code> unchanged</td>
+</tr>
+</tbody>
+</table></div>
+<p class="kern-body">Mixing happens in the <code>oklab</code> colour space, which keeps the shades evenly bright. In dark mode the script inserts the dark values for <code>area</code>, <code>on</code> and <code>fg</code>; the formulas stay the same and then mix with the dark KERN tokens.</p>
+<h3 class="kern-heading-medium" id="27-browsers">2.7 Browsers</h3>
+<p class="kern-body">The renderer only needs features that have been Baseline "widely available" in all major browsers since 2023: <code>DOMParser</code>, <code>URL</code>, <code>color-mix()</code> (since May 2023), <code>aspect-ratio</code>, <code>:focus-visible</code>. Two newer features are used with a fallback: the stylesheet rules are applied through <code>adoptedStyleSheets</code> (Chrome 73, Edge 79, Firefox 101, Safari 16.4; caniuse as of 2026-10-12), older browsers get a <code>&lt;style&gt;</code> element that works just as well without a strict CSP. Card surfaces and borders are first declared as <code>color-mix()</code> and overridden by the relative colour syntax <code>oklch(from …)</code> where it is fully supported (Chrome and Edge 131, Firefox 133, Safari 18; 93 percent share); older browsers show the <code>color-mix()</code> version, which differs only in nuances. The KERN kit itself does not name a browser list in its package. Tested on 2026-10-12 in Chromium, Firefox 157 and WebKit 27.2 via Playwright, see <a class="kern-link" href="#5-checking-and-maintaining">section 5</a>.</p>
+<h2 class="kern-heading-large" id="3-processing-and-output">3. Processing and output</h2>
+<h3 class="kern-heading-medium" id="31-flow">3.1 Flow</h3>
+<ol class="kern-list kern-list--number">
+<li><strong>Start:</strong> On load, the script calls <code>init</code> for every <code>[data-projektschau]</code>. It reads the options from the attributes and takes the data from the embedded JSON block or fetches it from <code>data-src</code>.</li>
+<li><strong>Render:</strong> <code>render(data, options)</code> builds the complete markup as a string. There are no templates; each structure lives in a small function: <code>karte</code> for a card, <code>zeitleisteHtml</code> for the timeline, <code>filterBtn</code>, <code>badge</code>, <code>btn</code> and <code>icon</code> for the building blocks.</li>
+<li><strong>Interaction:</strong> <code>interaktion(root)</code> attaches the events to the rendered markup: language switch, filters, view, reset, address bar, collapsible blocks.</li>
+</ol>
+<p class="kern-body">Both functions are also available from outside as <code>window.Projektschau.render</code> and <code>window.Projektschau.init</code>, for example to pre-render the markup on the server.</p>
+<h3 class="kern-heading-medium" id="32-where-each-field-is-shown">3.2 Where each field is shown</h3>
+<p class="kern-body">Card view, top to bottom:</p>
+<div class="kern-table-responsive" data-name="Table, scrolls sideways"><table class="kern-table kern-table--striped">
+<thead class="kern-table__header">
+<tr class="kern-table__row">
+<th class="kern-table__cell">Place</th>
+<th class="kern-table__cell">Field</th>
+<th class="kern-table__cell">Markup</th>
+</tr>
+</thead>
+<tbody class="kern-table__body">
+<tr class="kern-table__row">
+<td class="kern-table__cell">Column and card</td>
+<td class="kern-table__cell">–</td>
+<td class="kern-table__cell"><code>kern-col-12 kern-col-md-6 kern-col-lg-4 kern-col-xxl-3 ps-col</code> &gt; <code>kern-card kern-layer kern-level-1 ps-card</code> with <code>data-bereich</code> and <code>data-cat</code></td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Area badge</td>
+<td class="kern-table__cell"><code>bereiche[].icon_svg</code>, <code>bereiche[].label</code></td>
+<td class="kern-table__cell"><code>kern-badge kern-badge--small ps-badge</code> in area colour, with the area icon, on card and timeline</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Category badge</td>
+<td class="kern-table__cell"><code>einordnungen[].label</code></td>
+<td class="kern-table__cell"><code>kern-badge kern-badge--small</code> neutral</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Number</td>
+<td class="kern-table__cell"><code>nr</code></td>
+<td class="kern-table__cell"><code>ps-num</code>, right, area colour muted</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Icon</td>
+<td class="kern-table__cell"><code>icon_svg</code></td>
+<td class="kern-table__cell"><code>kern-card__media ps-cover</code> above the head, visible only with the cover switched on (<code>data-symbole</code> or icon switch, <a class="kern-link" href="#1-demo-and-integration">section 1</a>)</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Title</td>
+<td class="kern-table__cell"><code>titel</code></td>
+<td class="kern-table__cell"><code>kern-title</code> in area colour, one step larger than in the kit</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Status</td>
+<td class="kern-table__cell"><code>status</code></td>
+<td class="kern-table__cell"><code>kern-subline kern-subline--small</code> in area colour</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Description</td>
+<td class="kern-table__cell"><code>beschreibung</code></td>
+<td class="kern-table__cell"><code>kern-body</code></td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Sections</td>
+<td class="kern-table__cell"><code>abschnitte[]</code></td>
+<td class="kern-table__cell"><code>label</code> as <code>kern-label</code>, <code>liste</code> as <code>kern-list kern-list--bullet kern-list--small</code>, <code>text</code> as <code>kern-body kern-body--small</code></td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Key figure</td>
+<td class="kern-table__cell"><code>kennzahl</code></td>
+<td class="kern-table__cell"><code>kern-body ps-kpi</code> with <code>&lt;strong&gt;</code>, area colour, directly after text or list</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Divider</td>
+<td class="kern-table__cell">only if <code>links</code> present</td>
+<td class="kern-table__cell"><code>kern-divider kern-divider--decorative ps-card-divider</code></td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Links</td>
+<td class="kern-table__cell"><code>links[]</code></td>
+<td class="kern-table__cell"><code>kern-link kern-link--small</code> in <code>kern-card__footer</code>, 16 pixels like the rest of the card text</td>
+</tr>
+</tbody>
+</table></div>
+<p class="kern-body">Timeline, one group per year:</p>
+<div class="kern-table-responsive" data-name="Table, scrolls sideways"><table class="kern-table kern-table--striped">
+<thead class="kern-table__header">
+<tr class="kern-table__row">
+<th class="kern-table__cell">Place</th>
+<th class="kern-table__cell">Field</th>
+<th class="kern-table__cell">Markup</th>
+</tr>
+</thead>
+<tbody class="kern-table__body">
+<tr class="kern-table__row">
+<td class="kern-table__cell">Year heading</td>
+<td class="kern-table__cell">from <code>zeitleiste.sortierung</code></td>
+<td class="kern-table__cell"><code>kern-heading kern-heading-medium ps-tl-jahr</code></td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Period</td>
+<td class="kern-table__cell"><code>zeitleiste.zeitraum</code></td>
+<td class="kern-table__cell"><code>ps-tl-zeit</code>, left column, on mobile above the entry</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Dot on the line</td>
+<td class="kern-table__cell">colour from <code>bereiche[].farben.*.fg</code></td>
+<td class="kern-table__cell">pseudo-element of <code>ps-tl-main</code> (mobile: of <code>ps-row</code>)</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Number, badge, title, category</td>
+<td class="kern-table__cell"><code>nr</code>, <code>bereiche[].label</code>, <code>titel</code>, <code>einordnungen[].label_zeitleiste</code></td>
+<td class="kern-table__cell">one line <code>ps-tl-kopf</code>, all on a shared baseline</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Note</td>
+<td class="kern-table__cell"><code>zeitleiste.notiz</code></td>
+<td class="kern-table__cell"><code>kern-body kern-body--small ps-tl-notiz</code></td>
+</tr>
+</tbody>
+</table></div>
+<p class="kern-body">Filter bar: area filters from <code>bereiche</code> with icon and hit count, the cards/timeline switch to the right, below that the category filters from the categories with <code>als_filter_chip: true</code>. The hit counts take both axes into account: the counter of an area counts only projects that also match the selected category, and vice versa.</p>
+<h3 class="kern-heading-medium" id="33-languages">3.3 Languages</h3>
+<p class="kern-body">Each language pair is rendered as a sequence of elements with a <code>lang</code> attribute, one per language, for example <code>&lt;span lang="de"&gt;Umwelt&lt;/span&gt;&lt;span lang="en"&gt;Environment&lt;/span&gt;</code>. Block texts with HTML use <code>div</code> elements. If all variants are identical or there is only one language, the text is output without a wrapper.</p>
+<p class="kern-body">The script generates one CSS rule per language and puts it into a <code>&lt;style&gt;</code> before the wrapper: <code>.ps[data-lang="de"] [lang]:not([lang="de"]) { display: none }</code>. Switching the language only changes <code>data-lang</code> and <code>lang</code> on the wrapper; all texts stay in the document, and search engines and screen readers see the active language correctly marked up. <code>aria-label</code> texts are stored as <code>data-aria-&lt;language&gt;</code> on the element and rewritten on switch. The chosen language is remembered under <code>ps-lang</code> in <code>localStorage</code>.</p>
+<h3 class="kern-heading-medium" id="34-area-colours-in-the-markup">3.4 Area colours in the markup</h3>
+<p class="kern-body">When rendering, the script writes the light colours of all areas as CSS variables into a generated <code>&lt;style&gt;</code> before the wrapper, rule <code>.ps { … }</code>: <code>--ps-area-umwelt</code>, <code>--ps-area-umwelt-on</code>, <code>--ps-area-umwelt-fg</code> and so on per key. A <code>style</code> attribute would be unsuitable because it would override the dark rules. The dark colours are in the same <code>&lt;style&gt;</code> under the KERN theme selectors <code>[data-kern-theme="dark"] .ps</code>, <code>.kern-dark .ps</code> and, as a fallback for the system setting, <code>@media (prefers-color-scheme: dark)</code>.</p>
+<p class="kern-body">Every element that belongs to an area (card, timeline row, area filter, badge) gets three generic variables via its <code>style</code> attribute: <code>--ps-area</code>, <code>--ps-area-on</code>, <code>--ps-area-fg</code>, pointing to the variables of its area. The CSS only works with these three names and does not know the areas. New areas therefore need no CSS change.</p>
+<h3 class="kern-heading-medium" id="35-filters-view-and-address-bar">3.5 Filters, view and address bar</h3>
+<p class="kern-body">Every card and every timeline row carries <code>data-bereich</code> and <code>data-cat</code>. A filter click updates <code>aria-pressed</code> and the button variants, checks each element against both active filters and sets the class <code>is-hidden</code>. Years without a visible row are hidden, the first visible row of a year gets the class <code>ps-row--erste</code> (there the line starts at the dot), and with zero hits the empty state with a reset button appears. The live region <code>ps-live</code> announces the hit count to screen readers; its texts are in the script (<code>LIVE</code>, <code>LEER</code>) and can be replaced via the options <code>live</code> and <code>leer</code> when calling <code>render</code> directly.</p>
+<p class="kern-body">The state is kept in the address bar after <code>#</code>, for example <code>#bereich=kultur&amp;filter=netzwerk&amp;ansicht=zeitleiste</code>, and restored on load and on <code>hashchange</code>. Any selection can thus be shared as a link.</p>
+<p class="kern-body">Area and category filters each live in a KERN details component. From 48rem viewport width the script sets both to <code>open</code> and the class <code>ps-panel--offen</code>; the CSS then hides the headers and shows the labels inline. Below that width the headers "Area" and "Filter" act as toggles; the area block starts open, the category block closed.</p>
+<h2 class="kern-heading-large" id="4-styling">4. Styling</h2>
+<h3 class="kern-heading-medium" id="41-the-kern-kit">4.1 The KERN kit</h3>
+<p class="kern-body">The kit is included unchanged under <code>vendor/kern/</code> (<code>kern.min.css</code>, <a class="kern-link" rel="noopener" href="https://github.com/mozilla/Fira">Fira Sans</a> in the weights 400, 400 italic, 500, 600 and 700, licence, version file). The demo page sets <code>data-kern-theme</code> from <code>localStorage</code> (key <code>ps-theme</code>) before the first render so nothing flashes. The grid fills the width with as many columns as cards of at least 18rem fit.</p>
+<h3 class="kern-heading-medium" id="42-kern-components-used">4.2 KERN components used</h3>
+<div class="kern-table-responsive" data-name="Table, scrolls sideways"><table class="kern-table kern-table--striped">
+<thead class="kern-table__header">
+<tr class="kern-table__row">
+<th class="kern-table__cell">Component</th>
+<th class="kern-table__cell">Use</th>
+</tr>
+</thead>
+<tbody class="kern-table__body">
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>kern-card</code> with <code>__container</code>, <code>__header</code>, <code>__body</code>, <code>__footer</code></td>
+<td class="kern-table__cell">the card in its compact variant <code>kern-card--small</code> (8 pixels between header, body and footer, 16 pixel texts), padding 24 pixels (<code>--kern-metric-space-large</code>) via an own rule</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>kern-hgroup</code>, <code>kern-title</code>, <code>kern-subline</code></td>
+<td class="kern-table__cell">title block of the card with status</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>kern-badge kern-badge--small</code></td>
+<td class="kern-table__cell">area and category on card and timeline</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>kern-btn</code> with <code>--x-small</code>, <code>--primary</code>, <code>--secondary</code>, <code>--tertiary</code>, <code>kern-btn-wrapper</code></td>
+<td class="kern-table__cell">filters, view and language switches (x-small), reset (tertiary); active is <code>--primary</code>, inactive <code>--secondary</code>, state also in <code>aria-pressed</code></td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>kern-form-check</code> with <code>__checkbox</code> and <code>kern-label</code></td>
+<td class="kern-table__cell">icon switch as a checkbox (the kit has no toggle switch)</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>kern-details</code> with <code>__header</code>, <code>__body</code></td>
+<td class="kern-table__cell">area and category filters, optional "About" section</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>kern-row</code>, <code>kern-col-12</code>, <code>kern-col-md-6</code>, <code>kern-col-lg-4</code>, <code>kern-col-xxl-3</code> (from <code>kern-grid.min.css</code>)</td>
+<td class="kern-table__cell">card grid: one, two, three and from 1600 pixels four columns at the KERN breakpoints</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>kern-stack-lg</code>, <code>kern-stack-sm</code></td>
+<td class="kern-table__cell">vertical spacing in the wrapper and the head</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>kern-layer kern-level-1</code></td>
+<td class="kern-table__cell">the card as a raised surface with the contextual tokens of the kit</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>kern-divider kern-divider--decorative</code></td>
+<td class="kern-table__cell">divider before the links</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>kern-heading-x-large</code>, <code>kern-heading-medium</code>, <code>kern-body</code>, <code>kern-label</code>, <code>kern-list</code>, <code>kern-link</code>, <code>kern-sr-only</code></td>
+<td class="kern-table__cell">typography, lists, links, screen reader text</td>
+</tr>
+</tbody>
+</table></div>
+<p class="kern-body">KERN has no chip or tag toggle, no segmented control and no tabs. Filters and switches are therefore buttons with <code>aria-pressed</code>. For the cards/timeline switch, a "Segmented Control" component has been proposed in the KERN project (<a class="kern-link" rel="noopener" href="https://gitlab.opencode.de/kern-ux/pattern-library/-/work_items/1141">issue 1141 in the KERN main repository</a>, in refinement as of October 2026, semantics as <code>radiogroup</code> or as a button group with <code>aria-pressed</code> still open). Until then the switch here is custom-built from joined KERN buttons and will be aligned with the component once it is part of the kit.</p>
+<h3 class="kern-heading-medium" id="43-own-additions">4.3 Own additions</h3>
+<p class="kern-body">All own classes carry the prefix <code>ps-</code>, all values come from KERN tokens or the three area variables. Two set values remain because the kit has no tokens for them: <code>--ps-tl-mitte</code> (17 pixels) is the height of the first line in the timeline to which dot and period are aligned, on mobile half the line height from the token; and 200 milliseconds for the transition of the cover icon. Everything else, including dot size, line width and period column, comes from tokens.</p>
+<div class="kern-table-responsive" data-name="Table, scrolls sideways"><table class="kern-table kern-table--striped">
+<thead class="kern-table__header">
+<tr class="kern-table__row">
+<th class="kern-table__cell">Class</th>
+<th class="kern-table__cell">Purpose</th>
+</tr>
+</thead>
+<tbody class="kern-table__body">
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>.ps</code></td>
+<td class="kern-table__cell">wrapper; spacing comes from <code>kern-stack-lg</code></td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>.ps-head</code>, <code>.ps-lede</code>, <code>.ps-kopfzeile</code>, <code>.ps-symbolschalter</code>, <code>.ps-lang</code></td>
+<td class="kern-table__cell">head area, introduction, top-right row with icon switch and language switch</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>.ps-controls</code>, <code>.ps-controls-divider</code></td>
+<td class="kern-table__cell">filter bar as a grid: area block left, switch right, category block below, <code>kern-divider</code> at the end; sticks to the top, slightly transparent with blur</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>.ps-filter</code>, <code>.ps-filter-label</code>, <code>.ps-view</code>, <code>.ps-count</code></td>
+<td class="kern-table__cell">filter rows as a grid (label left, buttons wrap within their column), view switch (up to 64rem as a full row on top), hit count</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>.ps-btn-bereich</code></td>
+<td class="kern-table__cell">area filter in area colour, active filled, inactive with coloured border, hover and active as a blend of the area colour</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>.ps-seg</code></td>
+<td class="kern-table__cell">two buttons joined into one switch; colours and radius remain those of the buttons</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>.ps-panel</code>, <code>.ps-panel-bereich</code>, <code>.ps-panel-cat</code>, <code>.ps-panel--offen</code></td>
+<td class="kern-table__cell">the two filter blocks as details: open without header on desktop, collapsible on mobile with a header in label size</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>.ps-grid</code>, <code>.ps-col</code></td>
+<td class="kern-table__cell">row and columns of the KERN grid with a 24 instead of 32 pixel gutter (12 pixels per column side from the <code>large</code> token); <code>.ps-col</code> stretches the card to row height</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>.ps-card</code></td>
+<td class="kern-table__cell">surface and very subtle border as steps 025 and 100 of the area ramp, in dark mode 950 and 900</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>.ps-cover</code>, <code>.ps-cover-icon</code></td>
+<td class="kern-table__cell">optional 16:9 cover above the card head, surface step 100 of the area ramp (dark 900), icon 22 percent of the card width in <code>fg</code>, grows smoothly to 115 percent on pointer or focus on the card (200 milliseconds, none with reduced motion); visible only with the cover switched on</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>.ps-tags</code>, <code>.ps-badge</code>, <code>.ps-num</code></td>
+<td class="kern-table__cell">head line of the card, badge in area colour with more padding, number on the right</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">rules on <code>.kern-title</code>, <code>.kern-subline</code>, <code>.ps-kpi</code> in <code>.ps-card</code></td>
+<td class="kern-table__cell">area colour and title size; their specificity is above the card rules of the kit because those would win otherwise</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>.ps-field</code>, rules on <code>.kern-list--bullet</code> in the card</td>
+<td class="kern-table__cell">field label without bottom spacing, lists with 4 instead of 24 pixel spacing and 20 instead of 32 pixel indent</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>.ps-card-divider</code></td>
+<td class="kern-table__cell">divider in the border blend</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>.ps-tl</code>, <code>.ps-year</code>, <code>.ps-tl-jahr</code>, <code>.ps-tl-liste</code>, <code>.ps-row</code>, <code>.ps-tl-zeit</code>, <code>.ps-tl-main</code>, <code>.ps-tl-kopf</code>, <code>.ps-tl-titel</code>, <code>.ps-tl-cat</code>, <code>.ps-tl-notiz</code></td>
+<td class="kern-table__cell">timeline: grid with a 96 pixel period column (3 × <code>x-large</code>), 2 pixel line with 16 pixel dot, the line starts at the dot for the first visible row of each year, head line on a baseline; below 40rem the period sits above the entry, the line runs along the row edge, the dot sits at the period</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>.ps-empty</code></td>
+<td class="kern-table__cell">empty state: text and tertiary button in <code>kern-stack-sm</code>, with <code>role="status"</code></td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>.ps-live</code></td>
+<td class="kern-table__cell">live region, visually hidden via <code>kern-sr-only</code></td>
+</tr>
+</tbody>
+</table></div>
+<p class="kern-body">The gradation of the area colour on the card, from strong to quiet: badge and active filter (<code>area</code> full), title, status, key figure, dot (<code>fg</code> full), number (<code>fg</code> at 75 percent opacity), border and divider (step 100), surface (step 025).</p>
+<h3 class="kern-heading-medium" id="44-where-to-adjust-what">4.4 Where to adjust what</h3>
+<div class="kern-table-responsive" data-name="Table, scrolls sideways"><table class="kern-table kern-table--striped">
+<thead class="kern-table__header">
+<tr class="kern-table__row">
+<th class="kern-table__cell">Wish</th>
+<th class="kern-table__cell">Place</th>
+</tr>
+</thead>
+<tbody class="kern-table__body">
+<tr class="kern-table__row">
+<td class="kern-table__cell">colours of an area</td>
+<td class="kern-table__cell">only in the data: <code>bereiche[].farben</code></td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">interface texts</td>
+<td class="kern-table__cell">only in the data: <code>texte</code></td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">which categories are filterable</td>
+<td class="kern-table__cell"><code>einordnungen[].als_filter_chip</code></td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">order of filters and cards</td>
+<td class="kern-table__cell">order of the lists <code>bereiche</code> and <code>projekte</code></td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">initial view, preset filter, heading level, hiding parts</td>
+<td class="kern-table__cell">attributes on the element, <a class="kern-link" href="#1-demo-and-integration">section 1</a></td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">strength of the card tint or border</td>
+<td class="kern-table__cell">percentages in <code>.ps-card</code> and <code>.ps-card-divider</code></td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">size of card title or timeline title</td>
+<td class="kern-table__cell">token assignment in the rules on <code>.kern-title</code> in <code>.ps-card</code> or <code>.ps-tl-titel</code>; suitable steps are <code>medium-static</code> (18), <code>large-static</code> (21), <code>medium-adaptive</code> (21/24)</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">card padding</td>
+<td class="kern-table__cell">token in the rule on <code>.ps-card .kern-card__container</code>; without it the compact variant's 16 pixels apply</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">grid gutter</td>
+<td class="kern-table__cell">token in the rules on <code>.ps-grid.kern-row</code> and <code>.ps-grid.kern-row &gt; .ps-col</code>; without these rules the kit's 2rem apply</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">number of grid columns</td>
+<td class="kern-table__cell"><code>kern-col-*</code> classes in <code>karte()</code> in the script (default 12, md 6, lg 4, xxl 3)</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">sticky filter bar</td>
+<td class="kern-table__cell">remove <code>position: sticky</code> in <code>.ps-controls</code></td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">width of the period column</td>
+<td class="kern-table__cell">token calculation in <code>.ps-row</code> (3 × <code>x-large</code>, 96 pixels)</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">breakpoints</td>
+<td class="kern-table__cell"><code>48rem</code> in the script (collapsible blocks), <code>64rem</code> in the CSS (view switch), <code>40rem</code> in the CSS (timeline)</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">texts of the live region</td>
+<td class="kern-table__cell">constants <code>LIVE</code> and <code>LEER</code> in the script or options <code>live</code>/<code>leer</code> on <code>render</code></td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">focus colour, action colour, font</td>
+<td class="kern-table__cell">not in the pattern but via the KERN theme tokens of the page, for example <code>--kern-color-action-focus-default</code> on <code>:root</code></td>
+</tr>
+</tbody>
+</table></div>
+<p class="kern-body">Not intended: custom fonts (KERN specifies Fira Sans), a separate colour system next to the tokens, and scoping the kit for pages not designed with KERN.</p>
+<h3 class="kern-heading-medium" id="45-design-rules">4.5 Design rules</h3>
+<p class="kern-body">These rules describe how the demo is designed. Anyone adapting the pattern keeps to them or changes them here as well. All values are KERN tokens; the pixel figures give the token's value.</p>
+<p class="kern-body"><strong>Principles</strong></p>
+<ul class="kern-list kern-list--bullet">
+<li>Only classes that exist in the kit. Own classes carry the prefix <code>ps-</code> and only add what KERN lacks. No fixed colour or pixel value except <code>--ps-tl-mitte</code>.</li>
+<li>Three text sizes in the pattern: 16 pixels (<code>small-static</code>) for all running text, including badges, number, status, lists, links and period; 21 pixels, 24 from desktop up (<code>medium-adaptive</code>) for the card title; 21 pixels (<code>large-static</code>) for the title in the timeline. Plus <code>kern-heading-x-large</code> for the page title and <code>kern-heading-medium</code> for the year. Line height 24 pixels (<code>medium-static</code>), 28 or 32 for the card title.</li>
+<li>Spacing in four steps: 4 (<code>x-small</code>), 8 (<code>small</code>), 16 (<code>default</code>), 24 pixels (<code>large</code>). Things that belong together sit 4 or 8 apart, blocks are separated by 16 or 24.</li>
+<li>Area colour only via the three variables <code>--ps-area</code>, <code>--ps-area-on</code>, <code>--ps-area-fg</code>, graded from strong to quiet (end of 4.3). Everything else from kit tokens: action colour for switches, classification filters and links, <code>decorative-border</code> for lines, <code>text-muted</code> for the period.</li>
+<li>States: active is <code>kern-btn--primary</code>, inactive <code>kern-btn--secondary</code>, plus <code>aria-pressed</code>. Focus, hover and active come from the kit; for area buttons they are mixed from the area colour, as the kit does with the action colour.</li>
+<li>Dark mode mirrors the ramp: surface 950 instead of 025, border and divider 900 instead of 100, <code>fg</code> 300 instead of 700. No separate dark colours.</li>
+<li>Icons: Lucide, 1em in buttons and badges (area icon on card and timeline), always in the colour of the adjacent text. No icon next to the card title; the project icon appears only as an optional cover.</li>
+</ul>
+<p class="kern-body"><strong>Content</strong></p>
+<p class="kern-body">The rules for texts so that all cards share one structure.</p>
+<ul class="kern-list kern-list--bullet">
+<li>Title without a full stop; status as a short line following the pattern "Running – since 05/2025", "Planned for 06/2026" or "Idea – not yet started".</li>
+<li>Description one or two sentences; key figure and list items one line each.</li>
+<li>The first section below the description is a list with at least two items; each item starts with a capital letter and ends without a full stop. Cards without a section stay short.</li>
+<li>The key figure starts with a capital letter ("Around 90 assignments per month", not "around …"), ends without a full stop and separates thousands with a comma in English ("2,300 pictures") and a dot in German. It directly follows text or list.</li>
+<li>Links only in the card footer; the link text names the target ("About the garden", "Programme"), never "here" or "more".</li>
+<li>Timeline: period as "since 05/2025" or "07/2024", note a short sentence without a full stop.</li>
+<li>Both languages equally long and equally structured; numbers and dates identical in both.</li>
+</ul>
+<p class="kern-body"><strong>Page header</strong></p>
+<div class="kern-table-responsive" data-name="Table, scrolls sideways"><table class="kern-table kern-table--striped">
+<thead class="kern-table__header">
+<tr class="kern-table__row">
+<th class="kern-table__cell">Element</th>
+<th class="kern-table__cell">Rule</th>
+</tr>
+</thead>
+<tbody class="kern-table__body">
+<tr class="kern-table__row">
+<td class="kern-table__cell">Title</td>
+<td class="kern-table__cell">level from <code>data-ebene</code> (default <code>h1</code>), <code>kern-heading-x-large</code></td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Intro</td>
+<td class="kern-table__cell"><code>kern-body kern-body--large</code>, paragraphs 8 pixels apart, note in bold within the text</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Language switch</td>
+<td class="kern-table__cell">top right, two <code>kern-btn--x-small</code> (32 pixels, like cards/timeline) as a joined switch (<code>ps-seg</code>), active <code>primary</code>; <code>role="group"</code> with label from the data</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Icon switch</td>
+<td class="kern-table__cell">left of the language switch with an 8 pixel gap, a KERN checkbox (<code>kern-form-check</code>, 32 pixels) with the label from <code>texte.symbole.label</code> and <code>aria-label</code> from <code>texte.symbole.aria</code>; border and label in the kit's action colour, checked state as in the kit; only with <code>data-symbolschalter="ja"</code></td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Spacing</td>
+<td class="kern-table__cell"><code>kern-stack-sm</code> (8 pixels) inside the header, <code>kern-stack-lg</code> (32 pixels) between header, filter bar and grid</td>
+</tr>
+</tbody>
+</table></div>
+<p class="kern-body"><strong>Filter bar</strong></p>
+<div class="kern-table-responsive" data-name="Table, scrolls sideways"><table class="kern-table kern-table--striped">
+<thead class="kern-table__header">
+<tr class="kern-table__row">
+<th class="kern-table__cell">Element</th>
+<th class="kern-table__cell">Rule</th>
+</tr>
+</thead>
+<tbody class="kern-table__body">
+<tr class="kern-table__row">
+<td class="kern-table__cell">Bar</td>
+<td class="kern-table__cell">sticks to the top edge, background 88 percent of the page colour with 8 pixel blur, 16 pixel padding on top, closed by <code>kern-divider--decorative</code></td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Layout</td>
+<td class="kern-table__cell">grid: area block left, cards/timeline switch right on the same row, classification block below; 16 pixels between blocks</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Label</td>
+<td class="kern-table__cell"><code>kern-label</code> in an 80 pixel column (2.5 × <code>x-large</code>), shifted down 4 pixels so it is centred on the first button row</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Buttons</td>
+<td class="kern-table__cell"><code>kern-btn--x-small</code>, 32 pixels high, 8 pixels apart in both directions (the kit's 8 pixel top and bottom margins are removed), wrapping within their column</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Area buttons</td>
+<td class="kern-table__cell">active: surface <code>area</code>, text <code>on</code>; inactive: border <code>area</code>, text <code>fg</code>; hover and active as mixes of <code>area</code> (88 and 78 percent with black, or 10 and 18 percent over transparent); area icon in front</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Classification buttons</td>
+<td class="kern-table__cell">the kit's action colour, otherwise like area buttons</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Count</td>
+<td class="kern-table__cell">in brackets after the label, 80 percent opacity, follows the label's state</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Cards/timeline switch</td>
+<td class="kern-table__cell">two <code>kern-btn--x-small</code> as <code>ps-seg</code>, level with the first button row; up to 64rem a full row above the filters with two equal halves</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Mobile (below 48rem)</td>
+<td class="kern-table__cell">both blocks as <code>kern-details</code>, header in label size and action colour with a 20 pixel arrow, label on its own line, content not indented</td>
+</tr>
+</tbody>
+</table></div>
+<p class="kern-body"><strong>Card grid</strong></p>
+<div class="kern-table-responsive" data-name="Table, scrolls sideways"><table class="kern-table kern-table--striped">
+<thead class="kern-table__header">
+<tr class="kern-table__row">
+<th class="kern-table__cell">Element</th>
+<th class="kern-table__cell">Rule</th>
+</tr>
+</thead>
+<tbody class="kern-table__body">
+<tr class="kern-table__row">
+<td class="kern-table__cell">Columns</td>
+<td class="kern-table__cell">KERN grid: 1, from <code>md</code> 2, from <code>lg</code> 3, from <code>xxl</code> 4 columns</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Gutter</td>
+<td class="kern-table__cell">24 pixels (<code>large</code>) instead of the kit's 32, 12 per column side</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Height</td>
+<td class="kern-table__cell">all cards in a row equally high; the body stretches, divider and links always sit at the bottom edge</td>
+</tr>
+</tbody>
+</table></div>
+<p class="kern-body"><strong>Card</strong></p>
+<div class="kern-table-responsive" data-name="Table, scrolls sideways"><table class="kern-table kern-table--striped">
+<thead class="kern-table__header">
+<tr class="kern-table__row">
+<th class="kern-table__cell">Element</th>
+<th class="kern-table__cell">Rule</th>
+</tr>
+</thead>
+<tbody class="kern-table__body">
+<tr class="kern-table__row">
+<td class="kern-table__cell">Component</td>
+<td class="kern-table__cell"><code>kern-card kern-card--small</code> as <code>kern-layer kern-level-1</code>; compact variant for the 8 pixel gap between header, body and footer and the 16 pixel texts, but 24 pixel padding (<code>large</code>)</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Surface, border</td>
+<td class="kern-table__cell">steps 025 and 100 of the area ramp (light), 950 and 900 (dark), 1 pixel border, kit radius</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Order</td>
+<td class="kern-table__cell">optional cover, head line, title, status, text, fields with lists, key figure, divider, links</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Cover (option)</td>
+<td class="kern-table__cell"><code>kern-card__media</code> at 16:9, surface step 100 of the area ramp, project icon 22 percent of the card width in <code>fg</code>, top corners in the card radius; on pointer or focus on the card the icon grows smoothly to 115 percent, without transition under reduced motion; only with the cover switched on, otherwise the head line is the first element</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Head line</td>
+<td class="kern-table__cell">area badge with icon, classification badge without surface, number on the right; 4 pixels between badges, 8 pixels below</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Badge</td>
+<td class="kern-table__cell"><code>kern-badge--small</code>, padding 2 and 8 pixels, surface <code>area</code>, text <code>on</code>, 16 pixels semibold; icon 1em with 4 pixel gap</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Number</td>
+<td class="kern-table__cell">two digits with leading zero, 16 pixels regular, <code>fg</code> at 75 percent opacity, tabular figures, without baseline padding so it lines up with the badge</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Title</td>
+<td class="kern-table__cell"><code>kern-title</code>, 21/24 pixels, colour <code>fg</code>, without icon</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Status</td>
+<td class="kern-table__cell"><code>kern-subline--small</code> directly under the title without the kit's top baseline padding, 16 pixels, colour <code>fg</code></td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Text</td>
+<td class="kern-table__cell"><code>kern-body</code>, 16 pixels, the kit's text colour</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Field</td>
+<td class="kern-table__cell">label <code>kern-label</code> semibold, 4 pixels to its content; below it always a list <code>kern-list--bullet kern-list--small</code> with at least two items and 4 pixels between them, indented 20 pixels (<code>default</code> + <code>x-small</code>, the kit uses 32). No running text as the first section so the cards share one structure; cards without a section stay short</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Key figure</td>
+<td class="kern-table__cell"><code>kern-body</code> bold, colour <code>fg</code>, directly after text or list, never pushed to the bottom edge (that is reserved for the links); always starts with a capital letter ("Around 90 assignments per month"), no full stop; thousands separated by a comma in English ("2,300 pictures") and by a dot in German</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Divider</td>
+<td class="kern-table__cell"><code>kern-divider--decorative</code> in step 100, 16 pixels above and 0 below; with the card's 8 pixel gap that is 24 to the key figure and 8 to the links</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Links</td>
+<td class="kern-table__cell"><code>kern-link kern-link--small</code>, 16 pixels, action colour, underlined, 16 pixels apart, wrapping</td>
+</tr>
+</tbody>
+</table></div>
+<p class="kern-body"><strong>Timeline</strong></p>
+<div class="kern-table-responsive" data-name="Table, scrolls sideways"><table class="kern-table kern-table--striped">
+<thead class="kern-table__header">
+<tr class="kern-table__row">
+<th class="kern-table__cell">Element</th>
+<th class="kern-table__cell">Rule</th>
+</tr>
+</thead>
+<tbody class="kern-table__body">
+<tr class="kern-table__row">
+<td class="kern-table__cell">Year</td>
+<td class="kern-table__cell"><code>kern-heading-medium</code>, 8 pixels below, 24 pixels between years; years without visible entries are hidden</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Row</td>
+<td class="kern-table__cell">grid with a 96 pixel period column (3 × <code>x-large</code>) and 16 pixels to the line; 24 pixels below each entry, 4 below the last</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Period</td>
+<td class="kern-table__cell"><code>kern-body--small kern-body--muted</code>, right-aligned, level with the first line</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Line, dot</td>
+<td class="kern-table__cell">line 2 pixels (<code>border-width-default</code>) in <code>decorative-border</code>, dot 16 pixels (<code>dimension-x-small</code>) in <code>area</code>, centred on the line; the line starts at the first and ends at the last visible dot of the year</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Head line</td>
+<td class="kern-table__cell">on the baseline: number, area badge with area icon (raised 2 pixels so it is centred on the title line), title <code>kern-title</code> 21 pixels in <code>fg</code>, classification <code>kern-label--subtle</code> in <code>fg</code>; 8 pixels apart, 4 when wrapping</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Note</td>
+<td class="kern-table__cell"><code>kern-body--small</code>, 4 pixels below the head line, the kit's text colour</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Mobile (below 40rem)</td>
+<td class="kern-table__cell">period above the entry, 8 pixels below it; line at the left edge of the whole row, dot level with the period; list indented 8 pixels so the dot disappears behind the filter bar when scrolling</td>
+</tr>
+</tbody>
+</table></div>
+<p class="kern-body"><strong>Empty state and messages</strong></p>
+<div class="kern-table-responsive" data-name="Table, scrolls sideways"><table class="kern-table kern-table--striped">
+<thead class="kern-table__header">
+<tr class="kern-table__row">
+<th class="kern-table__cell">Element</th>
+<th class="kern-table__cell">Rule</th>
+</tr>
+</thead>
+<tbody class="kern-table__body">
+<tr class="kern-table__row">
+<td class="kern-table__cell">Empty state</td>
+<td class="kern-table__cell"><code>kern-body</code> and <code>kern-btn--tertiary</code> in <code>kern-stack-sm</code>, no box, <code>role="status"</code>; button not stretched</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Live region</td>
+<td class="kern-table__cell"><code>kern-sr-only</code>, <code>aria-live="polite"</code>, announces the count after every filter change</td>
+</tr>
+</tbody>
+</table></div>
+<h2 class="kern-heading-large" id="5-checking-and-maintaining">5. Checking and maintaining</h2>
+<ul class="kern-list kern-list--bullet">
+<li><code>python3 skripte/pruefe.py</code> must report "ALLE PRÜFUNGEN BESTANDEN" (all checks passed). It verifies that every <code>kern-*</code> class and every <code>--kern-*</code> token used exists in the kit, that the data package is consistent (known keys, title in every language), that badge and title contrasts suffice, and that the embedded data matches the JSON file.</li>
+<li>After every change to <code>daten/beispiel.json</code>: <code>python3 skripte/einbetten.py</code>.</li>
+<li>After every change to <code>README.md</code> or <code>README.en.md</code>: <code>python3 skripte/doku_html.py</code> (requires the Python module <a class="kern-link" rel="noopener" href="https://python-markdown.github.io"><code>markdown</code></a>).</li>
+<li><code>node skripte/pruefe_fuzz.js 1000 42</code> must report "ALLE PRÜFUNGEN BESTANDEN" (count and seed are free to choose).</li>
+<li>Print view: print the demo in the browser or check it via Playwright <code>emulateMedia({ media: 'print' })</code>; only title, introduction and cards may appear.</li>
+<li>Load test: <code>python3 skripte/erzeuge_last.py 1000</code> writes <code>last-test.html</code> with 1000 cards (not in the repository); open it in the browser and check filters, timeline and language. Measured: 205 ms to first render, 5 ms per filter click. Browser matrix and accessibility (axe-core via Playwright) are not part of this package and run by hand before a release, the Content Security Policy with a server that sets <code>style-src 'self'</code>.</li>
+<li><code>node skripte/pruefe_xss.js</code> must also report "ALLE PRÜFUNGEN BESTANDEN": it renders the sample data with payloads in area colour, key, language code, icon, number, link and year and searches the output for active markup. Run it after every change to the renderer.</li>
+<li>Reporting vulnerabilities: <a class="kern-link" href="../SECURITY.md"><code>SECURITY.md</code></a> states the address, the time frames and what belongs to the pattern.</li>
+<li>Bill of materials: <code>SPDX_projektschau-kern.spdx.json</code> (SPDX 2.3) lists the pattern, the KERN kit, Fira Sans and the icons of the sample data with version, licence, copyright and checksum; the licence texts sit next to it as <code>LICENSE</code>, <code>vendor/kern/LICENSE.md</code>, <code>LICENSE-fira-sans.txt</code> and <code>LICENSE-lucide.txt</code>; it is generated when the package is built, do not edit by hand.</li>
+<li>Release: the zip comes with a file holding its SHA-256 checksum (<code>shasum -a 256 -c &lt;zip&gt;.sha256</code>).</li>
+<li>Updating the kit: enter version and checksum in <code>skripte/kern-sync.sh</code>, run the script, then <code>pruefe.py</code>, because new kit versions may rename classes.</li>
+<li>Check in the browser: card count, filters with counters, language switch, timeline, light and dark, keyboard operation with visible focus, widths 400, 820 and 1280 pixels.</li>
+</ul>
+<h2 class="kern-heading-large" id="6-accessibility">6. Accessibility</h2>
+<p class="kern-body">Self-assessment, not a formal audit. All controls are buttons or links with the focus ring of the kit, reachable in display order. Filters and switches carry <code>aria-pressed</code>, groups carry <code>aria-label</code> in the active language. Results are announced via a live region. Icons are decorative (<code>aria-hidden</code>); every piece of information is also available as text. Contrasts for text and surfaces come from KERN; for the area colours the requirements in 2.4 apply. Without JavaScript the element stays empty because the cards are rendered from the data package; to avoid that, generate the markup on the server beforehand with <code>Projektschau.render</code>.</p>
+<h2 class="kern-heading-large" id="7-security">7. Security</h2>
+<p class="kern-body">This pattern was built with <a class="kern-link" rel="noopener" href="https://claude.com/claude-code">Claude Code</a> (<a class="kern-link" href="#9-origin-and-further-development">section 9</a>). That is why this chapter lists what I checked, with which tools, and what is still open. I ran all checks myself, with automated tools and AI-assisted reviews. There has been no review by independent third parties. As of 13 October 2026, release 0.1.0.</p>
+<p class="kern-body">The pattern runs entirely in the browser. It has no server part and no login, it collects no data from visitors and makes no external requests; kit, fonts and data are local. The only thing that comes from outside is the data package: the JSON file with areas, projects and texts that the operator provides (<a class="kern-link" href="#2-data">section 2</a>; in the demo <code>daten/beispiel.json</code>). The renderer builds the cards from it. It checks every field of it before it reaches the page, even when the file comes from the operator, because it may originate from an editorial system with several roles. <a class="kern-link" href="#25-creating-your-own-data">Section 2.5</a> describes how each field is handled. The checks below focus on this path.</p>
+<p class="kern-body">Everything the package brings along from others (KERN kit, Fira Sans, symbols from Lucide) is listed in the bill of materials with origin and licence, the kit also with a checksum. The components with a version number were looked up in the <a class="kern-link" rel="noopener" href="https://osv.dev">OSV</a> vulnerability database, with no hits (<a class="kern-link" href="#71-what-was-checked">section 7.1</a>).</p>
+<h3 class="kern-heading-medium" id="71-what-was-checked">7.1 What was checked</h3>
+<div class="kern-table-responsive" data-name="Table, scrolls sideways"><table class="kern-table kern-table--striped">
+<thead class="kern-table__header">
+<tr class="kern-table__row">
+<th class="kern-table__cell">Check</th>
+<th class="kern-table__cell">Approach</th>
+<th class="kern-table__cell">Result</th>
+</tr>
+</thead>
+<tbody class="kern-table__body">
+<tr class="kern-table__row">
+<td class="kern-table__cell">Review for DOM XSS</td>
+<td class="kern-table__cell">AI-assisted code review of renderer, demo and scripts; sources: data package, address, hash, browser storage, embedded JSON</td>
+<td class="kern-table__cell">7 findings, fixed</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Payloads in the renderer</td>
+<td class="kern-table__cell"><code>skripte/pruefe_xss.js</code> renders the sample data with payloads in colour, key, language code, symbol, number, link and year and looks for active markup</td>
+<td class="kern-table__cell">passed</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Fuzzing</td>
+<td class="kern-table__cell"><code>skripte/pruefe_fuzz.js</code>: 1000 and 2000 randomly mangled packages with a fixed seed (fields removed, wrongly typed, nested)</td>
+<td class="kern-table__cell">no exception, no active markup</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Unicode control characters</td>
+<td class="kern-table__cell">Bidi, zero-width and control characters in texts and link texts</td>
+<td class="kern-table__cell">are removed</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Misuse (sharp edges)</td>
+<td class="kern-table__cell">Trail of Bits method: options, data fields, embedding and silent failure paths from the view of operations and editors</td>
+<td class="kern-table__cell">3 findings, fixed</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Insecure defaults</td>
+<td class="kern-table__cell">Trail of Bits method: from credentials to errors that fail open instead of closed</td>
+<td class="kern-table__cell">no finding</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Security review of the whole code</td>
+<td class="kern-table__cell">Data flow from source to output</td>
+<td class="kern-table__cell">no finding of medium severity or above; one note implemented</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Content security policy</td>
+<td class="kern-table__cell">Demo under <code>default-src 'self'</code> without <code>unsafe-inline</code></td>
+<td class="kern-table__cell">works; the renderer sets its rules through <code>adoptedStyleSheets</code>, the demo runs without inline scripts and inline styles</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Secrets in the history</td>
+<td class="kern-table__cell">gitleaks across all commits</td>
+<td class="kern-table__cell">nothing found</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Linters and data check</td>
+<td class="kern-table__cell">ESLint and stylelint; <code>skripte/pruefe.py</code> checks every KERN class and token against the kit, the data package and the contrasts in light and dark</td>
+<td class="kern-table__cell">no finding</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Markup</td>
+<td class="kern-table__cell">html-validate on demo, documentation and rendered DOM</td>
+<td class="kern-table__cell">no finding</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Accessibility</td>
+<td class="kern-table__cell">axe-core for WCAG 2.1 AA and 2.2 AA with best practices: cards, timeline, light and dark, both languages, widths 1280, 390 and 320 pixels; contrast of every text recalculated, also on hover; keyboard pass with a check of the focus ring; text spacing, 200 % font size, reduced motion</td>
+<td class="kern-table__cell">no open violations</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Browsers and load</td>
+<td class="kern-table__cell">Chromium, Firefox and WebKit without console errors; 1000 cards</td>
+<td class="kern-table__cell">passed; 205 ms to render, 5 ms per filter click</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Lighthouse 13.5</td>
+<td class="kern-table__cell">Demo page of the package, mobile profile with simulated throttling, compressed delivery</td>
+<td class="kern-table__cell">accessibility 100, best practices 100, performance 81. The pattern itself adds about 29 KB compressed (CSS, JavaScript, sample data); a KERN page loads kit and font anyway</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Supply chain</td>
+<td class="kern-table__cell">KERN kit in a fixed version, SHA-512 checksum before unpacking; SHA-256 checksum for the zip</td>
+<td class="kern-table__cell">kit, Fira Sans and Lucide recorded, licence texts in the package</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell">Bill of materials</td>
+<td class="kern-table__cell">validated against the SPDX 2.3 JSON schema; compared with the package content on every build; KERN kit 2.8.2 and Lucide 1.49.0 looked up in the OSV vulnerability database (13 October 2026)</td>
+<td class="kern-table__cell">valid and up to date; no known vulnerabilities</td>
+</tr>
+</tbody>
+</table></div>
+<h3 class="kern-heading-medium" id="72-tools">7.2 Tools</h3>
+<div class="kern-table-responsive" data-name="Table, scrolls sideways"><table class="kern-table kern-table--striped">
+<thead class="kern-table__header">
+<tr class="kern-table__row">
+<th class="kern-table__cell">Tool</th>
+<th class="kern-table__cell">Used for</th>
+<th class="kern-table__cell">In the package</th>
+</tr>
+</thead>
+<tbody class="kern-table__body">
+<tr class="kern-table__row">
+<td class="kern-table__cell"><code>skripte/pruefe.py</code>, <code>skripte/pruefe_xss.js</code>, <code>skripte/pruefe_fuzz.js</code></td>
+<td class="kern-table__cell">Data package, classes, tokens and contrasts; payloads; fuzzing</td>
+<td class="kern-table__cell">yes</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><a class="kern-link" rel="noopener" href="https://claude.com/claude-code">Claude Code</a> with <a class="kern-link" rel="noopener" href="https://github.com/anthropics/claude-code-security-review"><code>/security-review</code></a></td>
+<td class="kern-table__cell">Code reviews for DOM XSS and security review of the whole code</td>
+<td class="kern-table__cell">no</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><a class="kern-link" rel="noopener" href="https://github.com/trailofbits/skills">Trail of Bits Skills</a>: <a class="kern-link" rel="noopener" href="https://github.com/trailofbits/skills/tree/main/plugins/sharp-edges">sharp-edges</a>, <a class="kern-link" rel="noopener" href="https://github.com/trailofbits/skills/tree/main/plugins/insecure-defaults">insecure-defaults</a></td>
+<td class="kern-table__cell">Reviews for misuse and insecure defaults</td>
+<td class="kern-table__cell">no</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><a class="kern-link" rel="noopener" href="https://github.com/dequelabs/axe-core">axe-core</a> 4.14</td>
+<td class="kern-table__cell">Accessibility</td>
+<td class="kern-table__cell">no</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><a class="kern-link" rel="noopener" href="https://github.com/microsoft/playwright">Playwright</a> 1.64</td>
+<td class="kern-table__cell">Browser matrix, keyboard, contrasts, content security policy, print view</td>
+<td class="kern-table__cell">no</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><a class="kern-link" rel="noopener" href="https://github.com/GoogleChrome/lighthouse">Lighthouse</a> 13.5</td>
+<td class="kern-table__cell">Accessibility, best practices, performance</td>
+<td class="kern-table__cell">no</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><a class="kern-link" rel="noopener" href="https://gitlab.com/html-validate/html-validate">html-validate</a> 11.16</td>
+<td class="kern-table__cell">Markup</td>
+<td class="kern-table__cell">no</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><a class="kern-link" rel="noopener" href="https://github.com/eslint/eslint">ESLint</a> 10.12, <a class="kern-link" rel="noopener" href="https://github.com/stylelint/stylelint">stylelint</a> 17.16</td>
+<td class="kern-table__cell">JavaScript and CSS</td>
+<td class="kern-table__cell">no</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><a class="kern-link" rel="noopener" href="https://github.com/gitleaks/gitleaks">gitleaks</a> 8.30</td>
+<td class="kern-table__cell">Secrets in the history</td>
+<td class="kern-table__cell">no</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><a class="kern-link" rel="noopener" href="https://spdx.github.io/spdx-spec/v2.3/">SPDX 2.3</a> with <a class="kern-link" rel="noopener" href="https://github.com/spdx/spdx-spec/blob/support/2.3/schemas/spdx-schema.json">JSON schema</a></td>
+<td class="kern-table__cell">Format and validation of the bill of materials <code>SPDX_projektschau-kern.spdx.json</code></td>
+<td class="kern-table__cell">bill of materials yes, schema no</td>
+</tr>
+<tr class="kern-table__row">
+<td class="kern-table__cell"><a class="kern-link" rel="noopener" href="https://osv.dev">OSV</a> (<a class="kern-link" rel="noopener" href="https://github.com/google/osv.dev">repository</a>)</td>
+<td class="kern-table__cell">known vulnerabilities of the components</td>
+<td class="kern-table__cell">no</td>
+</tr>
+</tbody>
+</table></div>
+<p class="kern-body">The tools outside the package run locally before every release. The three check scripts in the package only need Python and Node.js and run after every change to the renderer (<a class="kern-link" href="#5-checking-and-maintaining">section 5</a>).</p>
+<h3 class="kern-heading-medium" id="73-what-is-still-open">7.3 What is still open</h3>
+<ul class="kern-list kern-list--bullet">
+<li>Independent review: there has been no penetration test and no audit by third parties.</li>
+<li>Screen reader and usability test: axe-core covers only part of the criteria. A pass with a screen reader and a test with users are still to come.</li>
+<li>KERN kit: the <a class="kern-link" rel="noopener" href="https://gitlab.opencode.de/kern-ux/kern-ux-plain">kit</a> is included unchanged in a fixed version. What is checked: the package matches the registry and every class used exists in it. I have not reviewed the kit itself.</li>
+<li><a class="kern-link" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API">Trusted Types</a>: not tested. The renderer sets the checked markup through <code>innerHTML</code> in one place; a page that enforces Trusted Types needs its own policy for that.</li>
+<li>Automated pipeline: the checks do not yet run by themselves on every change, I run them locally by hand.</li>
+<li>Signature: the zip comes with a SHA-256 checksum, not yet with a signature.</li>
+<li>Vulnerabilities of the components: the <a class="kern-link" rel="noopener" href="https://osv.dev">OSV lookup</a> is a snapshot. There is no regular lookup yet; for Fira Sans the bill of materials gives no version that could be looked up.</li>
+<li>Embedding page: server, headers and content security policy belong to the operator. Anyone who calls <code>Projektschau.render</code> themselves and processes the result further leaves the checked path.</li>
+</ul>
+<p class="kern-body">Please report vulnerabilities privately: <a class="kern-link" href="../SECURITY.md"><code>SECURITY.md</code></a> gives address and deadlines.</p>
+<h2 class="kern-heading-large" id="8-licence">8. Licence</h2>
+<p class="kern-body">Code and documentation: <a class="kern-link" href="../LICENSE">EUPL-1.2</a> (<a class="kern-link" rel="noopener" href="https://eupl.eu/1.2/en/">licence text at the EU</a>). KERN kit: EUPL-1.2 (<code>vendor/kern/LICENSE.md</code>). <a class="kern-link" rel="noopener" href="https://github.com/mozilla/Fira">Fira Sans</a>: <a class="kern-link" rel="noopener" href="https://openfontlicense.org">SIL Open Font License 1.1</a>. Icons in the sample data after <a class="kern-link" rel="noopener" href="https://lucide.dev">Lucide</a> (<a class="kern-link" rel="noopener" href="https://github.com/lucide-icons/lucide/blob/main/LICENSE">ISC</a>).</p>
+<h2 class="kern-heading-large" id="9-origin-and-further-development">9. Origin and further development</h2>
+<h3 class="kern-heading-medium" id="91-how-this-project-came-about">9.1 How this project came about</h3>
+<p class="kern-body">The starting point is the <a class="kern-link" rel="noopener" href="https://ankerpunkt-hoherflaeming.de/projekte/">project overview of the Ankerpunkt Hoher Fläming</a>, which is in use there as a running project; a WordPress plugin is being developed from it in parallel. From there come the data package format, the logic for filters, timeline, languages and address bar, and the design decisions that were transferred to KERN here. The KERN pattern was created with Claude Code, Anthropic's command line tool. The roles: the user sets direction, standards and decisions and checks every state in the browser; the AI reads the sources (<a class="kern-link" rel="noopener" href="https://www.npmjs.com/package/@kern-ux/native">KERN kit</a>, <a class="kern-link" rel="noopener" href="https://www.kern-ux.de">KERN documentation</a>, <a class="kern-link" rel="noopener" href="https://katalog.kern-ux.de/de/nutzungsbedingungen">catalogue terms</a>, the existing project overview), writes code and documentation, measures in the browser and explains what is kit and what is custom.</p>
+<p class="kern-body">The process in stages:</p>
+<ol class="kern-list kern-list--number">
+<li><strong>Plan:</strong> First, plan mode was used to clarify what is realistic. Result: a self-contained project, EUPL-1.2 because of the catalogue terms, a standalone demo, target KERN catalogue.</li>
+<li><strong>Scaffold:</strong> fetch the KERN kit in a pinned version, write renderer and CSS, demo with fictitious sample data, check script.</li>
+<li><strong>Aligning with the original:</strong> step by step the presentation was brought closer to the existing project overview, always asking what of it is KERN standard. Kit components before custom code; custom code only from KERN tokens and named in the README.</li>
+<li><strong>Fine-tuning by screenshot:</strong> Most instructions were a screenshot plus one sentence, such as "icon centred on the first line of the heading", "area and filter on the height of the first row", "the line must not stick out above the dot". Every change was measured in the browser, documented and committed individually.</li>
+<li><strong>Documentation:</strong> one README with sections instead of several documents, bilingual, generated as pages in KERN style.</li>
+</ol>
+<p class="kern-body">What proved useful: every answer from the AI names what is kit and what is a deviation. The check script runs before every commit. Decisions are small and individual, not one big rebuild. And the question "is this KERN standard?" stood above every proposal.</p>
+<h3 class="kern-heading-medium" id="92-thank-you">9.2 Thank you</h3>
+<p class="kern-body">Thanks to <a class="kern-link" rel="noopener" href="https://gitlab.opencode.de/OC000011858689">Axel Wolters</a>, Senate Chancellery of Hamburg and representative of the client Hamburg in the KERN project, for looking at the KERN pattern, and to the whole <a class="kern-link" rel="noopener" href="https://www.kern-ux.de">KERN</a> team for the continuous, great exchange and the supportive atmosphere. Come and join: <a class="kern-link" rel="noopener" href="https://www.kern-ux.de/community-und-mitwirken/">community and contributing at KERN</a> (in German). Thanks to <a class="kern-link" rel="noopener" href="https://michaelplas.de">Michael Plas</a> for looking at the WordPress version. What comes of the feedback goes into the changelog.</p>
+<h3 class="kern-heading-medium" id="93-the-prompts-to-copy">9.3 The prompts to copy</h3>
+<p class="kern-body">The most important instructions in the order they were given, linguistically smoothed and translated from German. They can be reused for a similar project; adjust paths and addresses.</p>
+<div class="doku-code"><pre><code>Build a KERN version within this project, using the knowledge from the WordPress plugin. Take along the knowledge from the KERN UX theme for WordPress on openCode and the latest KERN version if necessary. Preferably clarify in plan mode first what is realistic, possibly a standalone version for KERN only, since the plugin for WordPress already exists.
+</code></pre><button type="button" class="kern-btn kern-btn--tertiary kern-btn--x-small doku-kopieren" aria-label="Copy code to clipboard" data-kopiert="Copied"><svg class="ps-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><span class="kern-label" aria-live="polite"></span></button></div>
+<div class="doku-code"><pre><code>Add as a goal that it should go into the KERN catalogue. Read the documentation and all requirements for that. The WordPress plugin is independent of it, so this is a subproject.
+</code></pre><button type="button" class="kern-btn kern-btn--tertiary kern-btn--x-small doku-kopieren" aria-label="Copy code to clipboard" data-kopiert="Copied"><svg class="ps-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><span class="kern-label" aria-live="polite"></span></button></div>
+<div class="doku-code"><pre><code>Fill the standalone demo page with sample content, about 32 cards and one more filter. Please also make a combination possible where nothing is found.
+</code></pre><button type="button" class="kern-btn kern-btn--tertiary kern-btn--x-small doku-kopieren" aria-label="Copy code to clipboard" data-kopiert="Copied"><svg class="ps-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><span class="kern-label" aria-live="polite"></span></button></div>
+<div class="doku-code"><pre><code>Can you think of or notice anything else I can make KERN standard? Of your proposals, please implement everything except the KERN icons.
+</code></pre><button type="button" class="kern-btn kern-btn--tertiary kern-btn--x-small doku-kopieren" aria-label="Copy code to clipboard" data-kopiert="Copied"><svg class="ps-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><span class="kern-label" aria-live="polite"></span></button></div>
+<div class="doku-code"><pre><code>Could you switch the algorithm to the colour system that KERN also uses for its colour calculation, and compute it in OKLCH? See the KERN page on colour. Please also write how the colours are computed programmatically from the base colours.
+</code></pre><button type="button" class="kern-btn kern-btn--tertiary kern-btn--x-small doku-kopieren" aria-label="Copy code to clipboard" data-kopiert="Copied"><svg class="ps-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><span class="kern-label" aria-live="polite"></span></button></div>
+<div class="doku-code"><pre><code>Describe the data specifically for this prototype: how it is created and how it is processed. The goal is that a developer reads a complete documentation with the background of how the data is structured and where it is displayed, plus a part on styling, what KERN components are, which were added and where things can be adjusted.
+</code></pre><button type="button" class="kern-btn kern-btn--tertiary kern-btn--x-small doku-kopieren" aria-label="Copy code to clipboard" data-kopiert="Copied"><svg class="ps-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><span class="kern-label" aria-live="polite"></span></button></div>
+<div class="doku-code"><pre><code>Please design README and developer documentation as standard KERN documentation like on the website, DE and EN, as one document with sections. Is there a running table of contents in the standard documentation? Then please adopt it. Code examples always with a subtle copy button and wrapping. Please always update the README and keep a changelog at the very bottom following the standard, like in the plugin.
+</code></pre><button type="button" class="kern-btn kern-btn--tertiary kern-btn--x-small doku-kopieren" aria-label="Copy code to clipboard" data-kopiert="Copied"><svg class="ps-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><span class="kern-label" aria-live="polite"></span></button></div>
+<p class="kern-body">For fine-tuning, a screenshot with a sentence or two is enough each time. Every line here was a request of its own:</p>
+<div class="doku-code"><pre><code>The icon should be centred on the first line of the heading.
+Area and filter on the height of the first row.
+Here the line still sticks out; at the last dot the line should not continue either.
+On mobile, area and filter should look the same, with a toggle; the filter toggle is far too big.
+Is the spacing now the standard? May it also be smaller than 1rem?
+</code></pre><button type="button" class="kern-btn kern-btn--tertiary kern-btn--x-small doku-kopieren" aria-label="Copy code to clipboard" data-kopiert="Copied"><svg class="ps-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg><span class="kern-label" aria-live="polite"></span></button></div>
+<h3 class="kern-heading-medium" id="94-how-the-project-can-be-extended">9.4 How the project can be extended</h3>
+<ul class="kern-list kern-list--bullet">
+<li><strong>Your own data:</strong> replace <code>daten/beispiel.json</code>, derive colours per area from a base colour with <code>skripte/farben.py</code>, check with <code>skripte/pruefe.py</code>, write into the demo with <code>skripte/einbetten.py</code>. <a class="kern-link" href="#25-creating-your-own-data">Section 2.5</a>.</li>
+<li><strong>Embedding in an existing KERN page:</strong> include the three files and the kit, set an element with <code>data-projektschau</code> and <code>data-src</code>. Initial view, preset filter and heading level via the attributes in <a class="kern-link" href="#1-demo-and-integration">section 1</a>.</li>
+<li><strong>Server-side rendering:</strong> <code>Projektschau.render(data, options)</code> returns the markup as a string; this way the overview can be delivered without JavaScript in the browser, for example from a CMS or a small Node script.</li>
+<li><strong>Pulling data from a source:</strong> the data package is plain JSON. An export from a spreadsheet or a CMS is enough; the WordPress plugin being developed in parallel uses the same package format.</li>
+<li><strong>More languages:</strong> extend <code>sprachen</code> and add each language pair; the switch grows with it. With more than three languages the row of buttons gets wide and hard to scan on narrow screens; a dropdown is then the better pattern, for example the select field of the KERN kit. The documentation pages need one Markdown file per language and an entry in <code>skripte/doku_html.py</code>.</li>
+<li><strong>KERN icons:</strong> for copy button, light/dark and collapsible blocks the kit has its own icons (<code>kern-icon--content-copy</code>, <code>--light-mode</code>, <code>--dark-mode</code>, <code>--chevron-*</code>). Project and area icons stay Lucide; KERN has no motifs for them.</li>
+<li><strong>Kit updates:</strong> enter version and checksum in <code>skripte/kern-sync.sh</code>, run the script; <code>pruefe.py</code> reports renamed classes.</li>
+<li><strong>Checking dark mode contrast:</strong> <code>pruefe.py</code> so far only checks the light values; a check of dark <code>fg</code> against the dark KERN background would be the next addition.</li>
+<li><strong>Scoping the kit:</strong> pages not designed with KERN would need a kit scoped to the wrapper. That is deliberately not part of the pattern.</li>
+</ul>
+<h2 class="kern-heading-large" id="10-about-the-author">10. About the author</h2>
+<div class="doku-autor"><img class="doku-foto" alt="Don Ludwig" src="don-ludwig.jpg" width="320" height="320" /><div class="kern-stack-sm"><p class="kern-body">Feedback, questions or just saying hello: I'd be glad to hear from you.</p><p class="kern-body">Don Ludwig, freelance UX designer. I build design systems, accompany agile product development and work on making the collaboration between design and development better. My process: think user-centred, work iteratively, understand technical constraints instead of ignoring them. For this pattern I worked with Claude Code; <a class="kern-link" href="#9-origin-and-further-development">section 9</a> describes how. This pattern grew out of the project overview of the <a class="kern-link" rel="noopener" href="https://ankerpunkt-hoherflaeming.de/">Ankerpunkt Hoher Fläming</a>, a regional network in Brandenburg; a WordPress plugin with the same data format is in progress.</p><ul class="kern-list kern-list--horizontal doku-autor-links"><li><a class="kern-link" rel="noopener" href="https://www.linkedin.com/in/donludwig/">LinkedIn</a></li><li><a class="kern-link" href="mailto:don@thinkrepeat.com">don@thinkrepeat.com</a></li><li><a class="kern-link" rel="noopener" href="https://thinkrepeat.com">thinkrepeat.com</a></li><li><a class="kern-link" rel="noopener" href="https://github.com/donludwig">GitHub</a></li></ul></div></div>
+<h2 class="kern-heading-large" id="11-changelog">11. Changelog</h2>
+<p class="kern-body">All notable changes are listed here, newest version first. The format follows <a class="kern-link" rel="noopener" href="https://keepachangelog.com/en/1.1.0/">Keep a Changelog</a>, version numbers follow <a class="kern-link" rel="noopener" href="https://semver.org/">semantic versioning</a>. Each version carries a name.</p>
+<h3 class="kern-heading-medium" id="010-musterstadt">0.1.0 "Musterstadt"</h3>
+<p class="kern-body">First release, named after the fictitious town of the sample data. As of 2026-10-13.</p>
+<h4 class="kern-heading-small" id="added">Added</h4>
+<ul class="kern-list kern-list--bullet">
+<li><strong>Cards:</strong> every project as a card with area, title, status, description, lists, key figure and links, in the colour of its area; optionally with a large symbol above the card head (<a class="kern-link" href="#32-where-each-field-is-shown">section 3.2</a>).</li>
+<li><strong>Timeline:</strong> the same projects ordered by year, with period and note (<a class="kern-link" href="#22-timeline">section 2.2</a>).</li>
+<li><strong>Filters:</strong> by area and category, with hit counts and a notice when nothing matches. Filters, view and language are kept in the address, so a link leads to exactly this selection (<a class="kern-link" href="#35-filters-view-and-address-bar">section 3.5</a>).</li>
+<li><strong>Two languages</strong> with a switch (<a class="kern-link" href="#33-languages">section 3.3</a>).</li>
+<li><strong>Light and dark:</strong> both colour schemes of the KERN kit; the colours of an area are derived from one base colour (<a class="kern-link" href="#26-deriving-colours-programmatically">section 2.6</a>).</li>
+<li><strong>Print view:</strong> title, introduction and the filtered view, without controls.</li>
+<li><strong>No framework, no build:</strong> one JavaScript file and one CSS file on top of KERN kit 2.8.2, which is included unchanged; no external requests (<a class="kern-link" href="#1-demo-and-integration">section 1</a>).</li>
+<li><strong>Data package:</strong> one JSON file with areas, categories, projects and texts (<a class="kern-link" href="#2-data">section 2</a>); 32 fictitious sample projects in four areas are included.</li>
+<li><strong>Accessibility:</strong> keyboard operation with visible focus, results are announced, checked contrasts, the system setting “reduce motion” is respected. Self-test with axe-core for WCAG 2.1 AA and 2.2 AA with no open violations (<a class="kern-link" href="#6-accessibility">section 6</a>).</li>
+<li><strong>Security:</strong> the renderer checks every field of the data package and runs under a strict content security policy. Check scripts, security policy (<code>SECURITY.md</code>) and bill of materials (SPDX 2.3) are included (<a class="kern-link" href="#7-security">section 7</a>).</li>
+<li><strong>Demo and documentation:</strong> demo page, this README in German and English, both also as HTML pages in KERN style; design and content rules for your own cards (<a class="kern-link" href="#45-design-rules">section 4.5</a>).</li>
+</ul>
+		</main>
+		<nav class="doku-toc" aria-label="On this page"><span class="kern-label">On this page</span><ul><li><a class="kern-link" href="#1-demo-and-integration">1. Demo and integration</a></li><li><a class="kern-link" href="#2-data">2. Data</a></li><li><a class="kern-link" href="#3-processing-and-output">3. Processing and output</a></li><li><a class="kern-link" href="#4-styling">4. Styling</a></li><li><a class="kern-link" href="#5-checking-and-maintaining">5. Checking and maintaining</a></li><li><a class="kern-link" href="#6-accessibility">6. Accessibility</a></li><li><a class="kern-link" href="#7-security">7. Security</a></li><li><a class="kern-link" href="#8-licence">8. Licence</a></li><li><a class="kern-link" href="#9-origin-and-further-development">9. Origin and further development</a></li><li><a class="kern-link" href="#10-about-the-author">10. About the author</a></li><li><a class="kern-link" href="#11-changelog">11. Changelog</a></li></ul></nav>
+		</div>
+		<footer class="demo-fuss">
+			<hr class="kern-divider kern-divider--decorative">
+			<p class="kern-body kern-body--small kern-body--muted">Code under <a class="kern-link" href="../LICENSE">EUPL-1.2</a>. KERN kit (<a class="kern-link" href="../vendor/kern/LICENSE.md">EUPL-1.2</a>, version in <code>vendor/kern/VERSION</code>), <a class="kern-link" href="https://github.com/mozilla/Fira">Fira Sans</a> (<a class="kern-link" href="https://openfontlicense.org">SIL OFL 1.1</a>), icons after <a class="kern-link" href="https://lucide.dev">Lucide</a> (ISC). All demo content is fictitious.</p>
+		</footer>
+	</div>
+	<script>
+		( function () {
+			var b = document.getElementById( 'farbschema' ), h = document.documentElement;
+			function zeige() { b.setAttribute( 'aria-checked', h.getAttribute( 'data-kern-theme' ) === 'dark' ? 'true' : 'false' ); }
+			b.addEventListener( 'click', function () {
+				var t = h.getAttribute( 'data-kern-theme' ) === 'dark' ? 'light' : 'dark';
+				h.setAttribute( 'data-kern-theme', t );
+				try { localStorage.setItem( 'ps-theme', t ); } catch ( e ) {}
+				zeige();
+			} );
+			zeige();
+			/* Inhaltsverzeichnis: den Abschnitt markieren, der gerade oben im Fenster steht */
+			var tocLinks = Array.prototype.slice.call( document.querySelectorAll( '.doku-toc a' ) ), abschnitte = tocLinks.map( function ( a ) { return document.getElementById( a.getAttribute( 'href' ).slice( 1 ) ); } );
+			var ziel = null;
+			function markiere() {
+				var aktiv = 0, ende = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+				/* Nach einem Klick bleibt das Ziel markiert, bis es oben angekommen ist oder die Seite zu Ende ist */
+				if ( ziel !== null ) { if ( ende || ( abschnitte[ ziel ] && abschnitte[ ziel ].getBoundingClientRect().top <= 120 ) ) { ziel = null; } else { return; } }
+				abschnitte.forEach( function ( el, i ) { if ( el && el.getBoundingClientRect().top <= 120 ) { aktiv = i; } } );
+				/* Am Seitenende gilt der letzte Abschnitt, auch wenn er nicht mehr bis oben scrollen kann */
+				if ( ende ) { aktiv = tocLinks.length - 1; }
+				setzeAktiv( aktiv );
+			}
+			function setzeAktiv( aktiv ) { tocLinks.forEach( function ( a, i ) { if ( i === aktiv ) { a.setAttribute( 'aria-current', 'true' ); } else { a.removeAttribute( 'aria-current' ); } } ); }
+			/* Klick im Verzeichnis markiert sofort den gewählten Abschnitt */
+			tocLinks.forEach( function ( a, i ) { a.addEventListener( 'click', function () { ziel = i; setzeAktiv( i ); } ); } );
+			window.addEventListener( 'scroll', markiere, { passive: true } );
+			markiere();
+			/* Codeblöcke in die Zwischenablage kopieren */
+			Array.prototype.slice.call( document.querySelectorAll( '.doku-kopieren' ) ).forEach( function ( k ) {
+				k.addEventListener( 'click', function () {
+					var code = k.parentNode.querySelector( 'pre' ).textContent, label = k.querySelector( '.kern-label' );
+					navigator.clipboard.writeText( code ).then( function () { label.textContent = k.getAttribute( 'data-kopiert' ); setTimeout( function () { label.textContent = ''; }, 1500 ); } );
+				} );
+			} );
+			/* Alle Seitenlinks tragen Farbschema und Sprache in der Adresse mit, damit der Wechsel auch ohne Browserspeicher stimmt */
+			var sy = new URLSearchParams( location.search ).get( 'symbole' );
+			function zustand( ziel, lang ) { return ziel + '?theme=' + h.getAttribute( 'data-kern-theme' ) + '&lang=' + lang + ( sy ? '&symbole=' + sy : '' ); }
+			Array.prototype.slice.call( document.querySelectorAll( '.doku-lang a' ) ).forEach( function ( x ) { x.addEventListener( 'click', function () { var l = x.getAttribute( 'data-lang' ); try { localStorage.setItem( 'ps-lang', l ); } catch ( e ) {} x.href = zustand( x.getAttribute( 'href' ).split( '?' )[ 0 ], l ); } ); } );
+			var demoLink = document.querySelector( '.demo-navi a[href$="index.html"]' );
+			demoLink.addEventListener( 'click', function () { demoLink.href = zustand( '../index.html', 'en' ); } );
+			/* Tabellen, die breiter sind als ihr Rahmen: Rahmen mit der Tastatur erreichbar machen und benennen, sonst nicht */
+			function tabellen() {
+				document.querySelectorAll( '.kern-table-responsive' ).forEach( function ( r ) {
+					if ( r.scrollWidth > r.clientWidth ) {
+						r.setAttribute( 'tabindex', '0' ); r.setAttribute( 'role', 'group' ); r.setAttribute( 'aria-label', r.getAttribute( 'data-name' ) );
+					} else {
+						r.removeAttribute( 'tabindex' ); r.removeAttribute( 'role' ); r.removeAttribute( 'aria-label' );
+					}
+				} );
+			}
+			tabellen(); window.addEventListener( 'resize', tabellen );
+		} )();
+	</script>
+</body>
+</html>
