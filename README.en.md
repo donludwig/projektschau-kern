@@ -468,7 +468,7 @@ The rules for texts so that all cards share one structure.
 
 ## 6. Accessibility
 
-Self-assessment, not a formal audit. All controls are buttons or links with the focus ring of the kit, reachable in display order. Filters and switches carry `aria-pressed`, groups carry `aria-label` in the active language. Results are announced via a live region. Icons are decorative (`aria-hidden`); every piece of information is also available as text. Contrasts for text and surfaces come from KERN; for the area colours the requirements in 2.4 apply. Without JavaScript the element stays empty because the cards are rendered from the data package; to avoid that, generate the markup on the server beforehand with `Projektschau.render`.
+Self-assessment, not a formal audit; goal, checks and open points are listed in [`ACCESSIBILITY.md`](ACCESSIBILITY.md). All controls are buttons or links with the focus ring of the kit, reachable in display order. Filters and switches carry `aria-pressed`, groups carry `aria-label` in the active language. Results are announced via a live region. Icons are decorative (`aria-hidden`); every piece of information is also available as text. Contrasts for text and surfaces come from KERN; for the area colours the requirements in 2.4 apply. Without JavaScript the element stays empty because the cards are rendered from the data package; to avoid that, generate the markup on the server beforehand with `Projektschau.render`.
 
 ## 7. Security
 

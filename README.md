@@ -468,7 +468,7 @@ Die Regeln für Texte, damit alle Karten gleich aufgebaut sind.
 
 ## 6. Barrierefreiheit
 
-Selbsttest, kein Nachweis. Alle Bedienelemente sind Buttons oder Links mit dem Fokusrahmen des Kits, in Darstellungsreihenfolge erreichbar. Filter und Umschalter tragen `aria-pressed`, Gruppen tragen `aria-label` in der aktiven Sprache. Ergebnisse werden über eine Live-Region angesagt. Symbole sind dekorativ (`aria-hidden`), jede Information steht auch als Text. Kontraste für Text und Flächen kommen aus KERN, für die Bereichsfarben gelten die Anforderungen aus 2.4. Ohne JavaScript bleibt das Element leer, weil die Karten aus dem Datenpaket gerendert werden; wer das vermeiden will, erzeugt das Markup mit `Projektschau.render` vorab auf dem Server.
+Selbsttest, kein Nachweis; Ziel, Prüfungen und offene Punkte stehen in [`ACCESSIBILITY.md`](ACCESSIBILITY.md). Alle Bedienelemente sind Buttons oder Links mit dem Fokusrahmen des Kits, in Darstellungsreihenfolge erreichbar. Filter und Umschalter tragen `aria-pressed`, Gruppen tragen `aria-label` in der aktiven Sprache. Ergebnisse werden über eine Live-Region angesagt. Symbole sind dekorativ (`aria-hidden`), jede Information steht auch als Text. Kontraste für Text und Flächen kommen aus KERN, für die Bereichsfarben gelten die Anforderungen aus 2.4. Ohne JavaScript bleibt das Element leer, weil die Karten aus dem Datenpaket gerendert werden; wer das vermeiden will, erzeugt das Markup mit `Projektschau.render` vorab auf dem Server.
 
 ## 7. Sicherheit
 
