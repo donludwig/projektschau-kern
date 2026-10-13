@@ -6,7 +6,7 @@ A project overview with cards, filters and a timeline, built on the [KERN UX sta
 
 Three files, no framework, no build step: `projektschau.js`, `projektschau.css` and a JSON data package. The KERN kit is included unchanged under `vendor/kern/`.
 
-The pattern grew out of the [project overview of the Ankerpunkt Hoher Fläming](https://ankerpunkt-hoherflaeming.de/projekte/), which is in use there as a running project. A WordPress plugin with the same data format is being developed in parallel. The sample data in `daten/beispiel.json` is fictitious.
+The pattern grew out of a [project overview](https://ankerpunkt-hoherflaeming.de/projekte/) that a regional network uses as a running project. A WordPress plugin with the same data format is being developed in parallel. The sample data in `daten/beispiel.json` is fictitious.
 
 Source code: [github.com/donludwig/projektschau-kern](https://github.com/donludwig/projektschau-kern). This page is also available in German: `README.md`.
 
@@ -538,7 +538,7 @@ Code and documentation: [EUPL-1.2](LICENSE) ([licence text at the EU](https://eu
 
 ### 9.1 How this project came about
 
-The starting point is the [project overview of the Ankerpunkt Hoher Fläming](https://ankerpunkt-hoherflaeming.de/projekte/), which is in use there as a running project; a WordPress plugin is being developed from it in parallel. From there come the data package format, the logic for filters, timeline, languages and address bar, and the design decisions that were transferred to KERN here. The KERN pattern was created with Claude Code, Anthropic's command line tool. The roles: the user sets direction, standards and decisions and checks every state in the browser; the AI reads the sources ([KERN kit](https://www.npmjs.com/package/@kern-ux/native), [KERN documentation](https://www.kern-ux.de), [catalogue terms](https://katalog.kern-ux.de/de/nutzungsbedingungen), the existing project overview), writes code and documentation, measures in the browser and explains what is kit and what is custom.
+The starting point is a [project overview](https://ankerpunkt-hoherflaeming.de/projekte/) that a regional network uses as a running project; a WordPress plugin is being developed from it in parallel. From there come the data package format, the logic for filters, timeline, languages and address bar, and the design decisions that were transferred to KERN here. The KERN pattern was created with Claude Code, Anthropic's command line tool. The roles: the user sets direction, standards and decisions and checks every state in the browser; the AI reads the sources ([KERN kit](https://www.npmjs.com/package/@kern-ux/native), [KERN documentation](https://www.kern-ux.de), [catalogue terms](https://katalog.kern-ux.de/de/nutzungsbedingungen), the existing project overview), writes code and documentation, measures in the browser and explains what is kit and what is custom.
 
 The process in stages:
 
@@ -614,7 +614,7 @@ Is the spacing now the standard? May it also be smaller than 1rem?
 
 Feedback, questions or just saying hello: I'd be glad to hear from you.
 
-Don Ludwig, freelance UX designer. I build design systems, accompany agile product development and work on making the collaboration between design and development better. My process: think user-centred, work iteratively, understand technical constraints instead of ignoring them. For this pattern I worked with Claude Code; [section 9](#9-origin-and-further-development) describes how. This pattern grew out of the project overview of the [Ankerpunkt Hoher Fläming](https://ankerpunkt-hoherflaeming.de/), a regional network in Brandenburg; a WordPress plugin with the same data format is in progress.
+Don Ludwig, freelance UX designer. I build design systems, accompany agile product development and work on making the collaboration between design and development better. My process: think user-centred, work iteratively, understand technical constraints instead of ignoring them. For this pattern I worked with Claude Code; [section 9](#9-origin-and-further-development) describes how. This pattern grew out of the [project overview](https://ankerpunkt-hoherflaeming.de/projekte/) of a regional network in Brandenburg; a WordPress plugin with the same data format is in progress.
 
 [LinkedIn](https://www.linkedin.com/in/donludwig/) · [don@thinkrepeat.com](mailto:don@thinkrepeat.com) · [thinkrepeat.com](https://thinkrepeat.com) · [GitHub](https://github.com/donludwig)
 

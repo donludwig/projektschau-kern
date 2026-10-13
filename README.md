@@ -6,7 +6,7 @@ Projektübersicht mit Karten, Filtern und Zeitleiste auf Basis des [KERN UX-Stan
 
 Drei Dateien, kein Framework, kein Build: `projektschau.js`, `projektschau.css` und ein JSON-Datenpaket. Das KERN-Kit liegt unverändert unter `vendor/kern/`.
 
-Das Pattern ist aus der [Projektübersicht des Ankerpunkts Hoher Fläming](https://ankerpunkt-hoherflaeming.de/projekte/) entstanden, die dort als laufendes Projekt im Einsatz ist. Parallel wird ein WordPress-Plugin mit demselben Datenformat entwickelt. Die Beispieldaten in `daten/beispiel.json` sind erfunden.
+Das Pattern ist aus einer [Projektübersicht](https://ankerpunkt-hoherflaeming.de/projekte/) entstanden, die bei einem regionalen Netzwerk als laufendes Projekt im Einsatz ist. Parallel wird ein WordPress-Plugin mit demselben Datenformat entwickelt. Die Beispieldaten in `daten/beispiel.json` sind erfunden.
 
 Quellcode: [github.com/donludwig/projektschau-kern](https://github.com/donludwig/projektschau-kern). Diese Seite gibt es auch auf Englisch: `README.en.md`.
 
@@ -538,7 +538,7 @@ Code und Dokumentation: [EUPL-1.2](LICENSE) (englischer Wortlaut im Paket, [deut
 
 ### 9.1 Wie dieses Projekt entstanden ist
 
-Ausgangspunkt ist die [Projektübersicht des Ankerpunkts Hoher Fläming](https://ankerpunkt-hoherflaeming.de/projekte/), die dort als laufendes Projekt im Einsatz ist; parallel entsteht daraus ein WordPress-Plugin. Von dort stammen das Datenpaket-Format, die Logik für Filter, Zeitleiste, Sprachen und Adresszeile sowie die Gestaltungsentscheidungen, die hier auf KERN übertragen wurden. Das KERN-Pattern ist mit Claude Code entstanden, dem Kommandozeilen-Werkzeug von Anthropic. Die Rollen: Der User gibt Richtung, Maßstab und Entscheidungen vor und prüft jeden Stand im Browser; die KI liest die Quellen ([KERN-Kit](https://www.npmjs.com/package/@kern-ux/native), [KERN-Doku](https://www.kern-ux.de), [Katalog-Bedingungen](https://katalog.kern-ux.de/de/nutzungsbedingungen), die bestehende Projektübersicht), schreibt Code und Doku, misst im Browser nach und erklärt, was Kit ist und was Eigenbau.
+Ausgangspunkt ist eine [Projektübersicht](https://ankerpunkt-hoherflaeming.de/projekte/), die bei einem regionalen Netzwerk als laufendes Projekt im Einsatz ist; parallel entsteht daraus ein WordPress-Plugin. Von dort stammen das Datenpaket-Format, die Logik für Filter, Zeitleiste, Sprachen und Adresszeile sowie die Gestaltungsentscheidungen, die hier auf KERN übertragen wurden. Das KERN-Pattern ist mit Claude Code entstanden, dem Kommandozeilen-Werkzeug von Anthropic. Die Rollen: Der User gibt Richtung, Maßstab und Entscheidungen vor und prüft jeden Stand im Browser; die KI liest die Quellen ([KERN-Kit](https://www.npmjs.com/package/@kern-ux/native), [KERN-Doku](https://www.kern-ux.de), [Katalog-Bedingungen](https://katalog.kern-ux.de/de/nutzungsbedingungen), die bestehende Projektübersicht), schreibt Code und Doku, misst im Browser nach und erklärt, was Kit ist und was Eigenbau.
 
 Der Ablauf in Stufen:
 
@@ -614,7 +614,7 @@ Ist der Abstand jetzt der Standard? Darf er auch kleiner als 1rem sein?
 
 Feedback, Fragen oder einfach Hallo sagen: ich freu mich.
 
-Don Ludwig, freier UX-Designer. Ich baue Design-Systeme, begleite agile Produktentwicklung und arbeite daran, die Zusammenarbeit zwischen Design und Entwicklung besser zu machen. Mein Prozess: nutzerzentriert denken, iterativ arbeiten, technische Rahmenbedingungen verstehen statt ignorieren. Für dieses Pattern habe ich mit Claude Code gearbeitet; wie, steht in [Abschnitt 9](#9-entstehung-und-weiterführung). Dieses Pattern ist aus der Projektübersicht des [Ankerpunkts Hoher Fläming](https://ankerpunkt-hoherflaeming.de/) entstanden, eines regionalen Netzwerks in Brandenburg; ein WordPress-Plugin mit demselben Datenformat ist in Arbeit.
+Don Ludwig, freier UX-Designer. Ich baue Design-Systeme, begleite agile Produktentwicklung und arbeite daran, die Zusammenarbeit zwischen Design und Entwicklung besser zu machen. Mein Prozess: nutzerzentriert denken, iterativ arbeiten, technische Rahmenbedingungen verstehen statt ignorieren. Für dieses Pattern habe ich mit Claude Code gearbeitet; wie, steht in [Abschnitt 9](#9-entstehung-und-weiterführung). Dieses Pattern ist aus der [Projektübersicht](https://ankerpunkt-hoherflaeming.de/projekte/) eines regionalen Netzwerks in Brandenburg entstanden; ein WordPress-Plugin mit demselben Datenformat ist in Arbeit.
 
 [LinkedIn](https://www.linkedin.com/in/donludwig/) · [don@thinkrepeat.com](mailto:don@thinkrepeat.com) · [thinkrepeat.com](https://thinkrepeat.com) · [GitHub](https://github.com/donludwig)
 
