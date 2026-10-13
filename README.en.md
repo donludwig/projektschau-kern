@@ -348,6 +348,7 @@ The gradation of the area colour on the card, from strong to quiet: badge and ac
 | grid gutter | token in the rules on `.ps-grid.kern-row` and `.ps-grid.kern-row > .ps-col`; without these rules the kit's 2rem apply |
 | number of grid columns | `kern-col-*` classes in `karte()` in the script (default 12, md 6, lg 4, xxl 3) |
 | sticky filter bar | remove `position: sticky` in `.ps-controls` |
+| content shows through above the filter bar in Safari on iPhone | from iOS 26, Safari draws the page under the status bar too and covers that area only when the sticky surface spans at least 90 percent of the window width, has a plain background colour and no blur. The demo solves this at the end of `demo.css` with a rule on `.ps-controls`; on your own page, adjust the margins of that rule to the layout |
 | width of the period column | token calculation in `.ps-row` (3 × `x-large`, 96 pixels) |
 | breakpoints | `48rem` in the script (collapsible blocks), `64rem` in the CSS (view switch), `40rem` in the CSS (timeline) |
 | texts of the live region | constants `LIVE` and `LEER` in the script or options `live`/`leer` on `render` |

@@ -12,6 +12,16 @@
 .demo-fuss { margin-top: calc(var(--kern-metric-space-x-large, 32px) * 3); padding-bottom: var(--kern-metric-space-x-large, 32px); }
 .demo-fuss .kern-divider { margin-bottom: var(--kern-metric-space-default, 16px); }
 [data-kern-theme="dark"] .demo-sonne, :root:not([data-kern-theme="dark"]) .demo-mond { display: none; }
+/* Schmale Bildschirme: Farbschalter mit zwei Feldern, Sonne und Mond, das gewählte Feld gefüllt; der Name bleibt als aria-label */
+@media (max-width: 48rem) {
+	.demo-kopf > #farbschema { padding: 0; gap: 0; min-height: 0; align-items: stretch; overflow: hidden; background: none; border: var(--kern-metric-border-width-light, 1px) solid var(--kern-color-action-default-contextual, #2044aa); color: var(--kern-color-action-default-contextual, #2044aa); }
+	.demo-kopf > #farbschema .ps-icon { display: block; box-sizing: content-box; width: 1rem; height: 1rem; margin: 0; padding: var(--kern-metric-space-small, 8px) var(--kern-metric-space-default, 16px); }
+	.demo-kopf > #farbschema .kern-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+	:root:not([data-kern-theme="dark"]) .demo-kopf > #farbschema .demo-sonne, [data-kern-theme="dark"] .demo-kopf > #farbschema .demo-mond { background: var(--kern-color-action-default-contextual, #2044aa); color: var(--kern-color-action-on-default-contextual, #fff); }
+}
+/* Safari ab iOS 26 zeichnet die Seite auch unter Statusleiste und Adressfeld. Es deckt den Bereich nur ab, wenn die haftende Fläche am oberen Rand
+   mindestens 90 Prozent der Fensterbreite hat, eine einfache Hintergrundfarbe trägt und keinen Weichzeichner. Die Filterleiste reicht deshalb dort bis zum Fensterrand */
+@supports (-webkit-touch-callout: none) { .ps-controls { margin-inline: calc(50% - 50vw); padding-inline: calc(50vw - 50%); background: var(--kern-color-layout-background-default, #fff); -webkit-backdrop-filter: none; backdrop-filter: none; } }
 /* Druck: Kopf- und Fußzeile der Demo-Seite entfallen, es bleibt die Projektschau (ihre Druckregeln stehen in projektschau.css). */
 @media print { .demo-kopf, .demo-fuss, .demo-kopf + hr, .kern-divider { display: none !important; } }
 /* Wer im System weniger Bewegung eingestellt hat, bekommt Sprünge statt des weichen Scrollens aus dem Kit. */

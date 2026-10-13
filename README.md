@@ -348,6 +348,7 @@ Die Abstufung der Bereichsfarbe auf der Karte, von kräftig nach leise: Badge un
 | Rinne des Rasters | Token in den Regeln auf `.ps-grid.kern-row` und `.ps-grid.kern-row > .ps-col`; ohne diese Regeln gelten die 2rem des Kits |
 | Spaltenzahl des Rasters | `kern-col-*`-Klassen in `karte()` im Skript (Vorgabe 12, md 6, lg 4, xxl 3) |
 | Haften der Filterleiste | `position: sticky` in `.ps-controls` entfernen |
+| Inhalt scheint in Safari auf dem iPhone über der Filterleiste durch | Safari ab iOS 26 zeichnet die Seite auch unter der Statusleiste und deckt den Bereich nur ab, wenn die haftende Fläche mindestens 90 Prozent der Fensterbreite hat, eine einfache Hintergrundfarbe trägt und keinen Weichzeichner. Die Demo löst das am Ende von `demo.css` mit einer Regel auf `.ps-controls`; auf einer eigenen Seite die Ränder dieser Regel an das Layout anpassen |
 | Breite der Zeitraumspalte | Token-Rechnung in `.ps-row` (3 × `x-large`, 96 Pixel) |
 | Umbruchpunkte | `48rem` im Skript (Aufklapper), `64rem` im CSS (Ansichtsumschalter), `40rem` im CSS (Zeitleiste) |
 | Texte der Live-Region | Konstanten `LIVE` und `LEER` im Skript oder Optionen `live`/`leer` bei `render` |

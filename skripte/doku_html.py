@@ -67,6 +67,13 @@ def seite(titel: str, inhalt: str, navi: str, sprache: str, t: dict, toc: str) -
 		.demo-navi [aria-current] {{ text-decoration: none; color: var(--kern-color-layout-text-default, #131525); font-weight: var(--kern-typography-font-weight-semi-bold, 600); }}
 		.ps-icon {{ width: 1em; height: 1em; flex: none; margin-inline-end: var(--kern-metric-space-x-small, 4px); color: var(--kern-color-action-default-contextual, #2044aa); }}
 		[data-kern-theme="dark"] .demo-sonne, :root:not([data-kern-theme="dark"]) .demo-mond {{ display: none; }}
+		/* Schmale Bildschirme: Farbschalter mit zwei Feldern, Sonne und Mond, das gewählte Feld gefüllt; der Name bleibt als aria-label */
+		@media (max-width: 48rem) {{
+			.demo-kopf > #farbschema {{ padding: 0; gap: 0; min-height: 0; align-items: stretch; overflow: hidden; background: none; border: var(--kern-metric-border-width-light, 1px) solid var(--kern-color-action-default-contextual, #2044aa); color: var(--kern-color-action-default-contextual, #2044aa); }}
+			.demo-kopf > #farbschema .ps-icon {{ display: block; box-sizing: content-box; width: 1rem; height: 1rem; margin: 0; padding: var(--kern-metric-space-small, 8px) var(--kern-metric-space-default, 16px); }}
+			.demo-kopf > #farbschema .kern-label {{ position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }}
+			:root:not([data-kern-theme="dark"]) .demo-kopf > #farbschema .demo-sonne, [data-kern-theme="dark"] .demo-kopf > #farbschema .demo-mond {{ background: var(--kern-color-action-default-contextual, #2044aa); color: var(--kern-color-action-on-default-contextual, #fff); }}
+		}}
 		/* Gleiche Lage wie der Sprachumschalter der Demo: 24 px unter der Kopfzeile, 24 px über dem Inhalt */
 		.doku-lang {{ gap: 0; justify-content: flex-end; margin-bottom: var(--kern-metric-space-small, 8px); }}
 		/* Überschrift und Einleitung wie in der Demo: 8 px unter dem Schalter, Einleitung in der großen Textstufe */
