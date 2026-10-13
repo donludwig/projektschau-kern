@@ -206,6 +206,8 @@ def main() -> None:
     for quelle, ziel, sprache, t in SEITEN:
         titel = t["readme"]
         md = (WURZEL / quelle).read_text(encoding="utf-8")
+        # Das Kopfbild der README ist für die Ansicht im Repositorium gedacht; die HTML-Seite beginnt mit der Überschrift
+        md = re.sub(r"\A!\[[^\]]*\]\(doku/katalog-bild\.png\)\n+", "", md)
         html = markdown.markdown(md, extensions=["tables", "fenced_code", "toc"], extension_configs={"toc": {"slugify": slugify_unicode}})
         for muster, ersatz in KLASSEN:
             html = re.sub(muster, ersatz, html)

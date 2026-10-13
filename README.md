@@ -1,3 +1,5 @@
+![Projektschau für KERN: Projektkarten in vier Bereichsfarben mit Filterleiste, darüber versetzt eine Zeitleiste](doku/katalog-bild.png)
+
 # Projektschau für KERN
 
 Projektübersicht mit Karten, Filtern und Zeitleiste auf Basis des [KERN UX-Standards](https://www.kern-ux.de). Ein Pattern für Initiativen, Vereine und Verwaltungen, die ihre Vorhaben auf einer Seite zeigen wollen: jede Karte ein Projekt mit Bereich, Einordnung, Status, Beschreibung, Aktivitäten, Partnern, Kennzahl und Links. Zwei Sprachen, Hell- und Dunkelmodus, Filter nach Bereich und Einordnung, Zeitleiste nach Jahren, Deep-Links über die Adresszeile.
@@ -530,7 +532,7 @@ Sicherheitslücken bitte vertraulich melden: [`SECURITY.md`](SECURITY.md) nennt 
 
 ## 8. Lizenz
 
-Code und Dokumentation: [EUPL-1.2](LICENSE) ([Lizenztext bei der EU](https://eupl.eu/1.2/de/)). KERN-Kit: EUPL-1.2 (`vendor/kern/LICENSE.md`). [Fira Sans](https://github.com/mozilla/Fira): [SIL Open Font License 1.1](https://openfontlicense.org). Symbole in den Beispieldaten nach [Lucide](https://lucide.dev) ([ISC](https://github.com/lucide-icons/lucide/blob/main/LICENSE)).
+Code und Dokumentation: [EUPL-1.2](LICENSE) (englischer Wortlaut im Paket, [deutscher Lizenztext bei der EU](https://eupl.eu/1.2/de/); alle Sprachfassungen gelten gleich). KERN-Kit: EUPL-1.2 (`vendor/kern/LICENSE.md`). [Fira Sans](https://github.com/mozilla/Fira): [SIL Open Font License 1.1](https://openfontlicense.org). Symbole in den Beispieldaten nach [Lucide](https://lucide.dev) ([ISC](https://github.com/lucide-icons/lucide/blob/main/LICENSE)).
 
 ## 9. Entstehung und Weiterführung
 

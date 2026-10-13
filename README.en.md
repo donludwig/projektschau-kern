@@ -1,3 +1,5 @@
+![Projektschau for KERN: project cards in four area colours with a filter bar, and a timeline set on top](doku/katalog-bild.png)
+
 # Projektschau for KERN
 
 A project overview with cards, filters and a timeline, built on the [KERN UX standard](https://www.kern-ux.de). A pattern for initiatives, associations and public administrations that want to show their projects on one page: each card is a project with area, category, status, description, activities, partners, key figure and links. Two languages, light and dark mode, filters by area and category, a timeline by year, deep links via the address bar.
