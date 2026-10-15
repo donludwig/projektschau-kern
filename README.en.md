@@ -477,63 +477,30 @@ Self-assessment, not a formal audit; goal, checks and open points are listed in 
 
 ## 7. Security
 
-This pattern was built with [Claude Code](https://claude.com/claude-code) ([section 9](#9-origin-and-further-development)). That is why this chapter lists what I checked, with which tools, and what is still open. I ran all checks myself, with automated tools and AI-assisted reviews. There has been no review by independent third parties. As of 13 October 2026, release 0.1.0.
+This pattern was built with [Claude Code](https://claude.com/claude-code) ([section 9](#9-origin-and-further-development)). That is why I set out here how I checked it. I carried out all checks myself, with automated tools and AI-assisted reviews. There has been no check by independent third parties. As of version 0.1.0, 15 October 2026.
 
-The pattern runs entirely in the browser. It has no server part and no login, it collects no data from visitors and makes no external requests; kit, fonts and data are local. The only thing that comes from outside is the data package: the JSON file with areas, projects and texts that the operator provides ([section 2](#2-data); in the demo `daten/beispiel.json`). The renderer builds the cards from it. It checks every field of it before it reaches the page, even when the file comes from the operator, because it may originate from an editorial system with several roles. [Section 2.5](#25-creating-your-own-data) describes how each field is handled. The checks below focus on this path.
+The pattern runs entirely in the browser, without a server part and without login. The only outside input is the data package ([section 2](#2-data)). The renderer treats it as untrusted even when the operator provides it: it may come from a content system with several roles.
 
-Everything the package brings along from others (KERN kit, Fira Sans, symbols from Lucide) is listed in the bill of materials with origin and licence, the kit also with a checksum. The components with a version number were looked up in the [OSV](https://osv.dev) vulnerability database, with no hits ([section 7.1](#71-what-was-checked)).
+### 7.1 What is protected
 
-### 7.1 What was checked
+- The renderer checks every field of the data package before it reaches the page: colours only as hex values, keys and language codes only in the expected format, links only with `http`, `https`, `mailto`, `tel` or relative, icons only as simple SVG shapes. It escapes texts and removes control characters ([section 2.5](#25-creating-your-own-data)).
+- Demo, documentation and start page run under a strict content security policy that allows only files from the package.
+- The package sets no cookies and loads nothing from third-party servers; kit, fonts and data are included.
+- The bill of materials lists every third-party component with origin and licence; the KERN kit comes in a fixed version with a checksum.
 
-| Check | Approach | Result |
-|---|---|---|
-| Review for DOM XSS | AI-assisted code review of renderer, demo and scripts; sources: data package, address, hash, browser storage, embedded JSON | 7 findings, fixed |
-| Payloads in the renderer | `skripte/pruefe_xss.js` renders the sample data with payloads in colour, key, language code, symbol, number, link and year and looks for active markup | passed |
-| Fuzzing | `skripte/pruefe_fuzz.js`: 1000 and 2000 randomly mangled packages with a fixed seed (fields removed, wrongly typed, nested) | no exception, no active markup |
-| Unicode control characters | Bidi, zero-width and control characters in texts and link texts | are removed |
-| Misuse (sharp edges) | Trail of Bits method: options, data fields, embedding and silent failure paths from the view of operations and editors | 3 findings, fixed |
-| Insecure defaults | Trail of Bits method: from credentials to errors that fail open instead of closed | no finding |
-| Security review of the whole code | Data flow from source to output | no finding of medium severity or above; one note implemented |
-| Content security policy | Demo, documentation and start page under `default-src 'self'; script-src 'self'; style-src 'self'; frame-ancestors 'none'` without `unsafe-inline` | works; the renderer sets its rules through `adoptedStyleSheets`, all pages run without inline scripts and inline styles |
-| Secrets in the history | gitleaks across all commits | nothing found |
-| Linters and data check | ESLint and stylelint; `skripte/pruefe.py` checks every KERN class and token against the kit, the data package and the contrasts in light and dark | no finding |
-| Markup | html-validate on demo, documentation, start page and rendered DOM | no finding |
-| Accessibility | axe-core for WCAG 2.1 AA and 2.2 AA with best practices: cards, timeline, light and dark, both languages, widths 1280, 390 and 320 pixels; contrast of every text recalculated, also on hover; keyboard pass with a check of the focus ring; text spacing, 200 % font size, reduced motion; documentation and start page in light and dark, both languages, at 1280, 390 and 320 pixels | no open violations |
-| Browsers and load | Chromium, Firefox and WebKit without console errors; 1000 cards | passed; 205 ms to render, 5 ms per filter click |
-| Lighthouse 13.5 | Demo page of the package, mobile profile with simulated throttling, compressed delivery | accessibility 100, best practices 100, performance 81. The pattern itself adds about 29 KB compressed (CSS, JavaScript, sample data); a KERN page loads kit and font anyway |
-| Supply chain | KERN kit in a fixed version, SHA-512 checksum before unpacking; SHA-256 checksum for the zip | kit, Fira Sans and Lucide recorded, licence texts in the package |
-| Bill of materials | validated against the SPDX 2.3 JSON schema; compared with the package content on every build; KERN kit 2.8.2 and Lucide 1.49.0 looked up in the OSV vulnerability database (13 October 2026) | valid and up to date; no known vulnerabilities |
+### 7.2 How it was checked
 
-### 7.2 Tools
+AI-assisted reviews of the data flow for DOM XSS, misuse and insecure defaults; check scripts in the package with attack strings in every data field and a thousand randomly mangled data packages; content security policy in the browser; accessibility with axe-core, light and dark, in both languages and three widths, plus keyboard and contrast; Chromium, Firefox and WebKit; Lighthouse; OWASP ZAP against the live site; linters, markup and link checks; a query of the components in the OSV vulnerability database and a search for secrets in the repository. The details with tools and results are in the [test report](https://github.com/donludwig/projektschau-kern/blob/main/doku/pruefbericht.en.md).
 
-| Tool | Used for | In the package |
-|---|---|---|
-| `skripte/pruefe.py`, `skripte/pruefe_xss.js`, `skripte/pruefe_fuzz.js` | Data package, classes, tokens and contrasts; payloads; fuzzing | yes |
-| [Claude Code](https://claude.com/claude-code) with [`/security-review`](https://github.com/anthropics/claude-code-security-review) | Code reviews for DOM XSS and security review of the whole code | no |
-| [Trail of Bits Skills](https://github.com/trailofbits/skills): [sharp-edges](https://github.com/trailofbits/skills/tree/main/plugins/sharp-edges), [insecure-defaults](https://github.com/trailofbits/skills/tree/main/plugins/insecure-defaults) | Reviews for misuse and insecure defaults | no |
-| [axe-core](https://github.com/dequelabs/axe-core) 4.14 | Accessibility | no |
-| [Playwright](https://github.com/microsoft/playwright) 1.64 | Browser matrix, keyboard, contrasts, content security policy, print view | no |
-| [Lighthouse](https://github.com/GoogleChrome/lighthouse) 13.5 | Accessibility, best practices, performance | no |
-| [html-validate](https://gitlab.com/html-validate/html-validate) 11.16 | Markup | no |
-| [ESLint](https://github.com/eslint/eslint) 10.12, [stylelint](https://github.com/stylelint/stylelint) 17.16 | JavaScript and CSS | no |
-| [gitleaks](https://github.com/gitleaks/gitleaks) 8.30 | Secrets in the history | no |
-| [SPDX 2.3](https://spdx.github.io/spdx-spec/v2.3/) with [JSON schema](https://github.com/spdx/spdx-spec/blob/support/2.3/schemas/spdx-schema.json) | Format and validation of the bill of materials `SPDX_projektschau-kern.spdx.json` | bill of materials yes, schema no |
-| [OSV](https://osv.dev) ([repository](https://github.com/google/osv.dev)) | known vulnerabilities of the components | no |
+### 7.3 Open items
 
-The tools outside the package run locally before every release. The three check scripts in the package only need Python and Node.js and run after every change to the renderer ([section 5](#5-checking-and-maintaining)).
+- Independent check: a penetration test or an audit by third parties has not taken place yet.
+- Screen reader and user test: axe-core covers only part of the criteria. A screen reader pass and a test with people who maintain content are open.
+- KERN kit: I checked that it matches the registry package, but not the kit itself.
+- Automated pipeline: I run the checks locally by hand.
+- Embedding page: server, headers and content security policy belong to the operator.
 
-### 7.3 What is still open
-
-- Independent review: there has been no penetration test and no audit by third parties.
-- Screen reader and usability test: axe-core covers only part of the criteria. A pass with a screen reader and a test with users are still to come.
-- KERN kit: the [kit](https://gitlab.opencode.de/kern-ux/kern-ux-plain) is included unchanged in a fixed version. What is checked: the package matches the registry and every class used exists in it. I have not reviewed the kit itself.
-- [Trusted Types](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API): not tested. The renderer sets the checked markup through `innerHTML` in one place; a page that enforces Trusted Types needs its own policy for that.
-- Automated pipeline: the checks do not yet run by themselves on every change, I run them locally by hand.
-- Signature: the zip comes with a SHA-256 checksum, not yet with a signature.
-- Vulnerabilities of the components: the [OSV lookup](https://osv.dev) is a snapshot. There is no regular lookup yet; for Fira Sans the bill of materials gives no version that could be looked up.
-- Embedding page: server, headers and content security policy belong to the operator. Anyone who calls `Projektschau.render` themselves and processes the result further leaves the checked path.
-
-Please report vulnerabilities privately: [`SECURITY.md`](SECURITY.md) gives address and deadlines.
+Please report vulnerabilities privately: [`SECURITY.md`](SECURITY.md) gives the address and deadlines.
 
 ## 8. Licence
 
@@ -642,6 +609,6 @@ First release, named after the fictitious town of the sample data. As of 2026-10
 - **No framework, no build:** one JavaScript file and one CSS file on top of KERN kit 2.8.2, which is included unchanged; no external requests ([section 1](#1-demo-and-integration)).
 - **Data package:** one JSON file with areas, categories, projects and texts ([section 2](#2-data)); 32 fictitious sample projects in four areas are included.
 - **Accessibility:** keyboard operation with visible focus, results are announced, checked contrasts, the system setting “reduce motion” is respected. Self-test with axe-core for WCAG 2.1 AA and 2.2 AA with no open violations ([section 6](#6-accessibility)).
-- **Security:** the renderer checks every field of the data package and runs under a strict content security policy. Check scripts, security policy (`SECURITY.md`) and bill of materials (SPDX 2.3) are included ([section 7](#7-security)).
+- **Security:** the renderer checks every field of the data package and runs under a strict content security policy. Check scripts, test report, threat model, security policy (`SECURITY.md`) and bill of materials (SPDX 2.3) are included ([section 7](#7-security)).
 - **Demo and documentation:** demo page, this README in German and English, both also as HTML pages in KERN style; design and content rules for your own cards ([section 4.5](#45-design-rules)).
 - **Start page:** the start page of projektschau.thinkrepeat.com in German and English under `website/`, as an example of how to present the pattern ([section 1](#1-demo-and-integration)).

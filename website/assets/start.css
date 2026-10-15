@@ -113,9 +113,10 @@
 	   und die soll es hier nicht geben. Mehr Bereiche oder längere Schritte passen deshalb nicht hinein. */
 	@keyframes start-chip-an { 30%, 70% { background: var(--ton); color: var(--ps-auf); } }
 	@keyframes start-chip-aus { 12%, 88% { background: color-mix(in srgb, var(--kern-color-action-default, #2044aa) 14%, var(--ps-tafel)); color: var(--kern-color-action-default, #2044aa); } }
-	@keyframes start-karte-1 { 0%, 38% { opacity: 1; } 56%, 84% { opacity: .55; } }
-	@keyframes start-karte-2 { 16%, 38% { opacity: .55; } 56%, 100% { opacity: 1; } }
-	@keyframes start-karte-rest { 16%, 84% { opacity: .55; } }
+	/* Nicht gewählte Karten treten grau zurück statt halb durchsichtig, damit der Kontrast auch mitten im Lauf hält */
+	@keyframes start-karte-1 { 0%, 38% { filter: none; } 56%, 84% { filter: grayscale(1); } }
+	@keyframes start-karte-2 { 16%, 38% { filter: grayscale(1); } 56%, 100% { filter: none; } }
+	@keyframes start-karte-rest { 16%, 84% { filter: grayscale(1); } }
 	.start-chips > .start-chip:nth-child(1) { animation: start-chip-aus 2.7s ease-in-out 2.05s; }
 	.start-chips > .start-chip:nth-child(2) { animation: start-chip-an 1.65s ease-in-out 1.9s; }
 	.start-chips > .start-chip:nth-child(3) { animation: start-chip-an 1.65s ease-in-out 3.25s; }

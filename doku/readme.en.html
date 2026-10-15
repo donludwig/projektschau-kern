@@ -1124,181 +1124,26 @@ python3 skripte/farben.py --rampe &quot;#4c8438&quot;
 <h2 class="kern-heading-large" id="6-accessibility">6. Accessibility</h2>
 <p class="kern-body">Self-assessment, not a formal audit; goal, checks and open points are listed in <a class="kern-link" href="../ACCESSIBILITY.md"><code>ACCESSIBILITY.md</code></a>. All controls are buttons or links with the focus ring of the kit, reachable in display order. Filters and switches carry <code>aria-pressed</code>, groups carry <code>aria-label</code> in the active language. Results are announced via a live region. Icons are decorative (<code>aria-hidden</code>); every piece of information is also available as text. Contrasts for text and surfaces come from KERN; for the area colours the requirements in 2.4 apply. Without JavaScript the element stays empty because the cards are rendered from the data package; to avoid that, generate the markup on the server beforehand with <code>Projektschau.render</code>.</p>
 <h2 class="kern-heading-large" id="7-security">7. Security</h2>
-<p class="kern-body">This pattern was built with <a class="kern-link" rel="noopener" href="https://claude.com/claude-code">Claude Code</a> (<a class="kern-link" href="#9-origin-and-further-development">section 9</a>). That is why this chapter lists what I checked, with which tools, and what is still open. I ran all checks myself, with automated tools and AI-assisted reviews. There has been no review by independent third parties. As of 13 October 2026, release 0.1.0.</p>
-<p class="kern-body">The pattern runs entirely in the browser. It has no server part and no login, it collects no data from visitors and makes no external requests; kit, fonts and data are local. The only thing that comes from outside is the data package: the JSON file with areas, projects and texts that the operator provides (<a class="kern-link" href="#2-data">section 2</a>; in the demo <code>daten/beispiel.json</code>). The renderer builds the cards from it. It checks every field of it before it reaches the page, even when the file comes from the operator, because it may originate from an editorial system with several roles. <a class="kern-link" href="#25-creating-your-own-data">Section 2.5</a> describes how each field is handled. The checks below focus on this path.</p>
-<p class="kern-body">Everything the package brings along from others (KERN kit, Fira Sans, symbols from Lucide) is listed in the bill of materials with origin and licence, the kit also with a checksum. The components with a version number were looked up in the <a class="kern-link" rel="noopener" href="https://osv.dev">OSV</a> vulnerability database, with no hits (<a class="kern-link" href="#71-what-was-checked">section 7.1</a>).</p>
-<h3 class="kern-heading-medium" id="71-what-was-checked">7.1 What was checked</h3>
-<div class="kern-table-responsive" data-name="Table, scrolls sideways"><table class="kern-table kern-table--striped">
-<thead class="kern-table__header">
-<tr class="kern-table__row">
-<th class="kern-table__cell">Check</th>
-<th class="kern-table__cell">Approach</th>
-<th class="kern-table__cell">Result</th>
-</tr>
-</thead>
-<tbody class="kern-table__body">
-<tr class="kern-table__row">
-<td class="kern-table__cell">Review for DOM XSS</td>
-<td class="kern-table__cell">AI-assisted code review of renderer, demo and scripts; sources: data package, address, hash, browser storage, embedded JSON</td>
-<td class="kern-table__cell">7 findings, fixed</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell">Payloads in the renderer</td>
-<td class="kern-table__cell"><code>skripte/pruefe_xss.js</code> renders the sample data with payloads in colour, key, language code, symbol, number, link and year and looks for active markup</td>
-<td class="kern-table__cell">passed</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell">Fuzzing</td>
-<td class="kern-table__cell"><code>skripte/pruefe_fuzz.js</code>: 1000 and 2000 randomly mangled packages with a fixed seed (fields removed, wrongly typed, nested)</td>
-<td class="kern-table__cell">no exception, no active markup</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell">Unicode control characters</td>
-<td class="kern-table__cell">Bidi, zero-width and control characters in texts and link texts</td>
-<td class="kern-table__cell">are removed</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell">Misuse (sharp edges)</td>
-<td class="kern-table__cell">Trail of Bits method: options, data fields, embedding and silent failure paths from the view of operations and editors</td>
-<td class="kern-table__cell">3 findings, fixed</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell">Insecure defaults</td>
-<td class="kern-table__cell">Trail of Bits method: from credentials to errors that fail open instead of closed</td>
-<td class="kern-table__cell">no finding</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell">Security review of the whole code</td>
-<td class="kern-table__cell">Data flow from source to output</td>
-<td class="kern-table__cell">no finding of medium severity or above; one note implemented</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell">Content security policy</td>
-<td class="kern-table__cell">Demo, documentation and start page under <code>default-src 'self'; script-src 'self'; style-src 'self'; frame-ancestors 'none'</code> without <code>unsafe-inline</code></td>
-<td class="kern-table__cell">works; the renderer sets its rules through <code>adoptedStyleSheets</code>, all pages run without inline scripts and inline styles</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell">Secrets in the history</td>
-<td class="kern-table__cell">gitleaks across all commits</td>
-<td class="kern-table__cell">nothing found</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell">Linters and data check</td>
-<td class="kern-table__cell">ESLint and stylelint; <code>skripte/pruefe.py</code> checks every KERN class and token against the kit, the data package and the contrasts in light and dark</td>
-<td class="kern-table__cell">no finding</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell">Markup</td>
-<td class="kern-table__cell">html-validate on demo, documentation, start page and rendered DOM</td>
-<td class="kern-table__cell">no finding</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell">Accessibility</td>
-<td class="kern-table__cell">axe-core for WCAG 2.1 AA and 2.2 AA with best practices: cards, timeline, light and dark, both languages, widths 1280, 390 and 320 pixels; contrast of every text recalculated, also on hover; keyboard pass with a check of the focus ring; text spacing, 200 % font size, reduced motion; documentation and start page in light and dark, both languages, at 1280, 390 and 320 pixels</td>
-<td class="kern-table__cell">no open violations</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell">Browsers and load</td>
-<td class="kern-table__cell">Chromium, Firefox and WebKit without console errors; 1000 cards</td>
-<td class="kern-table__cell">passed; 205 ms to render, 5 ms per filter click</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell">Lighthouse 13.5</td>
-<td class="kern-table__cell">Demo page of the package, mobile profile with simulated throttling, compressed delivery</td>
-<td class="kern-table__cell">accessibility 100, best practices 100, performance 81. The pattern itself adds about 29 KB compressed (CSS, JavaScript, sample data); a KERN page loads kit and font anyway</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell">Supply chain</td>
-<td class="kern-table__cell">KERN kit in a fixed version, SHA-512 checksum before unpacking; SHA-256 checksum for the zip</td>
-<td class="kern-table__cell">kit, Fira Sans and Lucide recorded, licence texts in the package</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell">Bill of materials</td>
-<td class="kern-table__cell">validated against the SPDX 2.3 JSON schema; compared with the package content on every build; KERN kit 2.8.2 and Lucide 1.49.0 looked up in the OSV vulnerability database (13 October 2026)</td>
-<td class="kern-table__cell">valid and up to date; no known vulnerabilities</td>
-</tr>
-</tbody>
-</table></div>
-<h3 class="kern-heading-medium" id="72-tools">7.2 Tools</h3>
-<div class="kern-table-responsive" data-name="Table, scrolls sideways"><table class="kern-table kern-table--striped">
-<thead class="kern-table__header">
-<tr class="kern-table__row">
-<th class="kern-table__cell">Tool</th>
-<th class="kern-table__cell">Used for</th>
-<th class="kern-table__cell">In the package</th>
-</tr>
-</thead>
-<tbody class="kern-table__body">
-<tr class="kern-table__row">
-<td class="kern-table__cell"><code>skripte/pruefe.py</code>, <code>skripte/pruefe_xss.js</code>, <code>skripte/pruefe_fuzz.js</code></td>
-<td class="kern-table__cell">Data package, classes, tokens and contrasts; payloads; fuzzing</td>
-<td class="kern-table__cell">yes</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell"><a class="kern-link" rel="noopener" href="https://claude.com/claude-code">Claude Code</a> with <a class="kern-link" rel="noopener" href="https://github.com/anthropics/claude-code-security-review"><code>/security-review</code></a></td>
-<td class="kern-table__cell">Code reviews for DOM XSS and security review of the whole code</td>
-<td class="kern-table__cell">no</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell"><a class="kern-link" rel="noopener" href="https://github.com/trailofbits/skills">Trail of Bits Skills</a>: <a class="kern-link" rel="noopener" href="https://github.com/trailofbits/skills/tree/main/plugins/sharp-edges">sharp-edges</a>, <a class="kern-link" rel="noopener" href="https://github.com/trailofbits/skills/tree/main/plugins/insecure-defaults">insecure-defaults</a></td>
-<td class="kern-table__cell">Reviews for misuse and insecure defaults</td>
-<td class="kern-table__cell">no</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell"><a class="kern-link" rel="noopener" href="https://github.com/dequelabs/axe-core">axe-core</a> 4.14</td>
-<td class="kern-table__cell">Accessibility</td>
-<td class="kern-table__cell">no</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell"><a class="kern-link" rel="noopener" href="https://github.com/microsoft/playwright">Playwright</a> 1.64</td>
-<td class="kern-table__cell">Browser matrix, keyboard, contrasts, content security policy, print view</td>
-<td class="kern-table__cell">no</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell"><a class="kern-link" rel="noopener" href="https://github.com/GoogleChrome/lighthouse">Lighthouse</a> 13.5</td>
-<td class="kern-table__cell">Accessibility, best practices, performance</td>
-<td class="kern-table__cell">no</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell"><a class="kern-link" rel="noopener" href="https://gitlab.com/html-validate/html-validate">html-validate</a> 11.16</td>
-<td class="kern-table__cell">Markup</td>
-<td class="kern-table__cell">no</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell"><a class="kern-link" rel="noopener" href="https://github.com/eslint/eslint">ESLint</a> 10.12, <a class="kern-link" rel="noopener" href="https://github.com/stylelint/stylelint">stylelint</a> 17.16</td>
-<td class="kern-table__cell">JavaScript and CSS</td>
-<td class="kern-table__cell">no</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell"><a class="kern-link" rel="noopener" href="https://github.com/gitleaks/gitleaks">gitleaks</a> 8.30</td>
-<td class="kern-table__cell">Secrets in the history</td>
-<td class="kern-table__cell">no</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell"><a class="kern-link" rel="noopener" href="https://spdx.github.io/spdx-spec/v2.3/">SPDX 2.3</a> with <a class="kern-link" rel="noopener" href="https://github.com/spdx/spdx-spec/blob/support/2.3/schemas/spdx-schema.json">JSON schema</a></td>
-<td class="kern-table__cell">Format and validation of the bill of materials <code>SPDX_projektschau-kern.spdx.json</code></td>
-<td class="kern-table__cell">bill of materials yes, schema no</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell"><a class="kern-link" rel="noopener" href="https://osv.dev">OSV</a> (<a class="kern-link" rel="noopener" href="https://github.com/google/osv.dev">repository</a>)</td>
-<td class="kern-table__cell">known vulnerabilities of the components</td>
-<td class="kern-table__cell">no</td>
-</tr>
-</tbody>
-</table></div>
-<p class="kern-body">The tools outside the package run locally before every release. The three check scripts in the package only need Python and Node.js and run after every change to the renderer (<a class="kern-link" href="#5-checking-and-maintaining">section 5</a>).</p>
-<h3 class="kern-heading-medium" id="73-what-is-still-open">7.3 What is still open</h3>
+<p class="kern-body">This pattern was built with <a class="kern-link" rel="noopener" href="https://claude.com/claude-code">Claude Code</a> (<a class="kern-link" href="#9-origin-and-further-development">section 9</a>). That is why I set out here how I checked it. I carried out all checks myself, with automated tools and AI-assisted reviews. There has been no check by independent third parties. As of version 0.1.0, 15 October 2026.</p>
+<p class="kern-body">The pattern runs entirely in the browser, without a server part and without login. The only outside input is the data package (<a class="kern-link" href="#2-data">section 2</a>). The renderer treats it as untrusted even when the operator provides it: it may come from a content system with several roles.</p>
+<h3 class="kern-heading-medium" id="71-what-is-protected">7.1 What is protected</h3>
 <ul class="kern-list kern-list--bullet">
-<li>Independent review: there has been no penetration test and no audit by third parties.</li>
-<li>Screen reader and usability test: axe-core covers only part of the criteria. A pass with a screen reader and a test with users are still to come.</li>
-<li>KERN kit: the <a class="kern-link" rel="noopener" href="https://gitlab.opencode.de/kern-ux/kern-ux-plain">kit</a> is included unchanged in a fixed version. What is checked: the package matches the registry and every class used exists in it. I have not reviewed the kit itself.</li>
-<li><a class="kern-link" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API">Trusted Types</a>: not tested. The renderer sets the checked markup through <code>innerHTML</code> in one place; a page that enforces Trusted Types needs its own policy for that.</li>
-<li>Automated pipeline: the checks do not yet run by themselves on every change, I run them locally by hand.</li>
-<li>Signature: the zip comes with a SHA-256 checksum, not yet with a signature.</li>
-<li>Vulnerabilities of the components: the <a class="kern-link" rel="noopener" href="https://osv.dev">OSV lookup</a> is a snapshot. There is no regular lookup yet; for Fira Sans the bill of materials gives no version that could be looked up.</li>
-<li>Embedding page: server, headers and content security policy belong to the operator. Anyone who calls <code>Projektschau.render</code> themselves and processes the result further leaves the checked path.</li>
+<li>The renderer checks every field of the data package before it reaches the page: colours only as hex values, keys and language codes only in the expected format, links only with <code>http</code>, <code>https</code>, <code>mailto</code>, <code>tel</code> or relative, icons only as simple SVG shapes. It escapes texts and removes control characters (<a class="kern-link" href="#25-creating-your-own-data">section 2.5</a>).</li>
+<li>Demo, documentation and start page run under a strict content security policy that allows only files from the package.</li>
+<li>The package sets no cookies and loads nothing from third-party servers; kit, fonts and data are included.</li>
+<li>The bill of materials lists every third-party component with origin and licence; the KERN kit comes in a fixed version with a checksum.</li>
 </ul>
-<p class="kern-body">Please report vulnerabilities privately: <a class="kern-link" href="../SECURITY.md"><code>SECURITY.md</code></a> gives address and deadlines.</p>
+<h3 class="kern-heading-medium" id="72-how-it-was-checked">7.2 How it was checked</h3>
+<p class="kern-body">AI-assisted reviews of the data flow for DOM XSS, misuse and insecure defaults; check scripts in the package with attack strings in every data field and a thousand randomly mangled data packages; content security policy in the browser; accessibility with axe-core, light and dark, in both languages and three widths, plus keyboard and contrast; Chromium, Firefox and WebKit; Lighthouse; OWASP ZAP against the live site; linters, markup and link checks; a query of the components in the OSV vulnerability database and a search for secrets in the repository. The details with tools and results are in the <a class="kern-link" rel="noopener" href="https://github.com/donludwig/projektschau-kern/blob/main/doku/pruefbericht.en.md">test report</a>.</p>
+<h3 class="kern-heading-medium" id="73-open-items">7.3 Open items</h3>
+<ul class="kern-list kern-list--bullet">
+<li>Independent check: a penetration test or an audit by third parties has not taken place yet.</li>
+<li>Screen reader and user test: axe-core covers only part of the criteria. A screen reader pass and a test with people who maintain content are open.</li>
+<li>KERN kit: I checked that it matches the registry package, but not the kit itself.</li>
+<li>Automated pipeline: I run the checks locally by hand.</li>
+<li>Embedding page: server, headers and content security policy belong to the operator.</li>
+</ul>
+<p class="kern-body">Please report vulnerabilities privately: <a class="kern-link" href="../SECURITY.md"><code>SECURITY.md</code></a> gives the address and deadlines.</p>
 <h2 class="kern-heading-large" id="8-licence">8. Licence</h2>
 <p class="kern-body">Code and documentation: <a class="kern-link" href="../LICENSE">EUPL-1.2</a> (<a class="kern-link" rel="noopener" href="https://eupl.eu/1.2/en/">licence text at the EU</a>). KERN kit: EUPL-1.2 (<code>vendor/kern/LICENSE.md</code>). <a class="kern-link" rel="noopener" href="https://github.com/mozilla/Fira">Fira Sans</a>: <a class="kern-link" rel="noopener" href="https://openfontlicense.org">SIL Open Font License 1.1</a>. Icons in the sample data and on the start page after <a class="kern-link" rel="noopener" href="https://lucide.dev">Lucide</a> (<a class="kern-link" rel="noopener" href="https://github.com/lucide-icons/lucide/blob/main/LICENSE">ISC</a>). The KERN logo on the start page (<code>website/</code>) is a mark of the KERN team and is not covered by the EUPL; its use here has been agreed with the KERN team.</p>
 <h2 class="kern-heading-large" id="9-origin-and-further-development">9. Origin and further development</h2>
@@ -1367,7 +1212,7 @@ Is the spacing now the standard? May it also be smaller than 1rem?
 <li><strong>No framework, no build:</strong> one JavaScript file and one CSS file on top of KERN kit 2.8.2, which is included unchanged; no external requests (<a class="kern-link" href="#1-demo-and-integration">section 1</a>).</li>
 <li><strong>Data package:</strong> one JSON file with areas, categories, projects and texts (<a class="kern-link" href="#2-data">section 2</a>); 32 fictitious sample projects in four areas are included.</li>
 <li><strong>Accessibility:</strong> keyboard operation with visible focus, results are announced, checked contrasts, the system setting “reduce motion” is respected. Self-test with axe-core for WCAG 2.1 AA and 2.2 AA with no open violations (<a class="kern-link" href="#6-accessibility">section 6</a>).</li>
-<li><strong>Security:</strong> the renderer checks every field of the data package and runs under a strict content security policy. Check scripts, security policy (<code>SECURITY.md</code>) and bill of materials (SPDX 2.3) are included (<a class="kern-link" href="#7-security">section 7</a>).</li>
+<li><strong>Security:</strong> the renderer checks every field of the data package and runs under a strict content security policy. Check scripts, test report, threat model, security policy (<code>SECURITY.md</code>) and bill of materials (SPDX 2.3) are included (<a class="kern-link" href="#7-security">section 7</a>).</li>
 <li><strong>Demo and documentation:</strong> demo page, this README in German and English, both also as HTML pages in KERN style; design and content rules for your own cards (<a class="kern-link" href="#45-design-rules">section 4.5</a>).</li>
 <li><strong>Start page:</strong> the start page of projektschau.thinkrepeat.com in German and English under <code>website/</code>, as an example of how to present the pattern (<a class="kern-link" href="#1-demo-and-integration">section 1</a>).</li>
 </ul>

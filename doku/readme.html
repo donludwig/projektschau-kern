@@ -1124,179 +1124,24 @@ python3 skripte/farben.py --rampe &quot;#4c8438&quot;
 <h2 class="kern-heading-large" id="6-barrierefreiheit">6. Barrierefreiheit</h2>
 <p class="kern-body">Selbsttest, kein Nachweis; Ziel, Prüfungen und offene Punkte stehen in <a class="kern-link" href="../ACCESSIBILITY.md"><code>ACCESSIBILITY.md</code></a>. Alle Bedienelemente sind Buttons oder Links mit dem Fokusrahmen des Kits, in Darstellungsreihenfolge erreichbar. Filter und Umschalter tragen <code>aria-pressed</code>, Gruppen tragen <code>aria-label</code> in der aktiven Sprache. Ergebnisse werden über eine Live-Region angesagt. Symbole sind dekorativ (<code>aria-hidden</code>), jede Information steht auch als Text. Kontraste für Text und Flächen kommen aus KERN, für die Bereichsfarben gelten die Anforderungen aus 2.4. Ohne JavaScript bleibt das Element leer, weil die Karten aus dem Datenpaket gerendert werden; wer das vermeiden will, erzeugt das Markup mit <code>Projektschau.render</code> vorab auf dem Server.</p>
 <h2 class="kern-heading-large" id="7-sicherheit">7. Sicherheit</h2>
-<p class="kern-body">Dieses Pattern ist mit <a class="kern-link" rel="noopener" href="https://claude.com/claude-code">Claude Code</a> entstanden (<a class="kern-link" href="#9-entstehung-und-weiterführung">Abschnitt 9</a>). Deshalb steht hier, was ich geprüft habe, mit welchen Werkzeugen und was noch aussteht. Alle Prüfungen habe ich selbst gemacht, mit automatischen Werkzeugen und KI-gestützten Reviews. Eine Prüfung durch unabhängige Dritte gab es nicht. Stand 13. Oktober 2026, Fassung 0.1.0.</p>
-<p class="kern-body">Das Pattern läuft vollständig im Browser. Es hat keinen Server-Teil und keine Anmeldung, es erhebt keine Daten von Besucher:innen und stellt keine externen Anfragen; Kit, Schriften und Daten liegen lokal. Von außen kommt nur das Datenpaket: die JSON-Datei mit Bereichen, Projekten und Texten, die der Betreiber selbst bereitstellt (<a class="kern-link" href="#2-daten">Abschnitt 2</a>; in der Demo <code>daten/beispiel.json</code>). Aus ihr baut der Renderer die Karten. Er prüft jedes Feld daraus, bevor es in die Seite gelangt, auch wenn die Datei vom Betreiber selbst stammt, denn sie kann aus einem Redaktionssystem mit mehreren Rollen kommen. Welches Feld wie behandelt wird, steht in <a class="kern-link" href="#25-eigene-daten-anlegen">Abschnitt 2.5</a>. Die Prüfungen unten gelten vor allem dieser Strecke.</p>
-<p class="kern-body">Alles, was das Paket von anderen mitbringt (KERN-Kit, Fira Sans, Symbole von Lucide), steht mit Herkunft und Lizenz in der Stückliste, das Kit zusätzlich mit Prüfsumme. Die Bestandteile mit Versionsnummer sind in der Schwachstellen-Datenbank <a class="kern-link" rel="noopener" href="https://osv.dev">OSV</a> abgefragt, ohne Treffer (<a class="kern-link" href="#71-was-geprüft-wurde">Abschnitt 7.1</a>).</p>
-<h3 class="kern-heading-medium" id="71-was-geprüft-wurde">7.1 Was geprüft wurde</h3>
-<div class="kern-table-responsive" data-name="Tabelle, seitlich verschiebbar"><table class="kern-table kern-table--striped">
-<thead class="kern-table__header">
-<tr class="kern-table__row">
-<th class="kern-table__cell">Prüfung</th>
-<th class="kern-table__cell">Vorgehen</th>
-<th class="kern-table__cell">Ergebnis</th>
-</tr>
-</thead>
-<tbody class="kern-table__body">
-<tr class="kern-table__row">
-<td class="kern-table__cell">Review auf DOM-XSS</td>
-<td class="kern-table__cell">KI-gestützter Code-Review von Renderer, Demo und Skripten; Quellen: Datenpaket, Adresse, Hash, Browserspeicher, eingebettetes JSON</td>
-<td class="kern-table__cell">7 Befunde, behoben</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell">Nutzlasten im Renderer</td>
-<td class="kern-table__cell"><code>skripte/pruefe_xss.js</code> rendert die Beispieldaten mit Nutzlasten in Farbe, Schlüssel, Sprachcode, Symbol, Nummer, Link und Jahr und sucht nach aktivem Markup</td>
-<td class="kern-table__cell">bestanden</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell">Fuzzing</td>
-<td class="kern-table__cell"><code>skripte/pruefe_fuzz.js</code>: 1000 und 2000 zufällig verstümmelte Pakete mit festem Startwert (Felder entfernt, falsch typisiert, verschachtelt)</td>
-<td class="kern-table__cell">keine Ausnahme, kein aktives Markup</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell">Unicode-Steuerzeichen</td>
-<td class="kern-table__cell">Bidi-, Zero-Width- und Steuerzeichen in Texten und Linktexten</td>
-<td class="kern-table__cell">werden entfernt</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell">Fehlbedienung (Sharp Edges)</td>
-<td class="kern-table__cell">Methode von Trail of Bits: Optionen, Datenfelder, Einbettung und stille Fehlerpfade aus Sicht von Betrieb und Redaktion</td>
-<td class="kern-table__cell">3 Befunde, behoben</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell">Unsichere Voreinstellungen (Insecure Defaults)</td>
-<td class="kern-table__cell">Methode von Trail of Bits: von Zugangsdaten bis zu Fehlern, die offen statt geschlossen enden</td>
-<td class="kern-table__cell">kein Befund</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell">Security-Review des gesamten Codes</td>
-<td class="kern-table__cell">Datenfluss von der Quelle bis zur Ausgabe</td>
-<td class="kern-table__cell">kein Befund ab Stufe Mittel; ein Hinweis umgesetzt</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell">Content-Security-Policy</td>
-<td class="kern-table__cell">Demo, Dokumentation und Startseite unter <code>default-src 'self'; script-src 'self'; style-src 'self'; frame-ancestors 'none'</code> ohne <code>unsafe-inline</code></td>
-<td class="kern-table__cell">läuft; der Renderer setzt seine Regeln über <code>adoptedStyleSheets</code>, alle Seiten kommen ohne Inline-Skripte und Inline-Stile aus</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell">Geheimnisse in der Historie</td>
-<td class="kern-table__cell">gitleaks über alle Commits</td>
-<td class="kern-table__cell">keine Funde</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell">Linter und Datenprüfung</td>
-<td class="kern-table__cell">ESLint und stylelint; <code>skripte/pruefe.py</code> prüft jede KERN-Klasse und jedes Token gegen das Kit, das Datenpaket und die Kontraste hell und dunkel</td>
-<td class="kern-table__cell">ohne Befund</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell">Markup</td>
-<td class="kern-table__cell">html-validate auf Demo, Dokumentation, Startseite und gerendertem DOM</td>
-<td class="kern-table__cell">ohne Befund</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell">Barrierefreiheit</td>
-<td class="kern-table__cell">axe-core nach WCAG 2.1 AA und 2.2 AA mit Best Practices: Karten, Zeitleiste, hell und dunkel, beide Sprachen, Breiten 1280, 390 und 320 Pixel; Kontraste aller Texte nachgerechnet, auch beim Überfahren; Tastaturdurchgang mit Prüfung des Fokusrahmens; Textabstände, Schrift 200 %, reduzierte Bewegung; Dokumentation und Startseite hell und dunkel in beiden Sprachen bei 1280, 390 und 320 Pixel</td>
-<td class="kern-table__cell">keine offenen Verstöße</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell">Browser und Last</td>
-<td class="kern-table__cell">Chromium, Firefox und WebKit ohne Konsolenfehler; 1000 Karten</td>
-<td class="kern-table__cell">bestanden; 205 ms bis zum Rendern, 5 ms je Filterklick</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell">Lighthouse 13.5</td>
-<td class="kern-table__cell">Demo-Seite des Pakets, Mobil-Profil mit simulierter Drosselung, komprimierte Auslieferung</td>
-<td class="kern-table__cell">Barrierefreiheit 100, Best Practices 100, Leistung 81. Das Pattern selbst bringt komprimiert rund 29 KB mit (CSS, JavaScript, Beispieldaten); Kit und Schrift lädt eine KERN-Seite ohnehin</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell">Lieferkette</td>
-<td class="kern-table__cell">KERN-Kit in fester Version, SHA-512-Prüfsumme vor dem Entpacken; SHA-256-Prüfsumme zum Zip</td>
-<td class="kern-table__cell">Kit, Fira Sans und Lucide erfasst, Lizenztexte im Paket</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell">Stückliste</td>
-<td class="kern-table__cell">gegen das JSON-Schema von SPDX 2.3 geprüft; bei jedem Bauen mit dem Paketinhalt verglichen; KERN-Kit 2.8.2 und Lucide 1.49.0 in der Schwachstellen-Datenbank OSV abgefragt (13. Oktober 2026)</td>
-<td class="kern-table__cell">gültig und aktuell; keine bekannten Schwachstellen</td>
-</tr>
-</tbody>
-</table></div>
-<h3 class="kern-heading-medium" id="72-werkzeuge">7.2 Werkzeuge</h3>
-<div class="kern-table-responsive" data-name="Tabelle, seitlich verschiebbar"><table class="kern-table kern-table--striped">
-<thead class="kern-table__header">
-<tr class="kern-table__row">
-<th class="kern-table__cell">Werkzeug</th>
-<th class="kern-table__cell">Wofür</th>
-<th class="kern-table__cell">Im Paket</th>
-</tr>
-</thead>
-<tbody class="kern-table__body">
-<tr class="kern-table__row">
-<td class="kern-table__cell"><code>skripte/pruefe.py</code>, <code>skripte/pruefe_xss.js</code>, <code>skripte/pruefe_fuzz.js</code></td>
-<td class="kern-table__cell">Datenpaket, Klassen, Tokens und Kontraste; Nutzlasten; Fuzzing</td>
-<td class="kern-table__cell">ja</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell"><a class="kern-link" rel="noopener" href="https://claude.com/claude-code">Claude Code</a> mit <a class="kern-link" rel="noopener" href="https://github.com/anthropics/claude-code-security-review"><code>/security-review</code></a></td>
-<td class="kern-table__cell">Code-Reviews auf DOM-XSS und Security-Review des gesamten Codes</td>
-<td class="kern-table__cell">nein</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell"><a class="kern-link" rel="noopener" href="https://github.com/trailofbits/skills">Trail of Bits Skills</a>: <a class="kern-link" rel="noopener" href="https://github.com/trailofbits/skills/tree/main/plugins/sharp-edges">sharp-edges</a>, <a class="kern-link" rel="noopener" href="https://github.com/trailofbits/skills/tree/main/plugins/insecure-defaults">insecure-defaults</a></td>
-<td class="kern-table__cell">Reviews auf Fehlbedienung und unsichere Voreinstellungen</td>
-<td class="kern-table__cell">nein</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell"><a class="kern-link" rel="noopener" href="https://github.com/dequelabs/axe-core">axe-core</a> 4.14</td>
-<td class="kern-table__cell">Barrierefreiheit</td>
-<td class="kern-table__cell">nein</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell"><a class="kern-link" rel="noopener" href="https://github.com/microsoft/playwright">Playwright</a> 1.64</td>
-<td class="kern-table__cell">Browser-Matrix, Tastatur, Kontraste, Content-Security-Policy, Druckansicht</td>
-<td class="kern-table__cell">nein</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell"><a class="kern-link" rel="noopener" href="https://github.com/GoogleChrome/lighthouse">Lighthouse</a> 13.5</td>
-<td class="kern-table__cell">Barrierefreiheit, Best Practices, Leistung</td>
-<td class="kern-table__cell">nein</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell"><a class="kern-link" rel="noopener" href="https://gitlab.com/html-validate/html-validate">html-validate</a> 11.16</td>
-<td class="kern-table__cell">Markup</td>
-<td class="kern-table__cell">nein</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell"><a class="kern-link" rel="noopener" href="https://github.com/eslint/eslint">ESLint</a> 10.12, <a class="kern-link" rel="noopener" href="https://github.com/stylelint/stylelint">stylelint</a> 17.16</td>
-<td class="kern-table__cell">JavaScript und CSS</td>
-<td class="kern-table__cell">nein</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell"><a class="kern-link" rel="noopener" href="https://github.com/gitleaks/gitleaks">gitleaks</a> 8.30</td>
-<td class="kern-table__cell">Geheimnisse in der Historie</td>
-<td class="kern-table__cell">nein</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell"><a class="kern-link" rel="noopener" href="https://spdx.github.io/spdx-spec/v2.3/">SPDX 2.3</a> mit <a class="kern-link" rel="noopener" href="https://github.com/spdx/spdx-spec/blob/support/2.3/schemas/spdx-schema.json">JSON-Schema</a></td>
-<td class="kern-table__cell">Format und Prüfung der Stückliste <code>SPDX_projektschau-kern.spdx.json</code></td>
-<td class="kern-table__cell">Stückliste ja, Schema nein</td>
-</tr>
-<tr class="kern-table__row">
-<td class="kern-table__cell"><a class="kern-link" rel="noopener" href="https://osv.dev">OSV</a> (<a class="kern-link" rel="noopener" href="https://github.com/google/osv.dev">Repositorium</a>)</td>
-<td class="kern-table__cell">bekannte Schwachstellen der Bestandteile</td>
-<td class="kern-table__cell">nein</td>
-</tr>
-</tbody>
-</table></div>
-<p class="kern-body">Die Werkzeuge außerhalb des Pakets laufen vor jedem Stand lokal. Die drei Prüfskripte im Paket brauchen nur Python und Node.js und laufen nach jeder Änderung am Renderer (<a class="kern-link" href="#5-prüfen-und-pflegen">Abschnitt 5</a>).</p>
+<p class="kern-body">Dieses Pattern ist mit <a class="kern-link" rel="noopener" href="https://claude.com/claude-code">Claude Code</a> entstanden (<a class="kern-link" href="#9-entstehung-und-weiterführung">Abschnitt 9</a>). Deshalb lege ich hier offen, wie ich es geprüft habe. Alle Prüfungen habe ich selbst gemacht, mit automatischen Werkzeugen und KI-gestützten Reviews. Eine Prüfung durch unabhängige Dritte gab es nicht. Stand: Fassung 0.1.0, 15. Oktober 2026.</p>
+<p class="kern-body">Das Pattern läuft vollständig im Browser, ohne Server-Teil und ohne Anmeldung. Von außen kommt nur das Datenpaket (<a class="kern-link" href="#2-daten">Abschnitt 2</a>). Der Renderer behandelt es als nicht vertrauenswürdig, auch wenn der Betreiber es selbst bereitstellt: Es kann aus einem Redaktionssystem mit mehreren Rollen stammen.</p>
+<h3 class="kern-heading-medium" id="71-was-geschützt-ist">7.1 Was geschützt ist</h3>
+<ul class="kern-list kern-list--bullet">
+<li>Der Renderer prüft jedes Feld des Datenpakets, bevor es in die Seite gelangt: Farben nur als Hex-Wert, Schlüssel und Sprachcodes nur im erwarteten Format, Links nur mit <code>http</code>, <code>https</code>, <code>mailto</code>, <code>tel</code> oder relativ, Symbole nur als einfache SVG-Formen. Er maskiert Texte und entfernt Steuerzeichen (<a class="kern-link" href="#25-eigene-daten-anlegen">Abschnitt 2.5</a>).</li>
+<li>Demo, Dokumentation und Startseite laufen unter einer strengen Content-Security-Policy, die nur Dateien aus dem Paket zulässt.</li>
+<li>Das Paket setzt keine Cookies und lädt nichts von fremden Servern; Kit, Schriften und Daten liegen bei.</li>
+<li>Die Stückliste nennt jeden fremden Bestandteil mit Herkunft und Lizenz; das KERN-Kit liegt in fester Version mit Prüfsumme bei.</li>
+</ul>
+<h3 class="kern-heading-medium" id="72-wie-geprüft-wurde">7.2 Wie geprüft wurde</h3>
+<p class="kern-body">KI-gestützte Reviews des Datenflusses auf DOM-XSS, Fehlbedienung und unsichere Voreinstellungen; Prüfskripte im Paket mit Angriffstexten in jedem Datenfeld und tausend zufällig verstümmelten Datenpaketen; Content-Security-Policy im Browser; Barrierefreiheit mit axe-core, hell und dunkel, in beiden Sprachen und drei Breiten, dazu Tastatur und Kontraste; Chromium, Firefox und WebKit; Lighthouse; OWASP ZAP gegen die laufende Seite; Linter, Markup- und Linkprüfung; Abfrage der Bestandteile in der Schwachstellen-Datenbank OSV und Suche nach Geheimnissen im Repositorium. Die Einzelheiten mit Werkzeugen und Ergebnissen stehen im <a class="kern-link" rel="noopener" href="https://github.com/donludwig/projektschau-kern/blob/main/doku/pruefbericht.md">Prüfbericht</a>.</p>
 <h3 class="kern-heading-medium" id="73-was-aussteht">7.3 Was aussteht</h3>
 <ul class="kern-list kern-list--bullet">
-<li>Unabhängige Prüfung: Es gab keinen Pentest und kein Audit durch Dritte.</li>
-<li>Screenreader und Nutzungstest: axe-core deckt nur einen Teil der Kriterien ab. Ein Durchgang mit Screenreader und ein Test mit Nutzer:innen stehen aus.</li>
-<li>KERN-Kit: Das <a class="kern-link" rel="noopener" href="https://gitlab.opencode.de/kern-ux/kern-ux-plain">Kit</a> ist unverändert in fester Version eingebunden. Geprüft ist, dass das Paket der Registry entspricht und dass jede verwendete Klasse darin existiert. Das Kit selbst habe ich nicht geprüft.</li>
-<li><a class="kern-link" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API">Trusted Types</a>: nicht getestet. Der Renderer setzt das geprüfte Markup an einer Stelle über <code>innerHTML</code>; eine Seite, die Trusted Types erzwingt, braucht dafür eine eigene Richtlinie.</li>
-<li>Automatische Prüfkette: Die Prüfungen laufen noch nicht bei jedem Stand von selbst, sondern lokal von Hand.</li>
-<li>Signatur: Zum Zip gehört eine SHA-256-Prüfsumme, eine Signatur noch nicht.</li>
-<li>Schwachstellen der Bestandteile: Die <a class="kern-link" rel="noopener" href="https://osv.dev">Abfrage bei OSV</a> ist eine Momentaufnahme. Eine regelmäßige Abfrage gibt es noch nicht; für Fira Sans nennt die Stückliste keine Version, die sich abfragen ließe.</li>
-<li>Einbettende Seite: Server, Header und Content-Security-Policy gehören dem Betreiber. Wer <code>Projektschau.render</code> selbst aufruft und das Ergebnis weiterverarbeitet, verlässt die geprüfte Strecke.</li>
+<li>Unabhängige Prüfung: Einen Pentest oder ein Audit durch Dritte gab es bisher nicht.</li>
+<li>Screenreader und Nutzungstest: axe-core deckt nur einen Teil der Kriterien ab. Ein Durchgang mit Screenreader und ein Test mit Menschen, die Inhalte pflegen, stehen aus.</li>
+<li>KERN-Kit: Ich habe geprüft, dass es dem Paket der Registry entspricht, das Kit selbst aber nicht.</li>
+<li>Automatische Prüfkette: Ich starte die Prüfungen lokal von Hand.</li>
+<li>Einbettende Seite: Server, Header und Content-Security-Policy gehören dem Betreiber.</li>
 </ul>
 <p class="kern-body">Sicherheitslücken bitte vertraulich melden: <a class="kern-link" href="../SECURITY.md"><code>SECURITY.md</code></a> nennt Adresse und Fristen.</p>
 <h2 class="kern-heading-large" id="8-lizenz">8. Lizenz</h2>
@@ -1367,7 +1212,7 @@ Ist der Abstand jetzt der Standard? Darf er auch kleiner als 1rem sein?
 <li><strong>Ohne Framework und Build:</strong> eine JavaScript-Datei und eine CSS-Datei auf dem KERN-Kit 2.8.2, das unverändert im Paket liegt; keine externen Anfragen (<a class="kern-link" href="#1-demo-und-einbinden">Abschnitt 1</a>).</li>
 <li><strong>Datenpaket:</strong> eine JSON-Datei mit Bereichen, Einordnungen, Projekten und Texten (<a class="kern-link" href="#2-daten">Abschnitt 2</a>); 32 erfundene Beispielprojekte in vier Bereichen liegen bei.</li>
 <li><strong>Barrierefreiheit:</strong> Tastaturbedienung mit sichtbarem Fokus, Ansage der Ergebnisse, geprüfte Kontraste, die Systemeinstellung „Bewegung reduzieren“ wird beachtet. Selbsttest mit axe-core nach WCAG 2.1 AA und 2.2 AA ohne offene Verstöße (<a class="kern-link" href="#6-barrierefreiheit">Abschnitt 6</a>).</li>
-<li><strong>Sicherheit:</strong> Der Renderer prüft jedes Feld des Datenpakets und läuft unter einer strengen Content-Security-Policy. Prüfskripte, Sicherheitsrichtlinie (<code>SECURITY.md</code>) und Stückliste (SPDX 2.3) liegen bei (<a class="kern-link" href="#7-sicherheit">Abschnitt 7</a>).</li>
+<li><strong>Sicherheit:</strong> Der Renderer prüft jedes Feld des Datenpakets und läuft unter einer strengen Content-Security-Policy. Prüfskripte, Prüfbericht, Bedrohungsmodell, Sicherheitsrichtlinie (<code>SECURITY.md</code>) und Stückliste (SPDX 2.3) liegen bei (<a class="kern-link" href="#7-sicherheit">Abschnitt 7</a>).</li>
 <li><strong>Demo und Dokumentation:</strong> Demo-Seite, diese README in Deutsch und Englisch, beide auch als HTML-Seiten im KERN-Stil; Gestaltungs- und Inhaltsregeln für eigene Karten (<a class="kern-link" href="#45-gestaltungsregeln">Abschnitt 4.5</a>).</li>
 <li><strong>Startseite:</strong> die Startseite von projektschau.thinkrepeat.com in Deutsch und Englisch unter <code>website/</code>, als Beispiel für die Vorstellung des Patterns (<a class="kern-link" href="#1-demo-und-einbinden">Abschnitt 1</a>).</li>
 </ul>

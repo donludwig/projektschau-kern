@@ -477,61 +477,28 @@ Selbsttest, kein Nachweis; Ziel, Prüfungen und offene Punkte stehen in [`ACCESS
 
 ## 7. Sicherheit
 
-Dieses Pattern ist mit [Claude Code](https://claude.com/claude-code) entstanden ([Abschnitt 9](#9-entstehung-und-weiterführung)). Deshalb steht hier, was ich geprüft habe, mit welchen Werkzeugen und was noch aussteht. Alle Prüfungen habe ich selbst gemacht, mit automatischen Werkzeugen und KI-gestützten Reviews. Eine Prüfung durch unabhängige Dritte gab es nicht. Stand 13. Oktober 2026, Fassung 0.1.0.
+Dieses Pattern ist mit [Claude Code](https://claude.com/claude-code) entstanden ([Abschnitt 9](#9-entstehung-und-weiterführung)). Deshalb lege ich hier offen, wie ich es geprüft habe. Alle Prüfungen habe ich selbst gemacht, mit automatischen Werkzeugen und KI-gestützten Reviews. Eine Prüfung durch unabhängige Dritte gab es nicht. Stand: Fassung 0.1.0, 15. Oktober 2026.
 
-Das Pattern läuft vollständig im Browser. Es hat keinen Server-Teil und keine Anmeldung, es erhebt keine Daten von Besucher:innen und stellt keine externen Anfragen; Kit, Schriften und Daten liegen lokal. Von außen kommt nur das Datenpaket: die JSON-Datei mit Bereichen, Projekten und Texten, die der Betreiber selbst bereitstellt ([Abschnitt 2](#2-daten); in der Demo `daten/beispiel.json`). Aus ihr baut der Renderer die Karten. Er prüft jedes Feld daraus, bevor es in die Seite gelangt, auch wenn die Datei vom Betreiber selbst stammt, denn sie kann aus einem Redaktionssystem mit mehreren Rollen kommen. Welches Feld wie behandelt wird, steht in [Abschnitt 2.5](#25-eigene-daten-anlegen). Die Prüfungen unten gelten vor allem dieser Strecke.
+Das Pattern läuft vollständig im Browser, ohne Server-Teil und ohne Anmeldung. Von außen kommt nur das Datenpaket ([Abschnitt 2](#2-daten)). Der Renderer behandelt es als nicht vertrauenswürdig, auch wenn der Betreiber es selbst bereitstellt: Es kann aus einem Redaktionssystem mit mehreren Rollen stammen.
 
-Alles, was das Paket von anderen mitbringt (KERN-Kit, Fira Sans, Symbole von Lucide), steht mit Herkunft und Lizenz in der Stückliste, das Kit zusätzlich mit Prüfsumme. Die Bestandteile mit Versionsnummer sind in der Schwachstellen-Datenbank [OSV](https://osv.dev) abgefragt, ohne Treffer ([Abschnitt 7.1](#71-was-geprüft-wurde)).
+### 7.1 Was geschützt ist
 
-### 7.1 Was geprüft wurde
+- Der Renderer prüft jedes Feld des Datenpakets, bevor es in die Seite gelangt: Farben nur als Hex-Wert, Schlüssel und Sprachcodes nur im erwarteten Format, Links nur mit `http`, `https`, `mailto`, `tel` oder relativ, Symbole nur als einfache SVG-Formen. Er maskiert Texte und entfernt Steuerzeichen ([Abschnitt 2.5](#25-eigene-daten-anlegen)).
+- Demo, Dokumentation und Startseite laufen unter einer strengen Content-Security-Policy, die nur Dateien aus dem Paket zulässt.
+- Das Paket setzt keine Cookies und lädt nichts von fremden Servern; Kit, Schriften und Daten liegen bei.
+- Die Stückliste nennt jeden fremden Bestandteil mit Herkunft und Lizenz; das KERN-Kit liegt in fester Version mit Prüfsumme bei.
 
-| Prüfung | Vorgehen | Ergebnis |
-|---|---|---|
-| Review auf DOM-XSS | KI-gestützter Code-Review von Renderer, Demo und Skripten; Quellen: Datenpaket, Adresse, Hash, Browserspeicher, eingebettetes JSON | 7 Befunde, behoben |
-| Nutzlasten im Renderer | `skripte/pruefe_xss.js` rendert die Beispieldaten mit Nutzlasten in Farbe, Schlüssel, Sprachcode, Symbol, Nummer, Link und Jahr und sucht nach aktivem Markup | bestanden |
-| Fuzzing | `skripte/pruefe_fuzz.js`: 1000 und 2000 zufällig verstümmelte Pakete mit festem Startwert (Felder entfernt, falsch typisiert, verschachtelt) | keine Ausnahme, kein aktives Markup |
-| Unicode-Steuerzeichen | Bidi-, Zero-Width- und Steuerzeichen in Texten und Linktexten | werden entfernt |
-| Fehlbedienung (Sharp Edges) | Methode von Trail of Bits: Optionen, Datenfelder, Einbettung und stille Fehlerpfade aus Sicht von Betrieb und Redaktion | 3 Befunde, behoben |
-| Unsichere Voreinstellungen (Insecure Defaults) | Methode von Trail of Bits: von Zugangsdaten bis zu Fehlern, die offen statt geschlossen enden | kein Befund |
-| Security-Review des gesamten Codes | Datenfluss von der Quelle bis zur Ausgabe | kein Befund ab Stufe Mittel; ein Hinweis umgesetzt |
-| Content-Security-Policy | Demo, Dokumentation und Startseite unter `default-src 'self'; script-src 'self'; style-src 'self'; frame-ancestors 'none'` ohne `unsafe-inline` | läuft; der Renderer setzt seine Regeln über `adoptedStyleSheets`, alle Seiten kommen ohne Inline-Skripte und Inline-Stile aus |
-| Geheimnisse in der Historie | gitleaks über alle Commits | keine Funde |
-| Linter und Datenprüfung | ESLint und stylelint; `skripte/pruefe.py` prüft jede KERN-Klasse und jedes Token gegen das Kit, das Datenpaket und die Kontraste hell und dunkel | ohne Befund |
-| Markup | html-validate auf Demo, Dokumentation, Startseite und gerendertem DOM | ohne Befund |
-| Barrierefreiheit | axe-core nach WCAG 2.1 AA und 2.2 AA mit Best Practices: Karten, Zeitleiste, hell und dunkel, beide Sprachen, Breiten 1280, 390 und 320 Pixel; Kontraste aller Texte nachgerechnet, auch beim Überfahren; Tastaturdurchgang mit Prüfung des Fokusrahmens; Textabstände, Schrift 200 %, reduzierte Bewegung; Dokumentation und Startseite hell und dunkel in beiden Sprachen bei 1280, 390 und 320 Pixel | keine offenen Verstöße |
-| Browser und Last | Chromium, Firefox und WebKit ohne Konsolenfehler; 1000 Karten | bestanden; 205 ms bis zum Rendern, 5 ms je Filterklick |
-| Lighthouse 13.5 | Demo-Seite des Pakets, Mobil-Profil mit simulierter Drosselung, komprimierte Auslieferung | Barrierefreiheit 100, Best Practices 100, Leistung 81. Das Pattern selbst bringt komprimiert rund 29 KB mit (CSS, JavaScript, Beispieldaten); Kit und Schrift lädt eine KERN-Seite ohnehin |
-| Lieferkette | KERN-Kit in fester Version, SHA-512-Prüfsumme vor dem Entpacken; SHA-256-Prüfsumme zum Zip | Kit, Fira Sans und Lucide erfasst, Lizenztexte im Paket |
-| Stückliste | gegen das JSON-Schema von SPDX 2.3 geprüft; bei jedem Bauen mit dem Paketinhalt verglichen; KERN-Kit 2.8.2 und Lucide 1.49.0 in der Schwachstellen-Datenbank OSV abgefragt (13. Oktober 2026) | gültig und aktuell; keine bekannten Schwachstellen |
+### 7.2 Wie geprüft wurde
 
-### 7.2 Werkzeuge
-
-| Werkzeug | Wofür | Im Paket |
-|---|---|---|
-| `skripte/pruefe.py`, `skripte/pruefe_xss.js`, `skripte/pruefe_fuzz.js` | Datenpaket, Klassen, Tokens und Kontraste; Nutzlasten; Fuzzing | ja |
-| [Claude Code](https://claude.com/claude-code) mit [`/security-review`](https://github.com/anthropics/claude-code-security-review) | Code-Reviews auf DOM-XSS und Security-Review des gesamten Codes | nein |
-| [Trail of Bits Skills](https://github.com/trailofbits/skills): [sharp-edges](https://github.com/trailofbits/skills/tree/main/plugins/sharp-edges), [insecure-defaults](https://github.com/trailofbits/skills/tree/main/plugins/insecure-defaults) | Reviews auf Fehlbedienung und unsichere Voreinstellungen | nein |
-| [axe-core](https://github.com/dequelabs/axe-core) 4.14 | Barrierefreiheit | nein |
-| [Playwright](https://github.com/microsoft/playwright) 1.64 | Browser-Matrix, Tastatur, Kontraste, Content-Security-Policy, Druckansicht | nein |
-| [Lighthouse](https://github.com/GoogleChrome/lighthouse) 13.5 | Barrierefreiheit, Best Practices, Leistung | nein |
-| [html-validate](https://gitlab.com/html-validate/html-validate) 11.16 | Markup | nein |
-| [ESLint](https://github.com/eslint/eslint) 10.12, [stylelint](https://github.com/stylelint/stylelint) 17.16 | JavaScript und CSS | nein |
-| [gitleaks](https://github.com/gitleaks/gitleaks) 8.30 | Geheimnisse in der Historie | nein |
-| [SPDX 2.3](https://spdx.github.io/spdx-spec/v2.3/) mit [JSON-Schema](https://github.com/spdx/spdx-spec/blob/support/2.3/schemas/spdx-schema.json) | Format und Prüfung der Stückliste `SPDX_projektschau-kern.spdx.json` | Stückliste ja, Schema nein |
-| [OSV](https://osv.dev) ([Repositorium](https://github.com/google/osv.dev)) | bekannte Schwachstellen der Bestandteile | nein |
-
-Die Werkzeuge außerhalb des Pakets laufen vor jedem Stand lokal. Die drei Prüfskripte im Paket brauchen nur Python und Node.js und laufen nach jeder Änderung am Renderer ([Abschnitt 5](#5-prüfen-und-pflegen)).
+KI-gestützte Reviews des Datenflusses auf DOM-XSS, Fehlbedienung und unsichere Voreinstellungen; Prüfskripte im Paket mit Angriffstexten in jedem Datenfeld und tausend zufällig verstümmelten Datenpaketen; Content-Security-Policy im Browser; Barrierefreiheit mit axe-core, hell und dunkel, in beiden Sprachen und drei Breiten, dazu Tastatur und Kontraste; Chromium, Firefox und WebKit; Lighthouse; OWASP ZAP gegen die laufende Seite; Linter, Markup- und Linkprüfung; Abfrage der Bestandteile in der Schwachstellen-Datenbank OSV und Suche nach Geheimnissen im Repositorium. Die Einzelheiten mit Werkzeugen und Ergebnissen stehen im [Prüfbericht](https://github.com/donludwig/projektschau-kern/blob/main/doku/pruefbericht.md).
 
 ### 7.3 Was aussteht
 
-- Unabhängige Prüfung: Es gab keinen Pentest und kein Audit durch Dritte.
-- Screenreader und Nutzungstest: axe-core deckt nur einen Teil der Kriterien ab. Ein Durchgang mit Screenreader und ein Test mit Nutzer:innen stehen aus.
-- KERN-Kit: Das [Kit](https://gitlab.opencode.de/kern-ux/kern-ux-plain) ist unverändert in fester Version eingebunden. Geprüft ist, dass das Paket der Registry entspricht und dass jede verwendete Klasse darin existiert. Das Kit selbst habe ich nicht geprüft.
-- [Trusted Types](https://developer.mozilla.org/en-US/docs/Web/API/Trusted_Types_API): nicht getestet. Der Renderer setzt das geprüfte Markup an einer Stelle über `innerHTML`; eine Seite, die Trusted Types erzwingt, braucht dafür eine eigene Richtlinie.
-- Automatische Prüfkette: Die Prüfungen laufen noch nicht bei jedem Stand von selbst, sondern lokal von Hand.
-- Signatur: Zum Zip gehört eine SHA-256-Prüfsumme, eine Signatur noch nicht.
-- Schwachstellen der Bestandteile: Die [Abfrage bei OSV](https://osv.dev) ist eine Momentaufnahme. Eine regelmäßige Abfrage gibt es noch nicht; für Fira Sans nennt die Stückliste keine Version, die sich abfragen ließe.
-- Einbettende Seite: Server, Header und Content-Security-Policy gehören dem Betreiber. Wer `Projektschau.render` selbst aufruft und das Ergebnis weiterverarbeitet, verlässt die geprüfte Strecke.
+- Unabhängige Prüfung: Einen Pentest oder ein Audit durch Dritte gab es bisher nicht.
+- Screenreader und Nutzungstest: axe-core deckt nur einen Teil der Kriterien ab. Ein Durchgang mit Screenreader und ein Test mit Menschen, die Inhalte pflegen, stehen aus.
+- KERN-Kit: Ich habe geprüft, dass es dem Paket der Registry entspricht, das Kit selbst aber nicht.
+- Automatische Prüfkette: Ich starte die Prüfungen lokal von Hand.
+- Einbettende Seite: Server, Header und Content-Security-Policy gehören dem Betreiber.
 
 Sicherheitslücken bitte vertraulich melden: [`SECURITY.md`](SECURITY.md) nennt Adresse und Fristen.
 
@@ -642,6 +609,6 @@ Erste Veröffentlichung, benannt nach dem erfundenen Ort der Beispieldaten. Stan
 - **Ohne Framework und Build:** eine JavaScript-Datei und eine CSS-Datei auf dem KERN-Kit 2.8.2, das unverändert im Paket liegt; keine externen Anfragen ([Abschnitt 1](#1-demo-und-einbinden)).
 - **Datenpaket:** eine JSON-Datei mit Bereichen, Einordnungen, Projekten und Texten ([Abschnitt 2](#2-daten)); 32 erfundene Beispielprojekte in vier Bereichen liegen bei.
 - **Barrierefreiheit:** Tastaturbedienung mit sichtbarem Fokus, Ansage der Ergebnisse, geprüfte Kontraste, die Systemeinstellung „Bewegung reduzieren“ wird beachtet. Selbsttest mit axe-core nach WCAG 2.1 AA und 2.2 AA ohne offene Verstöße ([Abschnitt 6](#6-barrierefreiheit)).
-- **Sicherheit:** Der Renderer prüft jedes Feld des Datenpakets und läuft unter einer strengen Content-Security-Policy. Prüfskripte, Sicherheitsrichtlinie (`SECURITY.md`) und Stückliste (SPDX 2.3) liegen bei ([Abschnitt 7](#7-sicherheit)).
+- **Sicherheit:** Der Renderer prüft jedes Feld des Datenpakets und läuft unter einer strengen Content-Security-Policy. Prüfskripte, Prüfbericht, Bedrohungsmodell, Sicherheitsrichtlinie (`SECURITY.md`) und Stückliste (SPDX 2.3) liegen bei ([Abschnitt 7](#7-sicherheit)).
 - **Demo und Dokumentation:** Demo-Seite, diese README in Deutsch und Englisch, beide auch als HTML-Seiten im KERN-Stil; Gestaltungs- und Inhaltsregeln für eigene Karten ([Abschnitt 4.5](#45-gestaltungsregeln)).
 - **Startseite:** die Startseite von projektschau.thinkrepeat.com in Deutsch und Englisch unter `website/`, als Beispiel für die Vorstellung des Patterns ([Abschnitt 1](#1-demo-und-einbinden)).

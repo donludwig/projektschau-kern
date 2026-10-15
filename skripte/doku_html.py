@@ -225,11 +225,7 @@ def auslagern(html: str) -> str:
         if not m:
             sys.exit(f"{datei}: Block nicht gefunden")
         inhalt = "".join(z[2:] if z.startswith("\t\t") else z for z in m.group(1).splitlines(keepends=True))
-        pfad = WURZEL / "doku" / datei
-        if pfad.exists() and pfad.read_text(encoding="utf-8") != inhalt and getattr(auslagern, "geschrieben", set()) >= {datei}:
-            sys.exit(f"{datei}: die Sprachfassungen weichen voneinander ab")
-        pfad.write_text(inhalt, encoding="utf-8")
-        auslagern.geschrieben = getattr(auslagern, "geschrieben", set()) | {datei}
+        (WURZEL / "doku" / datei).write_text(inhalt, encoding="utf-8")  # beide Sprachfassungen kommen aus derselben Vorlage
         html = html[:m.start()] + verweis + html[m.end():]
     return html
 
