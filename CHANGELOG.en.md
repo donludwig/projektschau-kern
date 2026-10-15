@@ -20,5 +20,6 @@ First release, named after the fictitious town of the sample data. As of 2026-10
 - **Security:** the renderer checks every field of the data package and runs under a strict content security policy. Check scripts, test report, threat model, security policy (`SECURITY.md`) and bill of materials (SPDX 2.3) are included ([section 7](README.en.md#7-security)).
 - **Demo and documentation:** demo page, this README in German and English, both also as HTML pages in KERN style; design and content rules for your own cards ([section 4.5](README.en.md#45-design-rules)).
 - **Start page:** the start page of projektschau.thinkrepeat.com in German and English under `website/`, as an example of how to present the pattern ([section 1](README.en.md#1-demo-and-integration)).
+- **Contributing:** `CONTRIBUTING.md`, issue templates for bugs and accessibility barriers, private vulnerability reporting through GitHub and `AGENTS.md` with check commands and rules for coding agents.
 
 Deutsche Fassung: [CHANGELOG.md](CHANGELOG.md).

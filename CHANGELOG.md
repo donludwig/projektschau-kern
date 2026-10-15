@@ -20,5 +20,6 @@ Erste Veröffentlichung, benannt nach dem erfundenen Ort der Beispieldaten. Stan
 - **Sicherheit:** Der Renderer prüft jedes Feld des Datenpakets und läuft unter einer strengen Content-Security-Policy. Prüfskripte, Prüfbericht, Bedrohungsmodell, Sicherheitsrichtlinie (`SECURITY.md`) und Stückliste (SPDX 2.3) liegen bei ([Abschnitt 7](README.md#7-sicherheit)).
 - **Demo und Dokumentation:** Demo-Seite, diese README in Deutsch und Englisch, beide auch als HTML-Seiten im KERN-Stil; Gestaltungs- und Inhaltsregeln für eigene Karten ([Abschnitt 4.5](README.md#45-gestaltungsregeln)).
 - **Startseite:** die Startseite von projektschau.thinkrepeat.com in Deutsch und Englisch unter `website/`, als Beispiel für die Vorstellung des Patterns ([Abschnitt 1](README.md#1-demo-und-einbinden)).
+- **Mitwirken:** `CONTRIBUTING.md`, Issue-Vorlagen für Fehler und Barrieren, vertraulicher Meldeweg über GitHub und `AGENTS.md` mit Prüfbefehlen und Regeln für Coding-Agenten.
 
 English version: [CHANGELOG.en.md](CHANGELOG.en.md).

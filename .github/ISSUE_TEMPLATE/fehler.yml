@@ -1,0 +1,21 @@
+name: Fehler / Bug
+description: Etwas funktioniert nicht wie beschrieben. / Something does not work as documented.
+labels: ["fehler"]
+body:
+  - type: textarea
+    id: was
+    attributes:
+      label: Was passiert? / What happens?
+      description: Erwartetes und tatsächliches Verhalten. / Expected and actual behaviour.
+    validations:
+      required: true
+  - type: textarea
+    id: schritte
+    attributes:
+      label: Schritte / Steps
+      description: Datenpaket oder Einbettung, die den Fehler zeigt (ohne persönliche Daten). / Data package or embedding that shows the bug (no personal data).
+  - type: input
+    id: umgebung
+    attributes:
+      label: Browser und Version des Patterns / Browser and pattern version
+      placeholder: z. B. Firefox 140, Projektschau für KERN 0.1.0
