@@ -5,6 +5,7 @@ Aufruf aus dem Ordner kern/: python3 skripte/doku_html.py
 Braucht das Python-Modul markdown. Die Markdown-Dateien bleiben die Quelle; die HTML-Dateien nicht von Hand ändern.
 """
 import re
+import sys
 from pathlib import Path
 
 import markdown
@@ -55,7 +56,7 @@ def seite(titel: str, inhalt: str, navi: str, sprache: str, t: dict, toc: str) -
 	<link rel="stylesheet" href="../vendor/kern/kern-grid.min.css">
 	<style>
 		.demo-kopf {{ display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--kern-metric-space-small, 8px); padding: var(--kern-metric-space-small, 8px) 0; margin-bottom: var(--kern-metric-space-large, 24px); border-bottom: var(--kern-metric-border-width-light, 1px) solid var(--kern-color-decorative-border-contextual, #c0c3d5); }}
-		.demo-navi {{ display: flex; gap: var(--kern-metric-space-default, 16px); margin-inline-start: auto; margin-inline-end: var(--kern-metric-space-default, 16px); }}
+		.demo-navi {{ display: flex; gap: var(--kern-metric-space-default, 16px); margin-inline: auto var(--kern-metric-space-default, 16px); }}
 		@media (max-width: 48rem) {{ .demo-kopf > p {{ flex: 1 1 100%; }} .demo-navi {{ margin-inline-start: 0; }} #farbschema {{ margin-inline-start: auto; }} }}
 		.demo-fuss {{ margin-top: calc(var(--kern-metric-space-x-large, 32px) * 3); padding-bottom: var(--kern-metric-space-x-large, 32px); }}
 		.demo-fuss .kern-divider {{ margin-bottom: var(--kern-metric-space-default, 16px); }}
@@ -187,10 +188,10 @@ def seite(titel: str, inhalt: str, navi: str, sprache: str, t: dict, toc: str) -
 			}} );
 			/* Alle Seitenlinks tragen Farbschema und Sprache in der Adresse mit, damit der Wechsel auch ohne Browserspeicher stimmt */
 			var sy = new URLSearchParams( location.search ).get( 'symbole' );
-			function zustand( ziel, lang ) {{ return ziel + '?theme=' + h.getAttribute( 'data-kern-theme' ) + '&lang=' + lang + ( sy ? '&symbole=' + sy : '' ); }}
+			function zustand( pfad, lang ) {{ return pfad + '?theme=' + h.getAttribute( 'data-kern-theme' ) + '&lang=' + lang + ( sy ? '&symbole=' + sy : '' ); }}
 			Array.prototype.slice.call( document.querySelectorAll( '.doku-lang a' ) ).forEach( function ( x ) {{ x.addEventListener( 'click', function () {{ var l = x.getAttribute( 'data-lang' ); try {{ localStorage.setItem( 'ps-lang', l ); }} catch ( e ) {{}} x.href = zustand( x.getAttribute( 'href' ).split( '?' )[ 0 ], l ); }} ); }} );
 			var demoLink = document.querySelector( '.demo-navi a[href$="index.html"]' );
-			demoLink.addEventListener( 'click', function () {{ demoLink.href = zustand( '../index.html', '{sprache}' ); }} );
+			demoLink.addEventListener( 'click', function () {{ demoLink.href = zustand( '../index.html', h.lang ); }} );
 			/* Tabellen, die breiter sind als ihr Rahmen: Rahmen mit der Tastatur erreichbar machen und benennen, sonst nicht */
 			function tabellen() {{
 				document.querySelectorAll( '.kern-table-responsive' ).forEach( function ( r ) {{
@@ -207,6 +208,30 @@ def seite(titel: str, inhalt: str, navi: str, sprache: str, t: dict, toc: str) -
 </body>
 </html>
 """
+
+
+# Skripte und Stile der Seite liegen als Dateien neben ihr, damit sie unter einer strengen Content-Security-Policy
+# (script-src 'self'; style-src 'self') läuft. Beide Sprachfassungen nutzen dieselben Dateien.
+AUSLAGERN = (
+    (r"\t<script>\n(.*?)\t</script>\n", "doku-frueh.js", '\t<script src="doku-frueh.js"></script>\n'),
+    (r"\t<style>\n(.*?)\t</style>\n", "doku.css", '\t<link rel="stylesheet" href="doku.css">\n'),
+    (r"\t<script>\n(.*?)\t</script>\n", "doku.js", '\t<script src="doku.js"></script>\n'),
+)
+
+
+def auslagern(html: str) -> str:
+    for muster, datei, verweis in AUSLAGERN:
+        m = re.search(muster, html, re.S)
+        if not m:
+            sys.exit(f"{datei}: Block nicht gefunden")
+        inhalt = "".join(z[2:] if z.startswith("\t\t") else z for z in m.group(1).splitlines(keepends=True))
+        pfad = WURZEL / "doku" / datei
+        if pfad.exists() and pfad.read_text(encoding="utf-8") != inhalt and getattr(auslagern, "geschrieben", set()) >= {datei}:
+            sys.exit(f"{datei}: die Sprachfassungen weichen voneinander ab")
+        pfad.write_text(inhalt, encoding="utf-8")
+        auslagern.geschrieben = getattr(auslagern, "geschrieben", set()) | {datei}
+        html = html[:m.start()] + verweis + html[m.end():]
+    return html
 
 
 def main() -> None:
@@ -241,7 +266,7 @@ def main() -> None:
         html = html.replace('href="https://', 'rel="noopener" href="https://')
         navi = f'<a class="kern-link" href="../index.html">{t["demo"]}</a><a class="kern-link" href="{ziel}" aria-current="page">{t["readme"]}</a>'
         toc = "".join(f'<li><a class="kern-link" href="#{i}">{re.sub("<[^>]+>", "", txt)}</a></li>' for i, txt in re.findall(r'<h2 class="kern-heading-large" id="([^"]+)">(.*?)</h2>', html))
-        (WURZEL / "doku" / ziel).write_text(seite(titel, html, navi, sprache, t, toc), encoding="utf-8")
+        (WURZEL / "doku" / ziel).write_text(auslagern(seite(titel, html, navi, sprache, t, toc)), encoding="utf-8")
         print(f"{ziel}: {len(html)} Zeichen aus {quelle}")
 
 

@@ -28,7 +28,7 @@
 	}
 	function springe( wert ) {
 		var t = wert.split( ':' ), i = parseInt( t[ 0 ], 10 ), f = parseFloat( t[ 1 ] ), hs, a, b;
-		if ( isNaN( i ) || isNaN( f ) ) { return; }
+		if ( isNaN( i ) || isNaN( f ) || i < 0 ) { return; }
 		if ( i === 0 ) { setze( parseInt( t[ 2 ], 10 ) || 0 ); return; }
 		hs = ueberschriften();
 		if ( i > hs.length ) { return; }

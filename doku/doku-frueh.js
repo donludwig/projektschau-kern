@@ -1,0 +1,2 @@
+/* Reihenfolge: Adresse (?theme=, für Seitenwechsel ohne Browserspeicher), gespeicherte Wahl, Systemeinstellung */
+( function () { var t = new URLSearchParams( location.search ).get( 'theme' ); if ( t !== 'dark' && t !== 'light' ) { t = null; try { t = localStorage.getItem( 'ps-theme' ); } catch ( e ) {} } if ( ! t && window.matchMedia && matchMedia( '(prefers-color-scheme: dark)' ).matches ) { t = 'dark'; } if ( t ) { document.documentElement.setAttribute( 'data-kern-theme', t ); try { localStorage.setItem( 'ps-theme', t ); } catch ( e ) {} } } )();

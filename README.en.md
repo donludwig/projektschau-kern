@@ -494,11 +494,11 @@ Everything the package brings along from others (KERN kit, Fira Sans, symbols fr
 | Misuse (sharp edges) | Trail of Bits method: options, data fields, embedding and silent failure paths from the view of operations and editors | 3 findings, fixed |
 | Insecure defaults | Trail of Bits method: from credentials to errors that fail open instead of closed | no finding |
 | Security review of the whole code | Data flow from source to output | no finding of medium severity or above; one note implemented |
-| Content security policy | Demo under `default-src 'self'` without `unsafe-inline` | works; the renderer sets its rules through `adoptedStyleSheets`, the demo runs without inline scripts and inline styles |
+| Content security policy | Demo, documentation and start page under `default-src 'self'; script-src 'self'; style-src 'self'; frame-ancestors 'none'` without `unsafe-inline` | works; the renderer sets its rules through `adoptedStyleSheets`, all pages run without inline scripts and inline styles |
 | Secrets in the history | gitleaks across all commits | nothing found |
 | Linters and data check | ESLint and stylelint; `skripte/pruefe.py` checks every KERN class and token against the kit, the data package and the contrasts in light and dark | no finding |
-| Markup | html-validate on demo, documentation and rendered DOM | no finding |
-| Accessibility | axe-core for WCAG 2.1 AA and 2.2 AA with best practices: cards, timeline, light and dark, both languages, widths 1280, 390 and 320 pixels; contrast of every text recalculated, also on hover; keyboard pass with a check of the focus ring; text spacing, 200 % font size, reduced motion | no open violations |
+| Markup | html-validate on demo, documentation, start page and rendered DOM | no finding |
+| Accessibility | axe-core for WCAG 2.1 AA and 2.2 AA with best practices: cards, timeline, light and dark, both languages, widths 1280, 390 and 320 pixels; contrast of every text recalculated, also on hover; keyboard pass with a check of the focus ring; text spacing, 200 % font size, reduced motion; documentation and start page in light and dark, both languages, at 1280, 390 and 320 pixels | no open violations |
 | Browsers and load | Chromium, Firefox and WebKit without console errors; 1000 cards | passed; 205 ms to render, 5 ms per filter click |
 | Lighthouse 13.5 | Demo page of the package, mobile profile with simulated throttling, compressed delivery | accessibility 100, best practices 100, performance 81. The pattern itself adds about 29 KB compressed (CSS, JavaScript, sample data); a KERN page loads kit and font anyway |
 | Supply chain | KERN kit in a fixed version, SHA-512 checksum before unpacking; SHA-256 checksum for the zip | kit, Fira Sans and Lucide recorded, licence texts in the package |

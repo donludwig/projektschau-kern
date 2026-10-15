@@ -494,11 +494,11 @@ Alles, was das Paket von anderen mitbringt (KERN-Kit, Fira Sans, Symbole von Luc
 | Fehlbedienung (Sharp Edges) | Methode von Trail of Bits: Optionen, Datenfelder, Einbettung und stille Fehlerpfade aus Sicht von Betrieb und Redaktion | 3 Befunde, behoben |
 | Unsichere Voreinstellungen (Insecure Defaults) | Methode von Trail of Bits: von Zugangsdaten bis zu Fehlern, die offen statt geschlossen enden | kein Befund |
 | Security-Review des gesamten Codes | Datenfluss von der Quelle bis zur Ausgabe | kein Befund ab Stufe Mittel; ein Hinweis umgesetzt |
-| Content-Security-Policy | Demo unter `default-src 'self'` ohne `unsafe-inline` | läuft; der Renderer setzt seine Regeln über `adoptedStyleSheets`, die Demo kommt ohne Inline-Skripte und Inline-Stile aus |
+| Content-Security-Policy | Demo, Dokumentation und Startseite unter `default-src 'self'; script-src 'self'; style-src 'self'; frame-ancestors 'none'` ohne `unsafe-inline` | läuft; der Renderer setzt seine Regeln über `adoptedStyleSheets`, alle Seiten kommen ohne Inline-Skripte und Inline-Stile aus |
 | Geheimnisse in der Historie | gitleaks über alle Commits | keine Funde |
 | Linter und Datenprüfung | ESLint und stylelint; `skripte/pruefe.py` prüft jede KERN-Klasse und jedes Token gegen das Kit, das Datenpaket und die Kontraste hell und dunkel | ohne Befund |
-| Markup | html-validate auf Demo, Dokumentation und gerendertem DOM | ohne Befund |
-| Barrierefreiheit | axe-core nach WCAG 2.1 AA und 2.2 AA mit Best Practices: Karten, Zeitleiste, hell und dunkel, beide Sprachen, Breiten 1280, 390 und 320 Pixel; Kontraste aller Texte nachgerechnet, auch beim Überfahren; Tastaturdurchgang mit Prüfung des Fokusrahmens; Textabstände, Schrift 200 %, reduzierte Bewegung | keine offenen Verstöße |
+| Markup | html-validate auf Demo, Dokumentation, Startseite und gerendertem DOM | ohne Befund |
+| Barrierefreiheit | axe-core nach WCAG 2.1 AA und 2.2 AA mit Best Practices: Karten, Zeitleiste, hell und dunkel, beide Sprachen, Breiten 1280, 390 und 320 Pixel; Kontraste aller Texte nachgerechnet, auch beim Überfahren; Tastaturdurchgang mit Prüfung des Fokusrahmens; Textabstände, Schrift 200 %, reduzierte Bewegung; Dokumentation und Startseite hell und dunkel in beiden Sprachen bei 1280, 390 und 320 Pixel | keine offenen Verstöße |
 | Browser und Last | Chromium, Firefox und WebKit ohne Konsolenfehler; 1000 Karten | bestanden; 205 ms bis zum Rendern, 5 ms je Filterklick |
 | Lighthouse 13.5 | Demo-Seite des Pakets, Mobil-Profil mit simulierter Drosselung, komprimierte Auslieferung | Barrierefreiheit 100, Best Practices 100, Leistung 81. Das Pattern selbst bringt komprimiert rund 29 KB mit (CSS, JavaScript, Beispieldaten); Kit und Schrift lädt eine KERN-Seite ohnehin |
 | Lieferkette | KERN-Kit in fester Version, SHA-512-Prüfsumme vor dem Entpacken; SHA-256-Prüfsumme zum Zip | Kit, Fira Sans und Lucide erfasst, Lizenztexte im Paket |
