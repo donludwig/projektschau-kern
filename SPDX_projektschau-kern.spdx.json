@@ -5,7 +5,7 @@
   "name": "projektschau-kern-0.1.0",
   "documentNamespace": "https://spdx.org/spdxdocs/projektschau-kern-0.1.0-11a35630-95fc-51ba-b213-349d0ccc74f7",
   "creationInfo": {
-    "created": "2026-10-15T16:07:54Z",
+    "created": "2026-10-15T16:17:50Z",
     "creators": [
       "Person: Don Ludwig (don@thinkrepeat.com)",
       "Tool: skripte/sbom.py"

@@ -1,5 +1,7 @@
 ![Projektschau für KERN: Projektkarten in vier Bereichsfarben mit Filterleiste, darüber versetzt eine Zeitleiste](doku/katalog-bild.png)
 
+Deutsch · [English](README.en.md)
+
 # Projektschau für KERN
 
 Projektübersicht mit Karten, Filtern und Zeitleiste auf Basis des [KERN UX-Standards](https://www.kern-ux.de). Ein Pattern für Initiativen, Vereine und Verwaltungen, die ihre Vorhaben auf einer Seite zeigen wollen: jede Karte ein Projekt mit Bereich, Einordnung, Status, Beschreibung, Aktivitäten, Partnern, Kennzahl und Links. Zwei Sprachen, Hell- und Dunkelmodus, Filter nach Bereich und Einordnung, Zeitleiste nach Jahren, Deep-Links über die Adresszeile.
@@ -8,7 +10,7 @@ Drei Dateien, kein Framework, kein Build: `projektschau.js`, `projektschau.css` 
 
 Das Pattern ist aus einer [Projektübersicht](https://ankerpunkt-hoherflaeming.de/projekte/) entstanden, die bei einem regionalen Netzwerk als laufendes Projekt im Einsatz ist. Parallel wird ein WordPress-Plugin mit demselben Datenformat entwickelt. Die Beispieldaten in `daten/beispiel.json` sind erfunden.
 
-Quellcode: [github.com/donludwig/projektschau-kern](https://github.com/donludwig/projektschau-kern). Diese Seite gibt es auch auf Englisch: `README.en.md`.
+Quellcode: [github.com/donludwig/projektschau-kern](https://github.com/donludwig/projektschau-kern).
 
 ## 1. Demo und Einbinden
 

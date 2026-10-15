@@ -1,5 +1,7 @@
 ![Projektschau for KERN: project cards in four area colours with a filter bar, and a timeline set on top](doku/katalog-bild.png)
 
+[Deutsch](README.md) · English
+
 # Projektschau for KERN
 
 A project overview with cards, filters and a timeline, built on the [KERN UX standard](https://www.kern-ux.de). A pattern for initiatives, associations and public administrations that want to show their projects on one page: each card is a project with area, category, status, description, activities, partners, key figure and links. Two languages, light and dark mode, filters by area and category, a timeline by year, deep links via the address bar.
@@ -8,7 +10,7 @@ Three files, no framework, no build step: `projektschau.js`, `projektschau.css` 
 
 The pattern grew out of a [project overview](https://ankerpunkt-hoherflaeming.de/projekte/) that a regional network uses as a running project. A WordPress plugin with the same data format is being developed in parallel. The sample data in `daten/beispiel.json` is fictitious.
 
-Source code: [github.com/donludwig/projektschau-kern](https://github.com/donludwig/projektschau-kern). This page is also available in German: `README.md`.
+Source code: [github.com/donludwig/projektschau-kern](https://github.com/donludwig/projektschau-kern).
 
 ## 1. Demo and integration
 

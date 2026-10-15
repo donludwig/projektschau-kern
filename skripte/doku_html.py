@@ -236,6 +236,8 @@ def main() -> None:
         md = (WURZEL / quelle).read_text(encoding="utf-8")
         # Das Kopfbild der README ist für die Ansicht im Repositorium gedacht; die HTML-Seite beginnt mit der Überschrift
         md = re.sub(r"\A!\[[^\]]*\]\(doku/katalog-bild\.png\)\n+", "", md)
+        # Ebenso die Sprachzeile unter dem Kopfbild: Die HTML-Seite hat ihren eigenen DE/EN-Umschalter
+        md = re.sub(r"\A(?:Deutsch|\[Deutsch\]\(README\.md\)) · (?:English|\[English\]\(README\.en\.md\))\n+", "", md)
         html = markdown.markdown(md, extensions=["tables", "fenced_code", "toc"], extension_configs={"toc": {"slugify": slugify_unicode}})
         for muster, ersatz in KLASSEN:
             html = re.sub(muster, ersatz, html)
