@@ -4,12 +4,12 @@
 
 Wenn du eine Sicherheitslücke in der Projektschau für KERN findest, melde sie bitte vertraulich per E-Mail an **don@thinkrepeat.com** mit dem Betreff „Projektschau KERN Sicherheit“. Bitte kein öffentliches Ticket, keine Veröffentlichung, bevor eine Korrektur verfügbar ist.
 
-Hilfreich in der Meldung: betroffene Fassung (Abschnitt „Änderungen“ der README), ein Datenpaket oder eine Einbettung, die das Problem zeigt, erwartetes und tatsächliches Verhalten, Browser.
+Hilfreich in der Meldung: betroffene Fassung (`CHANGELOG.md`), ein Datenpaket oder eine Einbettung, die das Problem zeigt, erwartetes und tatsächliches Verhalten, Browser.
 
 Ablauf:
 
 - Eingangsbestätigung mit Einschätzung und geplantem Weg innerhalb von 14 Tagen.
-- Korrektur als neue Fassung mit Eintrag im Abschnitt „Änderungen“, abgestimmt mit der meldenden Person. Veröffentlichung der Einzelheiten spätestens 90 Tage nach der Meldung, früher sobald die Korrektur verfügbar ist.
+- Korrektur als neue Fassung mit Eintrag in `CHANGELOG.md`, abgestimmt mit der meldenden Person. Veröffentlichung der Einzelheiten spätestens 90 Tage nach der Meldung, früher sobald die Korrektur verfügbar ist.
 - Nennung der meldenden Person, wenn gewünscht.
 
 ## Was dazugehört
@@ -29,7 +29,7 @@ Don Ludwig pflegt das Pattern und beantwortet Meldungen. Was geprüft ist, wie u
 
 # Security (English)
 
-Report vulnerabilities privately to **don@thinkrepeat.com**, subject “Projektschau KERN Security”. Please do not open a public issue before a fix is available. Include the affected release (see “Changelog” in the README), a data package or embedding that shows the problem, and the browser.
+Report vulnerabilities privately to **don@thinkrepeat.com**, subject “Projektschau KERN Security”. Please do not open a public issue before a fix is available. Include the affected release (see `CHANGELOG.en.md`), a data package or embedding that shows the problem, and the browser.
 
 You will receive an acknowledgement with an assessment within 14 days. Fixes ship as a new release with a changelog entry; details are published no later than 90 days after the report, earlier once the fix is out. Reporters are credited if they wish.
 
