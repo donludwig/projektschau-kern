@@ -57,6 +57,10 @@ The page must load the KERN kit (kit version in `vendor/kern/VERSION`). The kit 
 
 `index.html` has a header with the links Demo and Documentation, the light/dark toggle, and a footer with the licence notes; the documentation pages carry the same header and footer. Colour scheme and language are passed along in the address when switching between pages (`?theme=dark&lang=en`), so the choice survives even when the browser allows no storage, for example Safari with files from disk. Both values are also stored in `localStorage` under `ps-theme` and `ps-lang`. The README link always points to the version in the currently active language.
 
+### The start page
+
+`website/index.html` and `website/index.en.html` are the start page of [projektschau.thinkrepeat.com](https://projektschau.thinkrepeat.com/) in German and English, as an example of how to present the pattern on a site of your own. They use the kit and the sample data from the package; their own files are in `website/assets/`. The imprint links to the page on the web.
+
 ### Options on the element
 
 | Attribute | Values | Effect |
@@ -533,7 +537,7 @@ Please report vulnerabilities privately: [`SECURITY.md`](SECURITY.md) gives addr
 
 ## 8. Licence
 
-Code and documentation: [EUPL-1.2](LICENSE) ([licence text at the EU](https://eupl.eu/1.2/en/)). KERN kit: EUPL-1.2 (`vendor/kern/LICENSE.md`). [Fira Sans](https://github.com/mozilla/Fira): [SIL Open Font License 1.1](https://openfontlicense.org). Icons in the sample data after [Lucide](https://lucide.dev) ([ISC](https://github.com/lucide-icons/lucide/blob/main/LICENSE)).
+Code and documentation: [EUPL-1.2](LICENSE) ([licence text at the EU](https://eupl.eu/1.2/en/)). KERN kit: EUPL-1.2 (`vendor/kern/LICENSE.md`). [Fira Sans](https://github.com/mozilla/Fira): [SIL Open Font License 1.1](https://openfontlicense.org). Icons in the sample data and on the start page after [Lucide](https://lucide.dev) ([ISC](https://github.com/lucide-icons/lucide/blob/main/LICENSE)). The KERN logo on the start page (`website/`) is a mark of the KERN team and is not covered by the EUPL; its use here has been agreed with the KERN team.
 
 ## 9. Origin and further development
 
@@ -625,7 +629,7 @@ All notable changes are listed here, newest version first. The format follows [K
 
 ### 0.1.0 "Musterstadt"
 
-First release, named after the fictitious town of the sample data. As of 2026-10-13.
+First release, named after the fictitious town of the sample data. As of 2026-10-15.
 
 #### Added
 
@@ -640,3 +644,4 @@ First release, named after the fictitious town of the sample data. As of 2026-10
 - **Accessibility:** keyboard operation with visible focus, results are announced, checked contrasts, the system setting “reduce motion” is respected. Self-test with axe-core for WCAG 2.1 AA and 2.2 AA with no open violations ([section 6](#6-accessibility)).
 - **Security:** the renderer checks every field of the data package and runs under a strict content security policy. Check scripts, security policy (`SECURITY.md`) and bill of materials (SPDX 2.3) are included ([section 7](#7-security)).
 - **Demo and documentation:** demo page, this README in German and English, both also as HTML pages in KERN style; design and content rules for your own cards ([section 4.5](#45-design-rules)).
+- **Start page:** the start page of projektschau.thinkrepeat.com in German and English under `website/`, as an example of how to present the pattern ([section 1](#1-demo-and-integration)).

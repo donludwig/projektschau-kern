@@ -57,6 +57,10 @@ Die Seite muss das KERN-Kit laden (Kit-Version in `vendor/kern/VERSION`). Das Ki
 
 `index.html` hat eine Kopfzeile mit den Links Demo und Dokumentation, dem Hell/Dunkel-Umschalter und einer Fußzeile mit den Lizenzhinweisen; die Doku-Seiten tragen dieselbe Kopf- und Fußzeile. Farbschema und Sprache werden beim Wechsel zwischen den Seiten in der Adresse mitgegeben (`?theme=dark&lang=en`), damit die Wahl auch dann erhalten bleibt, wenn der Browser keinen Speicher erlaubt, etwa Safari bei Dateien von der Festplatte. Beide Werte landen zusätzlich im `localStorage` unter `ps-theme` und `ps-lang`. Der README-Link zeigt immer auf die Fassung in der gerade aktiven Sprache.
 
+### Die Startseite
+
+`website/index.html` und `website/index.en.html` sind die Startseite von [projektschau.thinkrepeat.com](https://projektschau.thinkrepeat.com/) in Deutsch und Englisch, als Beispiel dafür, wie sich das Pattern auf einer eigenen Seite vorstellen lässt. Sie nutzen das Kit und die Demo-Daten aus dem Paket; eigene Dateien liegen unter `website/assets/`. Das Impressum verlinkt auf die Seite im Netz.
+
 ### Optionen am Element
 
 | Attribut | Werte | Wirkung |
@@ -533,7 +537,7 @@ Sicherheitslücken bitte vertraulich melden: [`SECURITY.md`](SECURITY.md) nennt 
 
 ## 8. Lizenz
 
-Code und Dokumentation: [EUPL-1.2](LICENSE) (englischer Wortlaut im Paket, [deutscher Lizenztext bei der EU](https://eupl.eu/1.2/de/); alle Sprachfassungen gelten gleich). KERN-Kit: EUPL-1.2 (`vendor/kern/LICENSE.md`). [Fira Sans](https://github.com/mozilla/Fira): [SIL Open Font License 1.1](https://openfontlicense.org). Symbole in den Beispieldaten nach [Lucide](https://lucide.dev) ([ISC](https://github.com/lucide-icons/lucide/blob/main/LICENSE)).
+Code und Dokumentation: [EUPL-1.2](LICENSE) (englischer Wortlaut im Paket, [deutscher Lizenztext bei der EU](https://eupl.eu/1.2/de/); alle Sprachfassungen gelten gleich). KERN-Kit: EUPL-1.2 (`vendor/kern/LICENSE.md`). [Fira Sans](https://github.com/mozilla/Fira): [SIL Open Font License 1.1](https://openfontlicense.org). Symbole in den Beispieldaten und auf der Startseite nach [Lucide](https://lucide.dev) ([ISC](https://github.com/lucide-icons/lucide/blob/main/LICENSE)). Das KERN-Logo auf der Startseite (`website/`) ist ein Zeichen des KERN-Teams und steht nicht unter der EUPL; die Nutzung hier ist mit dem KERN-Team abgestimmt.
 
 ## 9. Entstehung und Weiterführung
 
@@ -625,7 +629,7 @@ Alle nennenswerten Änderungen stehen hier, neueste Version zuerst. Das Format f
 
 ### 0.1.0 „Musterstadt“
 
-Erste Veröffentlichung, benannt nach dem erfundenen Ort der Beispieldaten. Stand 2026-10-13.
+Erste Veröffentlichung, benannt nach dem erfundenen Ort der Beispieldaten. Stand 2026-10-15.
 
 #### Hinzugefügt
 
@@ -640,3 +644,4 @@ Erste Veröffentlichung, benannt nach dem erfundenen Ort der Beispieldaten. Stan
 - **Barrierefreiheit:** Tastaturbedienung mit sichtbarem Fokus, Ansage der Ergebnisse, geprüfte Kontraste, die Systemeinstellung „Bewegung reduzieren“ wird beachtet. Selbsttest mit axe-core nach WCAG 2.1 AA und 2.2 AA ohne offene Verstöße ([Abschnitt 6](#6-barrierefreiheit)).
 - **Sicherheit:** Der Renderer prüft jedes Feld des Datenpakets und läuft unter einer strengen Content-Security-Policy. Prüfskripte, Sicherheitsrichtlinie (`SECURITY.md`) und Stückliste (SPDX 2.3) liegen bei ([Abschnitt 7](#7-sicherheit)).
 - **Demo und Dokumentation:** Demo-Seite, diese README in Deutsch und Englisch, beide auch als HTML-Seiten im KERN-Stil; Gestaltungs- und Inhaltsregeln für eigene Karten ([Abschnitt 4.5](#45-gestaltungsregeln)).
+- **Startseite:** die Startseite von projektschau.thinkrepeat.com in Deutsch und Englisch unter `website/`, als Beispiel für die Vorstellung des Patterns ([Abschnitt 1](#1-demo-und-einbinden)).
